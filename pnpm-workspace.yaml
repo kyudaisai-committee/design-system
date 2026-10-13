@@ -1,0 +1,25 @@
+packages:
+  - apps/*
+  - packages/*
+allowBuilds:
+  esbuild: true
+  sharp: true
+  "@parcel/watcher": true
+minimumReleaseAgeExclude:
+  - '@storybook/addon-a11y@10.6.2'
+  - '@storybook/addon-docs@10.6.2'
+  - '@storybook/addon-vitest@10.6.2'
+  - '@storybook/builder-vite@10.6.2'
+  - '@storybook/react-dom-shim@10.6.2'
+  - '@storybook/react-vite@10.6.2'
+  - '@storybook/react@10.6.2'
+  - '@vitest/browser-playwright@5.0.4'
+  - '@vitest/browser@5.0.4'
+  - '@vitest/mocker@5.0.4'
+  - '@vitest/pretty-format@5.0.4'
+  - '@vitest/spy@5.0.4'
+  - '@vitest/ui@5.0.4'
+  - '@vitest/utils@5.0.4'
+  - storybook@10.6.2
+  - vitest@5.0.4
+  - lucide-react@1.56.0

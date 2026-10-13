@@ -1,0 +1,7 @@
+/* Keep theme artwork within the reading area without stretching it. */
+.prose img {
+  max-height: 28rem;
+  width: auto;
+  max-width: 100%;
+  object-fit: contain;
+}

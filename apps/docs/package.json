@@ -1,0 +1,13 @@
+{
+  "name": "@kyudaisai/docs",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "blume dev --port 4321",
+    "build": "node ../../scripts/build-docs.mjs"
+  },
+  "dependencies": {
+    "blume": "2.2.3",
+    "zod": "4.6.6"
+  }
+}

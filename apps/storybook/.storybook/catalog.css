@@ -1,0 +1,198 @@
+.sb-preview {
+  min-width: 0;
+}
+.sbdocs-content div:has(> .docblock-argstable) {
+  max-width: 100%;
+  overflow-x: auto;
+  padding: 1px;
+}
+.sbdocs-content .docblock-argstable {
+  min-width: 38rem;
+}
+.sb-catalog,
+.sb-foundation {
+  max-width: 76rem;
+  margin-inline: auto;
+  padding: clamp(1rem, 4vw, 3rem);
+}
+.sb-catalog-header {
+  display: grid;
+  gap: 1rem;
+  padding-bottom: 2rem;
+  border-bottom: 1px solid var(--border);
+}
+.sb-catalog-header h1 {
+  font-size: clamp(1.75rem, 3vw, 2.5rem);
+  letter-spacing: -0.035em;
+}
+.sb-catalog-header p {
+  color: var(--muted-foreground);
+  max-width: 44rem;
+}
+.sb-catalog-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  font-size: 0.875rem;
+}
+.sb-catalog-links a {
+  text-decoration: underline;
+}
+.sb-catalog-search {
+  display: grid;
+  grid-template-columns: minmax(0, 28rem) 1fr;
+  align-items: end;
+  gap: 1rem;
+  padding-block: 2rem;
+}
+.sb-catalog-search label {
+  display: grid;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+.sb-catalog-search p {
+  color: var(--muted-foreground);
+  font-size: 0.875rem;
+  padding-bottom: 0.75rem;
+}
+.sb-catalog-section {
+  margin-bottom: 2.5rem;
+}
+.sb-catalog-section > h2 {
+  padding-bottom: 0.75rem;
+  font-size: 1rem;
+}
+.sb-catalog-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 15.5rem), 1fr));
+  border-top: 1px solid var(--border);
+  border-left: 1px solid var(--border);
+}
+.sb-catalog-item {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  border-right: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+.sb-catalog-preview {
+  display: grid;
+  align-items: center;
+  min-height: 9rem;
+  padding: 1.5rem;
+  overflow: hidden;
+  background: var(--background);
+}
+.sb-catalog-preview > * {
+  max-width: 100%;
+}
+.sb-catalog-label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1.25rem 0;
+  font-weight: 600;
+  text-decoration: none;
+}
+.sb-catalog-label:hover {
+  text-decoration: underline;
+}
+.sb-catalog-label svg {
+  color: var(--muted-foreground);
+  flex: none;
+}
+.sb-catalog-item > p {
+  padding: 0.3rem 1.25rem 1rem;
+  color: var(--muted-foreground);
+  font-size: 0.8125rem;
+  line-height: 1.6;
+}
+.sb-foundation {
+  display: grid;
+  gap: 2rem;
+}
+.sb-foundation h1 {
+  font-size: 2rem;
+  letter-spacing: -0.025em;
+}
+.sb-foundation > a {
+  justify-self: start;
+  font-size: 0.875rem;
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+.sb-foundation-section {
+  display: grid;
+  gap: 1rem;
+}
+.sb-token-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 0.875rem;
+}
+.sb-token-table td,
+.sb-token-table th {
+  padding: 1rem 0.75rem;
+  border-bottom: 1px solid var(--border);
+  vertical-align: middle;
+}
+.sb-token-table th {
+  font-weight: 500;
+  color: var(--muted-foreground);
+}
+.sb-token-table code {
+  font: 0.75rem var(--font-mono);
+  overflow-wrap: anywhere;
+}
+.sb-swatch {
+  height: 3rem;
+  min-width: 3rem;
+  border: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.sb-token-strip {
+  display: grid;
+  grid-template-columns: 10rem minmax(0, 1fr);
+  gap: 1rem;
+  align-items: center;
+  padding-block: 0.75rem;
+  border-bottom: 1px solid var(--border);
+}
+.sb-token-strip code {
+  font: 0.75rem var(--font-mono);
+}
+.sb-type-specimen {
+  display: grid;
+  gap: 0.5rem;
+  padding-block: 1.5rem;
+  border-bottom: 1px solid var(--border);
+}
+.sb-type-specimen > small {
+  color: var(--muted-foreground);
+  font-size: 0.8125rem;
+}
+.sb-story-stack {
+  display: grid;
+  gap: 1.5rem;
+  width: min(100%, 34rem);
+}
+@media (max-width: 30rem) {
+  .sb-catalog-search {
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+  }
+  .sb-catalog-search p {
+    padding: 0;
+  }
+  .sb-token-table td,
+  .sb-token-table th {
+    padding: 0.75rem 0.3rem;
+  }
+  .sb-token-strip {
+    grid-template-columns: 7.5rem minmax(0, 1fr);
+  }
+}

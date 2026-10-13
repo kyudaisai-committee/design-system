@@ -1,0 +1,12 @@
+node_modules/
+dist/
+dist-packages/
+.blume/
+.blume-verify/
+.astro/
+storybook-static/
+test-results/
+playwright-report/
+.DS_Store
+*.tsbuildinfo
+.build-*/
