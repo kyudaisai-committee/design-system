@@ -1,0 +1,115 @@
+diff --git a/lib/compile.js b/lib/compile.js
+index dce69beb90ece5c3b0ca234a949418f9f34eedbc..3fc3f69e34380ccb58274fc1ce088bdb12e87885 100644
+--- a/lib/compile.js
++++ b/lib/compile.js
+@@ -2,8 +2,10 @@
+ 
+ const fill = require('fill-range');
+ const utils = require('./utils');
++const { assertDepth } = require('./depth');
+ 
+ const compile = (ast, options = {}) => {
++  assertDepth(ast);
+   const walk = (node, parent = {}) => {
+     const invalidBlock = utils.isInvalidBrace(parent);
+     const invalidNode = node.invalid === true && options.escapeInvalid === true;
+diff --git a/lib/depth.js b/lib/depth.js
+new file mode 100644
+index 0000000000000000000000000000000000000000..8a7151e1efae0ee011829cfa18e38b40183ac2e1
+--- /dev/null
++++ b/lib/depth.js
+@@ -0,0 +1,31 @@
++'use strict';
++
++const MAX_DEPTH = 128;
++
++const checkDepth = depth => {
++  if (depth > MAX_DEPTH) {
++    throw new SyntaxError(`Input nesting depth exceeds maximum (${MAX_DEPTH})`);
++  }
++};
++
++// Validate AST input iteratively before any recursive walker. Parent references
++// are normal in parsed ASTs, but an excessive or cyclic parent chain is not.
++const assertDepth = ast => {
++  const pending = [[ast, 0]];
++  while (pending.length > 0) {
++    const [node, depth] = pending.pop();
++    if (!node || typeof node !== 'object') continue;
++    checkDepth(depth - (Array.isArray(node.nodes) ? 0 : 1));
++    let parent = node.parent;
++    let parentDepth = 0;
++    while (parent) {
++      checkDepth(parentDepth++);
++      parent = parent.parent;
++    }
++    if (node.nodes) {
++      for (const child of node.nodes) pending.push([child, depth + 1]);
++    }
++  }
++};
++
++module.exports = { checkDepth, assertDepth };
+diff --git a/lib/expand.js b/lib/expand.js
+index 35b2c41d6afdb8f0197959e26079f266e48370d3..afa2f9db1badb8884255c241761831ca1010e1df 100644
+--- a/lib/expand.js
++++ b/lib/expand.js
+@@ -3,6 +3,7 @@
+ const fill = require('fill-range');
+ const stringify = require('./stringify');
+ const utils = require('./utils');
++const { assertDepth } = require('./depth');
+ 
+ const append = (queue = '', stash = '', enclose = false) => {
+   const result = [];
+@@ -31,6 +32,7 @@ const append = (queue = '', stash = '', enclose = false) => {
+ };
+ 
+ const expand = (ast, options = {}) => {
++  assertDepth(ast);
+   const rangeLimit = options.rangeLimit === undefined ? 1000 : options.rangeLimit;
+ 
+   const walk = (node, parent = {}) => {
+diff --git a/lib/parse.js b/lib/parse.js
+index 3a6988e629f52aee6609dc5ec290a5e9ff47cecb..422bcf0b9a0abd51e84997338c05c51697dd00dd 100644
+--- a/lib/parse.js
++++ b/lib/parse.js
+@@ -1,6 +1,7 @@
+ 'use strict';
+ 
+ const stringify = require('./stringify');
++const { checkDepth } = require('./depth');
+ 
+ /**
+  * Constants
+@@ -144,6 +145,7 @@ const parse = (input, options = {}) => {
+ 
+     if (value === CHAR_LEFT_PARENTHESES) {
+       block = push({ type: 'paren', nodes: [] });
++      checkDepth(stack.length);
+       stack.push(block);
+       push({ type: 'text', value });
+       continue;
+@@ -210,6 +212,7 @@ const parse = (input, options = {}) => {
+       };
+ 
+       block = push(brace);
++      checkDepth(stack.length);
+       stack.push(block);
+       push({ type: 'open', value });
+       continue;
+diff --git a/lib/stringify.js b/lib/stringify.js
+index 8bcf872c31894f81a8c64d9202fd607e4fd7ea2b..51fcca3f11c8fba2cb0130d3c3341a1e1ddfe2fa 100644
+--- a/lib/stringify.js
++++ b/lib/stringify.js
+@@ -1,8 +1,10 @@
+ 'use strict';
+ 
+ const utils = require('./utils');
++const { assertDepth } = require('./depth');
+ 
+ module.exports = (ast, options = {}) => {
++  assertDepth(ast);
+   const stringify = (node, parent = {}) => {
+     const invalidBlock = options.escapeInvalid && utils.isInvalidBrace(parent);
+     const invalidNode = node.invalid === true && options.escapeInvalid === true;

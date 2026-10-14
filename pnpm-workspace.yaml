@@ -6,6 +6,13 @@ allowBuilds:
   lefthook: true
   sharp: true
   "@parcel/watcher": true
+overrides:
+  "esbuild@>=0.27.3 <0.28.1": 0.28.2
+  "katex@>=0.11.0 <0.18.2": 0.18.10
+  "path-to-regexp@>=4.0.0 <6.3.0": 6.3.0
+  "postcss-selector-parser@<7.1.6": 7.1.6
+  "uuid@<11.1.1": 11.1.1
+  "js-yaml@3.15.2>argparse": 2.0.1
 minimumReleaseAgeExclude:
   - "@storybook/addon-a11y@10.6.2"
   - "@storybook/addon-docs@10.6.2"
@@ -39,3 +46,7 @@ minimumReleaseAgeExclude:
   - expo-dev-launcher@57.0.21
   - expo-dev-menu@57.0.20
   - expo-sharing@57.0.23
+patchedDependencies:
+  braces@3.0.3: patches/braces@3.0.3.patch
+  js-yaml@3.15.2: patches/js-yaml@3.15.2.patch
+  node-forge@1.4.0: patches/node-forge@1.4.0.patch

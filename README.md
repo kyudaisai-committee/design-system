@@ -51,9 +51,12 @@ pnpm lint
 pnpm lint:fix
 pnpm format
 pnpm format:check
+pnpm dependencies:test
 ```
 
 OxlintはコードとHooks、Webでは基本的なアクセシビリティも検査します。Oxfmtはコード・設定・文書を整形します。Lefthookはコミット前に対象ファイルのLintと整形、push前にLint・整形・型・トークンの整合を確認します。GitHub Actionsはプルリクエストとmainへのpushで `pnpm check` を実行し、成功した公開用サイトを成果物として保存します。CI定義は `.github/workflows/ci.yml` にあります。
+
+依存関係のセキュリティ修正と互換性は `pnpm dependencies:test` で確認します。修正版が未提供の依存に適用する局所修正は、[パッチの保守方針](patches/README.md)を参照してください。
 
 ## 執筆・更新手順
 
