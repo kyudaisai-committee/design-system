@@ -610,3 +610,124 @@
     scroll-behavior: auto !important;
   }
 }
+
+/* QR images keep their own white optical surface in both themes. */
+.ds-qr {
+  container-type: inline-size;
+  width: 100%;
+  max-width: 24rem;
+  min-width: 0;
+}
+.ds-qr:not([data-variant="plain"]) {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  background: var(--card);
+  color: var(--card-foreground);
+  padding: var(--space-6);
+}
+.ds-qr[data-variant="compact"] {
+  max-width: 35rem;
+}
+.ds-qr-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-4);
+  min-width: 0;
+}
+.ds-qr-heading {
+  display: grid;
+  gap: var(--space-2);
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.ds-qr-heading h3 {
+  font-size: var(--text-lg);
+  font-weight: 600;
+}
+.ds-qr[data-variant="card"] .ds-qr-heading {
+  text-align: center;
+}
+.ds-qr-visual {
+  width: 15.5rem;
+  max-width: 100%;
+  justify-self: center;
+}
+.ds-qr[data-variant="plain"] .ds-qr-visual {
+  width: 13.5rem;
+}
+.ds-qr[data-variant="compact"] .ds-qr-visual {
+  width: 10rem;
+}
+.ds-qr-image {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: contain;
+  background: #fff;
+}
+.ds-qr-message {
+  display: grid;
+  gap: var(--space-3);
+  align-content: center;
+  min-height: 13.5rem;
+  padding: var(--space-4);
+  background: var(--muted);
+  border-radius: var(--radius-md);
+}
+.ds-qr-message button {
+  white-space: normal;
+}
+.ds-qr-details,
+.ds-qr-actions {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.ds-qr-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+.ds-qr-example-details {
+  display: grid;
+  gap: var(--space-1);
+}
+@container (min-width: 26rem) {
+  .ds-qr[data-variant="compact"] .ds-qr-layout {
+    grid-template-columns: 10rem minmax(0, 1fr);
+    column-gap: var(--space-6);
+    align-items: center;
+  }
+  .ds-qr[data-variant="compact"] .ds-qr-visual {
+    grid-column: 1;
+    grid-row: 1 / 4;
+  }
+  .ds-qr[data-variant="compact"] .ds-qr-heading,
+  .ds-qr[data-variant="compact"] .ds-qr-details,
+  .ds-qr[data-variant="compact"] .ds-qr-actions {
+    grid-column: 2;
+  }
+}
+.ds-qr-comparison {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-8);
+  max-width: 56rem;
+}
+.ds-qr-comparison-intro,
+.ds-qr-comparison-wide {
+  grid-column: 1 / -1;
+}
+.ds-qr-comparison > article {
+  align-content: start;
+}
+.ds-qr-comparison-wide .ds-qr {
+  max-width: 100%;
+}
+@media (max-width: 40rem) {
+  .ds-qr:not([data-variant="plain"]) {
+    padding: var(--space-4);
+  }
+  .ds-qr-comparison {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

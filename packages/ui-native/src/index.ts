@@ -4,3 +4,4 @@ export * from "./bottom-tab-bar";
 export * from "./form-controls";
 export * from "./date-input";
 export * from "./collection-inputs";
+export * from "./qr-code";

@@ -28,6 +28,7 @@ import {
   CardContent,
   Checkbox,
   DateDetails,
+  QrCode,
   Field,
   Input,
   Label,
@@ -72,6 +73,7 @@ import {
   Textarea,
   Timeline,
 } from "../index";
+import qrSample from "./qr-code-sample.png";
 
 type CatalogEntry = { name: string; purpose: string; preview: ReactNode };
 type CatalogGroup = { title: string; items: CatalogEntry[] };
@@ -355,6 +357,18 @@ const groups: CatalogGroup[] = [
   {
     title: "情報・状態",
     items: [
+      {
+        name: "QrCode",
+        purpose: "QRコードを対象・案内と一緒に表示",
+        preview: (
+          <QrCode
+            src={qrSample}
+            title="九大祭公式サイト"
+            label="公式サイトを開くQRコード"
+            variant="plain"
+          />
+        ),
+      },
       {
         name: "Badge",
         purpose: "短い分類やラベル",

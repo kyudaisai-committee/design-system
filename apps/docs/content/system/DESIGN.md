@@ -235,21 +235,22 @@ Checkboxは4pxの角丸、RadioGroupは円、Switchは丸いつまみを使い�
 
 ### 情報・状態
 
-| 部品                                                                 | 選び方                                                         |
-| -------------------------------------------------------------------- | -------------------------------------------------------------- |
-| [Badge](/storybook/?path=/docs/components-badge--docs)               | 種別や開催回など、短い分類を添える                             |
-| [StatusBadge](/storybook/?path=/docs/components-statusbadge--docs)   | 状態名とその意味に対応する色を示す。業務状態は利用側で決める   |
-| [Alert](/storybook/?path=/docs/components-alert--docs)               | 見出し・本文・アイコンを組み合わせた、画面内に残るメッセージ   |
-| [Notice](/storybook/?path=/docs/components-notice--docs)             | 案内・完了・注意・失敗の意味を揃えた通知領域。次の行動も添える |
-| [Card](/storybook/?path=/docs/components-card--docs)                 | 見出し、本文、補助操作を含む独立したまとまり                   |
-| [ContentCard](/storybook/?path=/docs/components-contentcard--docs)   | 一定の内側余白を持つ本文領域                                   |
-| [Table](/storybook/?path=/docs/components-table--docs)               | 同じ項目で複数の対象を比較する。列と操作に名前を付ける         |
-| [Progress](/storybook/?path=/docs/components-progress--docs)         | ファイル送信など、量を測れる処理の進み具合                     |
-| [Skeleton](/storybook/?path=/docs/components-skeleton--docs)         | 読み込み後の形を示す。模様を読み上げさせない                   |
-| [LoadingState](/storybook/?path=/docs/components-loadingstate--docs) | 読み込んでいる対象を文字で伝える領域                           |
-| [EmptyState](/storybook/?path=/docs/components-emptystate--docs)     | 対象がない理由と次の操作。検索結果なしでは条件を残す           |
-| [DateDetails](/storybook/?path=/docs/components-datedetails--docs)   | 締切、予定日、提出日など、意味の異なる日時を並べる             |
-| [Separator](/storybook/?path=/docs/components-separator--docs)       | 異なる情報群を区切る。各行を無条件に分断しない                 |
+| 部品                                                                 | 選び方                                                                                                           |
+| -------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------- |
+| [QrCode](/storybook/?path=/docs/components-qrcode--docs)             | 提示カードを基本に、QRコードと対象を表示する。[上部の見出し・提示方法の案内](./qr-code.md)は差し替え・省略できる |
+| [Badge](/storybook/?path=/docs/components-badge--docs)               | 種別や開催回など、短い分類を添える                                                                               |
+| [StatusBadge](/storybook/?path=/docs/components-statusbadge--docs)   | 状態名とその意味に対応する色を示す。業務状態は利用側で決める                                                     |
+| [Alert](/storybook/?path=/docs/components-alert--docs)               | 見出し・本文・アイコンを組み合わせた、画面内に残るメッセージ                                                     |
+| [Notice](/storybook/?path=/docs/components-notice--docs)             | 案内・完了・注意・失敗の意味を揃えた通知領域。次の行動も添える                                                   |
+| [Card](/storybook/?path=/docs/components-card--docs)                 | 見出し、本文、補助操作を含む独立したまとまり                                                                     |
+| [ContentCard](/storybook/?path=/docs/components-contentcard--docs)   | 一定の内側余白を持つ本文領域                                                                                     |
+| [Table](/storybook/?path=/docs/components-table--docs)               | 同じ項目で複数の対象を比較する。列と操作に名前を付ける                                                           |
+| [Progress](/storybook/?path=/docs/components-progress--docs)         | ファイル送信など、量を測れる処理の進み具合                                                                       |
+| [Skeleton](/storybook/?path=/docs/components-skeleton--docs)         | 読み込み後の形を示す。模様を読み上げさせない                                                                     |
+| [LoadingState](/storybook/?path=/docs/components-loadingstate--docs) | 読み込んでいる対象を文字で伝える領域                                                                             |
+| [EmptyState](/storybook/?path=/docs/components-emptystate--docs)     | 対象がない理由と次の操作。検索結果なしでは条件を残す                                                             |
+| [DateDetails](/storybook/?path=/docs/components-datedetails--docs)   | 締切、予定日、提出日など、意味の異なる日時を並べる                                                               |
+| [Separator](/storybook/?path=/docs/components-separator--docs)       | 異なる情報群を区切る。各行を無条件に分断しない                                                                   |
 
 ### 開閉・補足
 

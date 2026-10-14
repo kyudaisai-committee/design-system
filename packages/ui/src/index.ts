@@ -30,6 +30,7 @@ export * from "./components/skeleton";
 export * from "./components/table";
 export * from "./components/textarea";
 export * from "./components/compositions";
+export * from "./components/qr-code";
 export * from "./components/process-steps";
 export * from "./components/timeline";
 export * from "./components/date-details";
