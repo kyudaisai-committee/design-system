@@ -1,13 +1,17 @@
-import { useState, type ComponentProps } from "react";
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { expect, fn, userEvent, waitFor, within } from "storybook/test";
+
 import {
   Building2,
   CalendarDays,
   ClipboardList,
   Inbox,
   PanelsTopLeft,
+  Plus,
+  Ellipsis,
 } from "lucide-react";
+import { useState, type ComponentProps } from "react";
+import { expect, fn, userEvent, waitFor, within } from "storybook/test";
+
 import { Field } from "./compositions";
 import { Input } from "./input";
 import {
@@ -15,15 +19,18 @@ import {
   SidebarContent,
   SidebarFooter,
   SidebarGroup,
+  SidebarGroupAction,
   SidebarGroupContent,
   SidebarGroupLabel,
   SidebarHeader,
   SidebarInset,
   SidebarMenu,
+  SidebarMenuAction,
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarMenuSkeleton,
   SidebarProvider,
+  SidebarRail,
   SidebarSeparator,
   SidebarTrigger,
   useSidebar,
@@ -63,10 +70,7 @@ function DemoContent({
     setPage(next);
     setOpenMobile(false);
   };
-  const title =
-    page === "settings"
-      ? "団体設定"
-      : pages.find((item) => item.id === page)!.title;
+  const title = page === "settings" ? "団体設定" : pages.find((item) => item.id === page)!.title;
   return (
     <>
       <Sidebar {...props}>
@@ -85,11 +89,7 @@ function DemoContent({
         <SidebarSeparator />
         <SidebarContent>
           {loading ? (
-            <div
-              role="status"
-              aria-label="メニューを読み込んでいます"
-              className="p-2"
-            >
+            <div role="status" aria-label="メニューを読み込んでいます" className="p-2">
               <span className="sr-only">メニューを読み込んでいます</span>
               {[1, 2, 3].map((item) => (
                 <SidebarMenuSkeleton key={item} showIcon aria-hidden="true" />
@@ -98,11 +98,7 @@ function DemoContent({
           ) : (
             <nav aria-label="企画団体のメニュー" className="space-y-3">
               {navigationGroups.map((group) => (
-                <SidebarGroup
-                  key={group.label}
-                  role="group"
-                  aria-label={group.label}
-                >
+                <SidebarGroup key={group.label} role="group" aria-label={group.label}>
                   <SidebarGroupLabel>{group.label}</SidebarGroupLabel>
                   <SidebarGroupContent>
                     <SidebarMenu>
@@ -145,9 +141,7 @@ function DemoContent({
                   >
                     <Building2 aria-hidden="true" />
                     <span>
-                      {longLabels
-                        ? "九州大学の研究を体験する科学実験企画の団体設定"
-                        : "団体設定"}
+                      {longLabels ? "九州大学の研究を体験する科学実験企画の団体設定" : "団体設定"}
                     </span>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
@@ -159,9 +153,7 @@ function DemoContent({
       <SidebarInset>
         <header className="flex min-h-16 items-center gap-3 border-b px-4">
           {(props.collapsible !== "none" || isMobile) && <SidebarTrigger />}
-          <p className="min-w-0 truncate text-sm text-muted-foreground">
-            九大カフェ
-          </p>
+          <p className="min-w-0 truncate text-sm text-muted-foreground">九大カフェ</p>
         </header>
         <div className="grid max-w-2xl gap-5 p-5 sm:p-8">
           <h1>{title}</h1>
@@ -172,9 +164,7 @@ function DemoContent({
                 <div className="flex flex-wrap gap-x-4">
                   <dt className="text-muted-foreground">再提出期限</dt>
                   <dd>
-                    <time dateTime="2026-10-20T17:00:00+09:00">
-                      10月20日 17:00
-                    </time>
+                    <time dateTime="2026-10-20T17:00:00+09:00">10月20日 17:00</time>
                   </dd>
                 </div>
                 <div className="flex flex-wrap gap-x-4">
@@ -187,10 +177,7 @@ function DemoContent({
           {page === "messages" && (
             <>
               <h2>搬入日時の確認</h2>
-              <p>
-                搬入は10月30日
-                14:00〜16:00です。会場の受付で企画番号をお伝えください。
-              </p>
+              <p>搬入は10月30日 14:00〜16:00です。会場の受付で企画番号をお伝えください。</p>
             </>
           )}
           {page === "event" && (
@@ -333,7 +320,8 @@ const meta = {
     collapsible: {
       control: "inline-radio",
       options: ["icon", "offcanvas", "none"],
-      description: "広い画面での表示方法。iconはアイコンのみ、offcanvasは全体を隠し、noneは常に表示します。",
+      description:
+        "広い画面での表示方法。iconはアイコンのみ、offcanvasは全体を隠し、noneは常に表示します。",
     },
     label: {
       control: "text",
@@ -363,7 +351,7 @@ export const Default: Story = {
   decorators: [
     (Story, context) =>
       context.viewMode === "docs" ? (
-        <div className="relative isolate h-[560px] overflow-hidden [transform:translateZ(0)] [&_[data-slot=sidebar-wrapper]]:h-full [&_[data-slot=sidebar-wrapper]]:min-h-full [&_[data-slot=sidebar-container]]:absolute [&_[data-slot=sidebar-container]]:h-full [&_[data-slot=sidebar-inset]]:overflow-auto">
+        <div className="relative isolate h-[560px] [transform:translateZ(0)] overflow-hidden [&_[data-slot=sidebar-container]]:absolute [&_[data-slot=sidebar-container]]:h-full [&_[data-slot=sidebar-inset]]:overflow-auto [&_[data-slot=sidebar-wrapper]]:h-full [&_[data-slot=sidebar-wrapper]]:min-h-full">
           <Story />
         </div>
       ) : (
@@ -406,10 +394,7 @@ export const Keyboard: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     const body = within(canvasElement.ownerDocument.body);
-    const mobile =
-      canvasElement.ownerDocument.defaultView!.matchMedia(
-        "(width < 48rem)",
-      ).matches;
+    const mobile = canvasElement.ownerDocument.defaultView!.matchMedia("(width < 48rem)").matches;
     const trigger = canvas.getByRole("button", {
       name: mobile ? "メニューを開く" : "サイドバーを折りたたむ",
     });
@@ -417,30 +402,28 @@ export const Keyboard: Story = {
     await userEvent.keyboard("{Enter}");
     if (mobile) {
       const dialog = await body.findByRole("dialog", { name: "主なメニュー" });
-      await expect(
-        within(dialog).getByRole("button", { name: "申請" }),
-      ).toHaveAttribute("aria-current", "page");
+      await expect(within(dialog).getByRole("button", { name: "申請" })).toHaveAttribute(
+        "aria-current",
+        "page",
+      );
       within(dialog).getByRole("button", { name: "団体設定" }).focus();
       await new Promise((resolve) => setTimeout(resolve, 650));
       await userEvent.keyboard("{Escape}");
-      await waitFor(() =>
-        expect(body.queryByRole("dialog")).not.toBeInTheDocument(),
-      );
+      await waitFor(() => expect(body.queryByRole("dialog")).not.toBeInTheDocument());
       await expect(trigger).toHaveFocus();
     } else {
       await expect(trigger).toHaveAttribute("aria-expanded", "false");
       await userEvent.keyboard("{Enter}");
       await expect(trigger).toHaveAttribute("aria-expanded", "true");
       await userEvent.click(canvas.getByRole("button", { name: "連絡" }));
-      await expect(
-        canvas.getByRole("heading", { name: "連絡", level: 1 }),
-      ).toBeVisible();
-      await expect(
-        canvas.getByRole("button", { name: "連絡" }),
-      ).toHaveAttribute("aria-current", "page");
-      await expect(
-        canvas.getByRole("button", { name: "申請" }),
-      ).not.toHaveAttribute("aria-current");
+      await expect(canvas.getByRole("heading", { name: "連絡", level: 1 })).toBeVisible();
+      await expect(canvas.getByRole("button", { name: "連絡" })).toHaveAttribute(
+        "aria-current",
+        "page",
+      );
+      await expect(canvas.getByRole("button", { name: "申請" })).not.toHaveAttribute(
+        "aria-current",
+      );
     }
   },
 };
@@ -461,10 +444,7 @@ export const ShortcutDuringInput: Story = {
     await expect(trigger).toHaveAttribute("aria-expanded", before);
     trigger.focus();
     await userEvent.keyboard("{Meta>}b{/Meta}");
-    await expect(trigger).toHaveAttribute(
-      "aria-expanded",
-      before === "true" ? "false" : "true",
-    );
+    await expect(trigger).toHaveAttribute("aria-expanded", before === "true" ? "false" : "true");
   },
 };
 
@@ -478,11 +458,7 @@ export const ProviderNotification: Story = {
   ),
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    if (
-      canvasElement.ownerDocument.defaultView!.matchMedia("(width < 48rem)")
-        .matches
-    )
-      return;
+    if (canvasElement.ownerDocument.defaultView!.matchMedia("(width < 48rem)").matches) return;
     const trigger = canvas.getByRole("button", {
       name: "サイドバーを折りたたむ",
     });
@@ -506,11 +482,7 @@ export const DisabledItems: Story = {
               </SidebarMenuButton>
             </SidebarMenuItem>
             <SidebarMenuItem>
-              <SidebarMenuButton
-                disabled
-                tooltip="受付前です"
-                onClick={onDisabledClick}
-              >
+              <SidebarMenuButton disabled tooltip="受付前です" onClick={onDisabledClick}>
                 物品申込（受付前）
               </SidebarMenuButton>
             </SidebarMenuItem>
@@ -528,13 +500,8 @@ export const DisabledItems: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     let menu = canvas;
-    if (
-      canvasElement.ownerDocument.defaultView!.matchMedia("(width < 48rem)")
-        .matches
-    ) {
-      await userEvent.click(
-        canvas.getByRole("button", { name: "メニューを開く" }),
-      );
+    if (canvasElement.ownerDocument.defaultView!.matchMedia("(width < 48rem)").matches) {
+      await userEvent.click(canvas.getByRole("button", { name: "メニューを開く" }));
       menu = within(
         await within(canvasElement.ownerDocument.body).findByRole("dialog", {
           name: "主なメニュー",
@@ -550,5 +517,56 @@ export const DisabledItems: Story = {
       await expect(button).not.toHaveFocus();
     }
     await expect(onDisabledClick).not.toHaveBeenCalled();
+  },
+};
+
+const onUnexpectedSubmit = fn();
+export const InsideForm: Story = {
+  name: "フォーム内の補助操作",
+  render: () => (
+    <form
+      onSubmit={(event) => {
+        event.preventDefault();
+        onUnexpectedSubmit();
+      }}
+    >
+      <SidebarProvider>
+        <Sidebar collapsible="icon">
+          <SidebarContent>
+            <SidebarGroup>
+              <SidebarGroupLabel>企画運営</SidebarGroupLabel>
+              <SidebarGroupAction aria-label="メニューを追加">
+                <Plus />
+              </SidebarGroupAction>
+              <SidebarGroupContent>
+                <SidebarMenu>
+                  <SidebarMenuItem>
+                    <SidebarMenuButton>申請</SidebarMenuButton>
+                    <SidebarMenuAction aria-label="申請の操作">
+                      <Ellipsis />
+                    </SidebarMenuAction>
+                  </SidebarMenuItem>
+                </SidebarMenu>
+              </SidebarGroupContent>
+            </SidebarGroup>
+          </SidebarContent>
+          <SidebarRail />
+        </Sidebar>
+        <SidebarInset>
+          <SidebarTrigger />
+        </SidebarInset>
+      </SidebarProvider>
+    </form>
+  ),
+  play: async ({ canvasElement }) => {
+    onUnexpectedSubmit.mockClear();
+    const body = within(canvasElement.ownerDocument.body);
+    const mobile = canvasElement.ownerDocument.defaultView!.matchMedia("(width < 48rem)").matches;
+    if (mobile) await userEvent.click(body.getByRole("button", { name: "メニューを開く" }));
+    for (const name of ["メニューを追加", "申請の操作"]) {
+      await userEvent.click(body.getByRole("button", { name }));
+    }
+    if (!mobile) body.getByRole("button", { name: "サイドバーの表示を切り替える" }).click();
+    await expect(onUnexpectedSubmit).not.toHaveBeenCalled();
   },
 };

@@ -1,6 +1,8 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
+
 import { useState } from "react";
 import { expect, userEvent, within } from "storybook/test";
+
 import {
   Pagination,
   PaginationContent,
@@ -40,11 +42,10 @@ const meta = {
   },
   render: function Render(args) {
     const [page, setPage] = useState(2);
-    const go =
-      (next: number) => (event: React.MouseEvent<HTMLAnchorElement>) => {
-        event.preventDefault();
-        setPage(next);
-      };
+    const go = (next: number) => (event: React.MouseEvent<HTMLAnchorElement>) => {
+      event.preventDefault();
+      setPage(next);
+    };
     return (
       <div className="grid max-w-xl gap-5">
         <p role="status" className="text-sm text-muted-foreground">
@@ -101,18 +102,17 @@ export const Default: Story = {
       .getBoundingClientRect().left;
     next.focus();
     await userEvent.keyboard("{Enter}");
+    await expect(canvas.getByRole("link", { name: "3ページ目" })).toHaveAttribute(
+      "aria-current",
+      "page",
+    );
+    await expect(canvas.getByRole("link", { name: "次のページ" })).toHaveAttribute(
+      "aria-disabled",
+      "true",
+    );
+    await expect(canvas.getByRole("link", { name: "次のページ" })).not.toHaveAttribute("href");
     await expect(
-      canvas.getByRole("link", { name: "3ページ目" }),
-    ).toHaveAttribute("aria-current", "page");
-    await expect(
-      canvas.getByRole("link", { name: "次のページ" }),
-    ).toHaveAttribute("aria-disabled", "true");
-    await expect(
-      canvas.getByRole("link", { name: "次のページ" }),
-    ).not.toHaveAttribute("href");
-    await expect(
-      canvas.getByRole("link", { name: "次のページ" }).getBoundingClientRect()
-        .left,
+      canvas.getByRole("link", { name: "次のページ" }).getBoundingClientRect().left,
     ).toBe(nextPosition);
     await expect(canvas.getByRole("status")).toHaveTextContent("41〜60件");
     await userEvent.click(canvas.getByRole("link", { name: "前のページ" }));

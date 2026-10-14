@@ -38,8 +38,7 @@
   --radius-xl: 0.875rem;
 }
 .ds-root {
-  font: var(--font-weight-normal) var(--text-base)/var(--line-height-body)
-    var(--font-sans);
+  font: var(--font-weight-normal) var(--text-base)/var(--line-height-body) var(--font-sans);
   color: var(--foreground);
   background: var(--background);
 }
@@ -74,9 +73,19 @@
   outline: 3px solid var(--ring);
   outline-offset: 3px;
 }
+.ds-root [data-slot="tabs-trigger"]:focus-visible,
+.ds-dialog [data-slot="tabs-trigger"]:focus-visible {
+  outline-offset: -3px;
+}
 .ds-field {
   display: grid;
+  min-width: 0;
+  grid-template-columns: minmax(0, 1fr);
+  align-content: start;
   gap: var(--space-2);
+}
+[data-slot="input"][type="file"] {
+  padding-block: max(0.5rem, calc((var(--control-height) - 1.5em - 2px) / 2));
 }
 .ds-label {
   font-weight: 500;
@@ -85,10 +94,92 @@
 .ds-hint {
   color: var(--muted-foreground);
   font-size: var(--text-sm);
+  overflow-wrap: anywhere;
 }
 .ds-error {
   color: var(--danger);
   font-size: var(--text-sm);
+  overflow-wrap: anywhere;
+}
+.ds-otp {
+  container-type: inline-size;
+  position: relative;
+  width: min(100%, calc(var(--otp-digits) * 3rem + (var(--otp-digits) - 1) * var(--space-2)));
+  min-width: 0;
+}
+.ds-otp-slots {
+  display: grid;
+  grid-template-columns: repeat(var(--otp-digits), minmax(0, 1fr));
+  gap: var(--space-2);
+}
+.ds-otp-slot {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 3.5rem;
+  border-block-end: 2px solid var(--input);
+  font-family: var(--font-mono);
+  font-size: 1.5rem;
+  line-height: 1.5;
+  font-variant-numeric: tabular-nums;
+}
+.ds-otp[data-focused] .ds-otp-slot[data-active],
+.ds-otp-slot[data-selected] {
+  background: var(--muted);
+  border-block-end-color: var(--foreground);
+  box-shadow: 0 1px 0 var(--foreground);
+}
+.ds-otp[data-invalid] .ds-otp-slot {
+  border-block-end-color: var(--danger);
+}
+.ds-otp[data-invalid] .ds-otp-slot[data-active] {
+  box-shadow: 0 1px 0 var(--danger);
+}
+.ds-otp[data-disabled] {
+  opacity: 0.5;
+}
+.ds-otp[data-readonly][data-focused] {
+  outline: 3px solid var(--ring);
+  outline-offset: 3px;
+}
+.ds-otp-caret {
+  width: 2px;
+  height: 1.5rem;
+  background: currentColor;
+}
+.ds-otp-control {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  padding: 0;
+  padding-inline-start: calc(
+    (100cqw - (var(--otp-digits) - 1) * var(--space-2)) / var(--otp-digits) / 2 - 0.5ch
+  );
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  caret-color: transparent;
+  font-family: var(--font-mono);
+  font-size: 1.5rem;
+  line-height: 1.5;
+  letter-spacing: calc((100cqw + var(--space-2)) / var(--otp-digits) - 1ch);
+  cursor: text;
+}
+.ds-otp-control::selection {
+  color: transparent;
+  background: transparent;
+}
+.ds-root .ds-otp-control:focus-visible,
+.ds-dialog .ds-otp-control:focus-visible {
+  outline: none;
+}
+.ds-otp-control:disabled {
+  cursor: not-allowed;
 }
 .ds-checkbox {
   display: flex;
@@ -96,6 +187,10 @@
   align-items: flex-start;
   min-height: var(--control-height);
   padding-block: 0.5rem;
+}
+.ds-checkbox > span {
+  min-width: 0;
+  overflow-wrap: anywhere;
 }
 .ds-badge {
   display: inline-flex;
@@ -320,8 +415,12 @@
   padding: 0;
 }
 .ds-process-steps {
+  --sequence-current-background: var(--muted);
   margin-inline: var(--space-3);
   padding-block: var(--space-2);
+}
+.ds-sequence[data-current-tint="info"] > .ds-process-steps {
+  --sequence-current-background: var(--info-background);
 }
 .ds-sequence-item {
   position: relative;
@@ -356,6 +455,8 @@
   inset-inline: calc(-1 * var(--space-3));
   inset-block: calc(-1 * var(--space-2)) var(--space-6);
   border-inline-start: 3px solid var(--primary);
+  background: var(--sequence-current-background);
+  border-radius: var(--radius-sm);
   pointer-events: none;
 }
 .ds-process-steps > .ds-sequence-item[data-status="current"]:last-child::after {
@@ -368,6 +469,9 @@
 .ds-process-steps > .ds-sequence-item[data-status="current"] > * {
   position: relative;
   z-index: 2;
+}
+.ds-process-steps > .ds-sequence-item[data-status="current"] .ds-sequence-marker {
+  background: var(--sequence-current-background);
 }
 .ds-sequence-item[data-status="upcoming"] .ds-sequence-marker,
 .ds-sequence-item[data-status="skipped"] .ds-sequence-marker {
@@ -388,6 +492,8 @@
   display: flex;
   align-items: center;
   min-height: var(--space-8);
+  flex-wrap: wrap;
+  gap: var(--space-2);
 }
 .ds-sequence-title {
   font-weight: 600;
@@ -395,9 +501,7 @@
 .ds-process-steps .ds-sequence-title {
   font-weight: 500;
 }
-.ds-process-steps
-  > .ds-sequence-item[data-status="current"]
-  .ds-sequence-title {
+.ds-process-steps > .ds-sequence-item[data-status="current"] .ds-sequence-title {
   font-weight: 700;
 }
 .ds-sequence-status {
@@ -441,9 +545,7 @@
   .ds-sequence[data-orientation="horizontal"] > .ds-process-steps {
     display: flex;
   }
-  .ds-sequence[data-orientation="horizontal"]
-    > .ds-process-steps
-    > .ds-sequence-item {
+  .ds-sequence[data-orientation="horizontal"] > .ds-process-steps > .ds-sequence-item {
     flex: 1;
     min-width: 0;
     display: flex;
@@ -452,9 +554,7 @@
     padding-block-end: 0;
     padding-inline-end: var(--space-6);
   }
-  .ds-sequence[data-orientation="horizontal"]
-    > .ds-process-steps
-    > .ds-sequence-item:last-child {
+  .ds-sequence[data-orientation="horizontal"] > .ds-process-steps > .ds-sequence-item:last-child {
     padding-inline-end: 0;
   }
   .ds-sequence[data-orientation="horizontal"]
@@ -473,7 +573,10 @@
   .ds-sequence[data-orientation="horizontal"]
     > .ds-process-steps
     > .ds-sequence-item[data-status="current"]::after {
-    display: none;
+    inset-inline: calc(-1 * var(--space-3)) var(--space-3);
+    inset-block: calc(-1 * var(--space-2));
+    border-inline-start: 0;
+    border-block-end: 3px solid var(--primary);
   }
   .ds-sequence[data-orientation="horizontal"] .ds-sequence-heading {
     align-self: stretch;
@@ -482,7 +585,7 @@
   .ds-sequence[data-orientation="horizontal"]
     .ds-sequence-item[data-status="current"]
     .ds-sequence-heading {
-    border-block-end-color: var(--primary);
+    border-block-end-color: transparent;
   }
 }
 @media (max-width: 40rem) {

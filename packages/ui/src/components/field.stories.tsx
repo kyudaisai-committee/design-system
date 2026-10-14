@@ -1,12 +1,14 @@
-import { useRef, useState } from "react";
-import fieldStoriesSource from "./field.stories.tsx?raw";
 import type { Meta, StoryObj } from "@storybook/react-vite";
+
+import { useRef, useState } from "react";
 import { expect, userEvent, within } from "storybook/test";
-import { Field } from "./compositions";
+
 import { Button } from "./button";
+import { Field } from "./compositions";
+import fieldStoriesSource from "./field.stories.tsx?raw";
 import { Input } from "./input";
-import { Textarea } from "./textarea";
 import { NativeSelect, NativeSelectOption } from "./native-select";
+import { Textarea } from "./textarea";
 
 function fieldExampleSource(
   args: { label: string; hint?: string; required?: boolean; error?: string },
@@ -18,13 +20,14 @@ function fieldExampleSource(
     .join("\n");
   const imports = control === "NativeSelect" ? "NativeSelect, NativeSelectOption" : control;
   const extra = control === "Textarea" ? "\n            maxLength={200}\n            rows={4}" : "";
-  const close = control === "NativeSelect"
-    ? `>
+  const close =
+    control === "NativeSelect"
+      ? `>
             <NativeSelectOption value="exhibition">展示</NativeSelectOption>
             <NativeSelectOption value="food">模擬店</NativeSelectOption>
             <NativeSelectOption value="stage">ステージ</NativeSelectOption>
           </NativeSelect>`
-    : "/>";
+      : "/>";
   return `import { useState } from "react";
 import { Field, ${imports} } from "@kyudaisai/ui";
 
@@ -63,7 +66,8 @@ const meta = {
     hint: { control: "text", description: "入力前に必要な条件・書き方。" },
     error: {
       control: "text",
-      description: "入力欄の下に表示するエラーメッセージ。修正方法を記載します。指定すると入力欄にaria-invalidを設定します。",
+      description:
+        "入力欄の下に表示するエラーメッセージ。修正方法を記載します。指定すると入力欄にaria-invalidを設定します。",
     },
     required: {
       control: "boolean",
@@ -71,8 +75,7 @@ const meta = {
     },
     children: {
       control: false,
-      description:
-        "受け取ったid・required・aria-describedby・aria-invalidを入力部品へ渡します。",
+      description: "受け取ったid・required・aria-describedby・aria-invalidを入力部品へ渡します。",
     },
   },
   parameters: {
@@ -95,11 +98,7 @@ const meta = {
       <div className="max-w-md">
         <Field {...args}>
           {(props) => (
-            <Input
-              {...props}
-              value={value}
-              onChange={(event) => setValue(event.target.value)}
-            />
+            <Input {...props} value={value} onChange={(event) => setValue(event.target.value)} />
           )}
         </Field>
       </div>
@@ -211,8 +210,7 @@ function ValidationExample() {
   const [submitted, setSubmitted] = useState(false);
   const [saved, setSaved] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
-  const error =
-    submitted && !value.trim() ? "企画名を入力してください。" : undefined;
+  const error = submitted && !value.trim() ? "企画名を入力してください。" : undefined;
   return (
     <form
       noValidate
@@ -258,16 +256,18 @@ export const Validation: Story = {
         language: "tsx",
         type: "code",
         transform: (source: string) => source,
-        code: `import { useRef, useState } from "react";
+        code:
+          `import { useRef, useState } from "react";
 import { Field, Input, Button } from "@kyudaisai/ui";
 
-` + fieldStoriesSource
-          .slice(
-            fieldStoriesSource.indexOf("function ValidationExample()"),
-            fieldStoriesSource.indexOf("export const Validation:"),
-          )
-          .replace("function ValidationExample()", "export function ValidationExample()")
-          .trim(),
+` +
+          fieldStoriesSource
+            .slice(
+              fieldStoriesSource.indexOf("function ValidationExample()"),
+              fieldStoriesSource.indexOf("export const Validation:"),
+            )
+            .replace("function ValidationExample()", "export function ValidationExample()")
+            .trim(),
       },
     },
   },
@@ -287,8 +287,24 @@ import { Field, Input, Button } from "@kyudaisai/ui";
       "パンフレットに掲載する名称を入力してください。",
     );
     await userEvent.click(canvas.getByRole("button", { name: "保存" }));
-    await expect(canvas.getByRole("status")).toHaveTextContent(
-      "企画名を保存しました。",
-    );
+    await expect(canvas.getByRole("status")).toHaveTextContent("企画名を保存しました。");
+  },
+};
+
+export const NarrowLongHint: Story = {
+  name: "狭い画面と長い補足",
+  render: () => (
+    <div style={{ width: 240, maxWidth: "100%" }}>
+      <Field
+        label="Webサイト"
+        hint="https://example.com/InternationalFestivalRegistrationInformation"
+      >
+        {(props) => <Input {...props} type="url" />}
+      </Field>
+    </div>
+  ),
+  play: async ({ canvasElement }) => {
+    const container = within(canvasElement).getByRole("textbox").closest("[style]") as HTMLElement;
+    await expect(container.scrollWidth).toBeLessThanOrEqual(container.clientWidth + 1);
   },
 };

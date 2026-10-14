@@ -1,0 +1,25 @@
+{
+  "name": "@kyudaisai/tokens",
+  "version": "0.1.0",
+  "private": true,
+  "license": "MIT",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./src/native.ts",
+      "import": "./src/native.ts",
+      "default": "./src/native.ts"
+    },
+    "./native": {
+      "types": "./src/native.ts",
+      "import": "./src/native.ts",
+      "default": "./src/native.ts"
+    },
+    "./source.json": "./src/tokens.json"
+  },
+  "scripts": {
+    "build": "node ../../scripts/token-build.mjs",
+    "check": "node ../../scripts/token-build.mjs --check",
+    "test": "node --test ../../scripts/token-build.test.mjs"
+  }
+}

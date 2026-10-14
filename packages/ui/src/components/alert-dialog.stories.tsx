@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { useStoryControls } from "./story-controls";
+
 import { expect, fn, userEvent, waitFor, within } from "storybook/test";
+
 import {
   AlertDialog,
   AlertDialogAction,
@@ -13,6 +14,7 @@ import {
   AlertDialogTrigger,
 } from "./alert-dialog";
 import { Button } from "./button";
+import { useStoryControls } from "./story-controls";
 
 const meta = {
   title: "Components/AlertDialog",
@@ -40,8 +42,7 @@ const meta = {
     },
     children: {
       control: false,
-      description:
-        "Trigger、Content、Title、Description、Action、Cancel で構成する。",
+      description: "Trigger、Content、Title、Description、Action、Cancel で構成する。",
     },
   },
   parameters: {
@@ -62,9 +63,7 @@ const meta = {
           args.onOpenChange?.(open, details);
         }}
       >
-        <AlertDialogTrigger render={<Button variant="outline" />}>
-          編集を終了
-        </AlertDialogTrigger>
+        <AlertDialogTrigger render={<Button variant="outline" />}>編集を終了</AlertDialogTrigger>
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle>変更を破棄しますか？</AlertDialogTitle>
@@ -74,10 +73,7 @@ const meta = {
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>編集を続ける</AlertDialogCancel>
-            <AlertDialogAction
-              variant="destructive"
-              onClick={() => updateArgs({ open: false })}
-            >
+            <AlertDialogAction variant="destructive" onClick={() => updateArgs({ open: false })}>
               変更を破棄
             </AlertDialogAction>
           </AlertDialogFooter>
@@ -109,39 +105,27 @@ export const Keyboard: Story = {
     const dialog = await body.findByRole("alertdialog", {
       name: "変更を破棄しますか？",
     });
-    await expect(dialog).toHaveAccessibleDescription(
-      "保存していない企画紹介の変更が失われます。",
-    );
+    await expect(dialog).toHaveAccessibleDescription("保存していない企画紹介の変更が失われます。");
     const cancel = within(dialog).getByRole("button", { name: "編集を続ける" });
     await waitFor(() => expect(cancel).toHaveFocus());
     await userEvent.tab({ shift: true });
     await waitFor(() =>
-      expect(
-        within(dialog).getByRole("button", { name: "変更を破棄" }),
-      ).toHaveFocus(),
+      expect(within(dialog).getByRole("button", { name: "変更を破棄" })).toHaveFocus(),
     );
     await userEvent.tab();
     await waitFor(() => expect(cancel).toHaveFocus());
     await userEvent.keyboard("{Escape}");
-    await waitFor(() =>
-      expect(body.queryByRole("alertdialog")).not.toBeInTheDocument(),
-    );
+    await waitFor(() => expect(body.queryByRole("alertdialog")).not.toBeInTheDocument());
     await expect(trigger).toHaveFocus();
   },
 };
 export const Confirm: Story = {
   name: "確定",
   play: async ({ canvasElement }) => {
-    await userEvent.click(
-      within(canvasElement).getByRole("button", { name: "編集を終了" }),
-    );
+    await userEvent.click(within(canvasElement).getByRole("button", { name: "編集を終了" }));
     const body = within(canvasElement.ownerDocument.body);
     const dialog = await body.findByRole("alertdialog");
-    await userEvent.click(
-      within(dialog).getByRole("button", { name: "変更を破棄" }),
-    );
-    await waitFor(() =>
-      expect(body.queryByRole("alertdialog")).not.toBeInTheDocument(),
-    );
+    await userEvent.click(within(dialog).getByRole("button", { name: "変更を破棄" }));
+    await waitFor(() => expect(body.queryByRole("alertdialog")).not.toBeInTheDocument());
   },
 };

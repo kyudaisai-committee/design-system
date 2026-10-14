@@ -1,21 +1,29 @@
 "use client";
 
-import { useRef } from "react";
 import { Checkbox as CheckboxPrimitive } from "@base-ui/react/checkbox";
-
-import { mergeClassName } from "../lib/utils";
 import { CheckIcon, MinusIcon } from "lucide-react";
+import { useImperativeHandle, useRef } from "react";
+
+import { useFormResetValue } from "../hooks/use-form-reset";
+import { mergeClassName } from "../lib/utils";
 
 function Checkbox({
   className,
   checked,
   defaultChecked,
   indeterminate,
+  onCheckedChange,
+  ref,
   ...props
 }: CheckboxPrimitive.Root.Props) {
-  // Preserve in-progress edits when a parent receives new server defaults.
-  const initialDefault = useRef(defaultChecked);
-  const isControlled = checked !== undefined;
+  const controlRef = useRef<HTMLElement>(null);
+  useImperativeHandle(ref, () => controlRef.current!);
+  const [currentChecked, setChecked] = useFormResetValue(
+    checked,
+    defaultChecked ?? false,
+    controlRef,
+    props.form,
+  );
   return (
     <CheckboxPrimitive.Root
       data-slot="checkbox"
@@ -24,10 +32,13 @@ function Checkbox({
         className,
       )}
       indeterminate={indeterminate}
-      {...(isControlled
-        ? { checked }
-        : { defaultChecked: initialDefault.current })}
       {...props}
+      ref={controlRef}
+      checked={currentChecked}
+      onCheckedChange={(next, details) => {
+        onCheckedChange?.(next, details);
+        if (!details.isCanceled && checked === undefined) setChecked(next);
+      }}
     >
       <CheckboxPrimitive.Indicator
         data-slot="checkbox-indicator"

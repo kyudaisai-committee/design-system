@@ -36,7 +36,9 @@ function SpacingScale() {
           </div>
         ))}
       </section>
-      <a href="/system/DESIGN/#layout" target="_top">画面の幅と余白の使い方</a>
+      <a href="/system/DESIGN/#layout" target="_top">
+        画面の幅と余白の使い方
+      </a>
       <section className="sb-foundation-section">
         <h2>画面の幅</h2>
         <div className="sb-token-strip">

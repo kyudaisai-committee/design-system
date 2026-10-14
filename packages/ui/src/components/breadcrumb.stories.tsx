@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
+
 import {
   Breadcrumb,
   BreadcrumbEllipsis,
@@ -73,9 +74,7 @@ export const LongTitle: Story = {
         </BreadcrumbItem>
         <BreadcrumbSeparator />
         <BreadcrumbItem>
-          <BreadcrumbPage>
-            九州大学の研究を体験できる科学実験とワークショップ
-          </BreadcrumbPage>
+          <BreadcrumbPage>九州大学の研究を体験できる科学実験とワークショップ</BreadcrumbPage>
         </BreadcrumbItem>
       </BreadcrumbList>
     </Breadcrumb>

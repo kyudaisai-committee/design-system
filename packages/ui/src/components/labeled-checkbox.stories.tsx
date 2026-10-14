@@ -1,7 +1,9 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { useStoryControls } from "./story-controls";
+
 import { expect, fn, userEvent, within } from "storybook/test";
+
 import { LabeledCheckbox } from "./compositions";
+import { useStoryControls } from "./story-controls";
 
 const meta = {
   title: "Components/LabeledCheckbox",

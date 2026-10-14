@@ -1,22 +1,15 @@
-import { useId, useRef, useState } from "react";
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { expect, userEvent, within, waitFor } from "storybook/test";
-import { Button } from "./button";
-import { Input } from "./input";
-import { Textarea } from "./textarea";
-import { NativeSelect as Select } from "./native-select";
-import { Table } from "./table";
-import { ProcessSteps } from "./process-steps";
+
 import { Check, FilePenLine, ListChecks } from "lucide-react";
-import {
-  Notice as Alert,
-  StatusBadge as Badge,
-  ContentCard as Card,
-  LabeledCheckbox as Checkbox,
-  Field,
-  LoadingState as Skeleton,
-  EmptyState,
-} from "./compositions";
+import { useId, useRef, useState } from "react";
+import { expect, userEvent, within, waitFor } from "storybook/test";
+
+import { Button } from "./button";
+import { Notice as Alert, LabeledCheckbox as Checkbox, Field } from "./compositions";
+import { Input } from "./input";
+import { NativeSelect as Select } from "./native-select";
+import { ProcessSteps } from "./process-steps";
+import { Textarea } from "./textarea";
 
 function ApplicationForm({
   fail = false,
@@ -29,30 +22,21 @@ function ApplicationForm({
   initialStep?: "input" | "review" | "receipt";
   initialInvalid?: boolean;
 }) {
-  const [name, setName] = useState(
-    readOnly || initialStep !== "input" ? "九大カフェ" : "",
-  );
+  const [name, setName] = useState(readOnly || initialStep !== "input" ? "九大カフェ" : "");
   const [category, setCategory] = useState("模擬店");
   const [description, setDescription] = useState("");
   const [checked, setChecked] = useState(readOnly || initialStep !== "input");
   const [submitted, setSubmitted] = useState(initialInvalid);
   const [step, setStep] = useState<"input" | "review" | "receipt">(initialStep);
-  const [state, setState] = useState<"idle" | "pending" | "success" | "error">(
-    "idle",
-  );
+  const [state, setState] = useState<"idle" | "pending" | "success" | "error">("idle");
   const nameRef = useRef<HTMLInputElement>(null);
   const checkRef = useRef<HTMLElement>(null);
   const summaryRef = useRef<HTMLDivElement>(null);
   const headingRef = useRef<HTMLHeadingElement>(null);
   const consentErrorId = useId();
-  const nameError =
-    submitted && !name.trim() ? "企画名を入力してください。" : undefined;
-  const checkError =
-    submitted && !checked
-      ? "内容を確認してチェックを入れてください。"
-      : undefined;
-  const moveFocus = () =>
-    requestAnimationFrame(() => headingRef.current?.focus());
+  const nameError = submitted && !name.trim() ? "企画名を入力してください。" : undefined;
+  const checkError = submitted && !checked ? "内容を確認してチェックを入れてください。" : undefined;
+  const moveFocus = () => requestAnimationFrame(() => headingRef.current?.focus());
   return (
     <main className="ds-shell ds-stack ds-form">
       <header className="ds-stack">
@@ -74,12 +58,7 @@ function ApplicationForm({
               id: "review",
               title: "確認",
               icon: ListChecks,
-              status:
-                step === "review"
-                  ? "current"
-                  : step === "receipt"
-                    ? "complete"
-                    : "upcoming",
+              status: step === "review" ? "current" : step === "receipt" ? "complete" : "upcoming",
             },
             {
               id: "receipt",
@@ -347,43 +326,23 @@ export const Flow: Story = {
   render: () => <ApplicationForm />,
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    await userEvent.click(
-      canvas.getByRole("button", { name: "提出内容を確認" }),
-    );
+    await userEvent.click(canvas.getByRole("button", { name: "提出内容を確認" }));
     const input = canvas.getByLabelText("企画名（必須）");
     await waitFor(() => expect(canvas.getByRole("alert")).toHaveFocus());
-    await userEvent.click(
-      canvas.getByRole("link", { name: "企画名を入力してください。" }),
-    );
+    await userEvent.click(canvas.getByRole("link", { name: "企画名を入力してください。" }));
     await expect(input).toHaveFocus();
     await expect(input).toHaveAttribute("aria-invalid", "true");
     await userEvent.type(input, "九大カフェ");
-    await userEvent.click(
-      canvas.getByRole("checkbox", { name: "掲載内容を確認しました" }),
-    );
-    await userEvent.click(
-      canvas.getByRole("button", { name: "提出内容を確認" }),
-    );
-    await expect(
-      canvas.getByRole("heading", { name: "提出内容の確認" }),
-    ).toBeInTheDocument();
+    await userEvent.click(canvas.getByRole("checkbox", { name: "掲載内容を確認しました" }));
+    await userEvent.click(canvas.getByRole("button", { name: "提出内容を確認" }));
+    await expect(canvas.getByRole("heading", { name: "提出内容の確認" })).toBeInTheDocument();
     await userEvent.click(canvas.getByRole("button", { name: "入力へ戻る" }));
-    await expect(canvas.getByLabelText("企画名（必須）")).toHaveValue(
-      "九大カフェ",
-    );
-    await userEvent.click(
-      canvas.getByRole("button", { name: "提出内容を確認" }),
-    );
-    await userEvent.click(
-      canvas.getByRole("button", { name: "企画情報を提出" }),
-    );
-    await expect(
-      canvas.getByRole("button", { name: "提出中…" }),
-    ).toBeDisabled();
+    await expect(canvas.getByLabelText("企画名（必須）")).toHaveValue("九大カフェ");
+    await userEvent.click(canvas.getByRole("button", { name: "提出内容を確認" }));
+    await userEvent.click(canvas.getByRole("button", { name: "企画情報を提出" }));
+    await expect(canvas.getByRole("button", { name: "提出中…" })).toBeDisabled();
     await waitFor(() =>
-      expect(canvas.getByRole("status")).toHaveTextContent(
-        "企画情報を提出しました",
-      ),
+      expect(canvas.getByRole("status")).toHaveTextContent("企画情報を提出しました"),
     );
     await expect(canvas.getByText("受付番号：A-2026-001")).toBeInTheDocument();
   },
@@ -394,22 +353,12 @@ export const SubmissionFailure: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     await userEvent.type(canvas.getByLabelText("企画名（必須）"), "九大カフェ");
-    await userEvent.click(
-      canvas.getByRole("checkbox", { name: "掲載内容を確認しました" }),
-    );
-    await userEvent.click(
-      canvas.getByRole("button", { name: "提出内容を確認" }),
-    );
-    await userEvent.click(
-      canvas.getByRole("button", { name: "企画情報を提出" }),
-    );
-    await expect(await canvas.findByRole("alert")).toHaveTextContent(
-      "提出できませんでした",
-    );
+    await userEvent.click(canvas.getByRole("checkbox", { name: "掲載内容を確認しました" }));
+    await userEvent.click(canvas.getByRole("button", { name: "提出内容を確認" }));
+    await userEvent.click(canvas.getByRole("button", { name: "企画情報を提出" }));
+    await expect(await canvas.findByRole("alert")).toHaveTextContent("提出できませんでした");
     await userEvent.click(canvas.getByRole("button", { name: "入力へ戻る" }));
-    await expect(canvas.getByLabelText("企画名（必須）")).toHaveValue(
-      "九大カフェ",
-    );
+    await expect(canvas.getByLabelText("企画名（必須）")).toHaveValue("九大カフェ");
   },
 };
 export const ResultUnknown: Story = {

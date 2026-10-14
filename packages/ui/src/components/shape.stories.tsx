@@ -54,7 +54,9 @@ function ShapeGuide() {
           <p className="ds-hint">進行中</p>
         </div>
       </section>
-      <a href="/system/DESIGN/#shapes" target="_top">形の使い方</a>
+      <a href="/system/DESIGN/#shapes" target="_top">
+        形の使い方
+      </a>
       <section className="sb-foundation-section">
         <h2>重なり</h2>
         <p>

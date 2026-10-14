@@ -1,5 +1,7 @@
 import type { ReactNode } from "react";
+
 import { Circle, type LucideIcon } from "lucide-react";
+
 import type { Tone } from "./compositions";
 
 export type SequenceTimestamp = {
@@ -45,9 +47,7 @@ export function SequenceDetails({
         </time>
       )}
       {metadata && <div className="ds-sequence-meta">{metadata}</div>}
-      {description && (
-        <div className="ds-sequence-description">{description}</div>
-      )}
+      {description && <div className="ds-sequence-description">{description}</div>}
       {actions && <div className="ds-sequence-actions">{actions}</div>}
     </>
   );

@@ -1,0 +1,38 @@
+{
+  "$schema": "./node_modules/oxfmt/configuration_schema.json",
+  "printWidth": 100,
+  "tabWidth": 2,
+  "useTabs": false,
+  "semi": true,
+  "singleQuote": false,
+  "trailingComma": "all",
+  "sortPackageJson": true,
+  "sortImports": {
+    "groups": [
+      "type-import",
+      ["value-builtin", "value-external"],
+      "type-internal",
+      "value-internal",
+      ["type-parent", "type-sibling", "type-index"],
+      ["value-parent", "value-sibling", "value-index"],
+      "unknown"
+    ]
+  },
+  "sortTailwindcss": {
+    "stylesheet": "packages/ui/src/styles/styles.css",
+    "functions": ["cn", "clsx", "cva"]
+  },
+  "ignorePatterns": [
+    "**/node_modules/**",
+    "**/dist/**",
+    "**/dist-packages/**",
+    "**/storybook-static/**",
+    "**/.expo/**",
+    "**/coverage/**",
+    "pnpm-lock.yaml",
+    "apps/storybook-native/.rnstorybook/storybook.requires.ts",
+    "apps/storybook-native/.rnstorybook/storybook-entry.tsx",
+    "packages/tokens/src/native.ts",
+    "packages/ui/src/styles/tokens.css"
+  ]
+}

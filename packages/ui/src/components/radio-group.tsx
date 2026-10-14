@@ -2,14 +2,38 @@
 
 import { Radio as RadioPrimitive } from "@base-ui/react/radio";
 import { RadioGroup as RadioGroupPrimitive } from "@base-ui/react/radio-group";
+import { useImperativeHandle, useRef } from "react";
+
+import { useFormResetValue } from "../hooks/use-form-reset";
 import { mergeClassName } from "../lib/utils";
 
-function RadioGroup({ className, ...props }: RadioGroupPrimitive.Props) {
+function RadioGroup({
+  className,
+  value,
+  defaultValue,
+  onValueChange,
+  ref,
+  ...props
+}: RadioGroupPrimitive.Props) {
+  const controlRef = useRef<HTMLDivElement>(null);
+  useImperativeHandle(ref, () => controlRef.current!);
+  const [currentValue, setValue] = useFormResetValue(
+    value,
+    defaultValue ?? null,
+    controlRef,
+    props.form,
+  );
   return (
     <RadioGroupPrimitive
       data-slot="radio-group"
       className={mergeClassName("grid w-full gap-2", className)}
       {...props}
+      ref={controlRef}
+      value={currentValue}
+      onValueChange={(next, details) => {
+        onValueChange?.(next, details);
+        if (!details.isCanceled && value === undefined) setValue(next);
+      }}
     />
   );
 }

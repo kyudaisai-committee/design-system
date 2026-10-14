@@ -1,13 +1,10 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
+
 import { Download } from "lucide-react";
 import { expect, userEvent, waitFor, within } from "storybook/test";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "./tooltip";
+
 import { Button } from "./button";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "./tooltip";
 
 const meta = {
   title: "Components/Tooltip",
@@ -16,8 +13,7 @@ const meta = {
   argTypes: {
     defaultOpen: {
       control: "boolean",
-      description:
-        "初期表示。開閉を制御する場合は open と onOpenChange を使う。",
+      description: "初期表示。開閉を制御する場合は open と onOpenChange を使う。",
     },
     open: { control: false },
     onOpenChange: { control: false },
@@ -35,13 +31,7 @@ const meta = {
       <TooltipProvider delay={200}>
         <Tooltip {...args}>
           <TooltipTrigger
-            render={
-              <Button
-                variant="outline"
-                size="icon"
-                aria-label="控えをPDFで保存"
-              />
-            }
+            render={<Button variant="outline" size="icon" aria-label="控えをPDFで保存" />}
           >
             <Download aria-hidden="true" />
           </TooltipTrigger>
@@ -62,13 +52,9 @@ export const Default: Story = {
     await userEvent.tab();
     await expect(button).toHaveFocus();
     const body = within(canvasElement.ownerDocument.body);
-    await waitFor(() =>
-      expect(body.getByText("控えをPDFで保存")).toBeVisible(),
-    );
+    await waitFor(() => expect(body.getByText("控えをPDFで保存")).toBeVisible());
     await userEvent.keyboard("{Escape}");
-    await waitFor(() =>
-      expect(body.queryByText("控えをPDFで保存")).not.toBeInTheDocument(),
-    );
+    await waitFor(() => expect(body.queryByText("控えをPDFで保存")).not.toBeInTheDocument());
     await expect(button).toHaveFocus();
   },
 };
@@ -84,12 +70,8 @@ export const Bottom: Story = {
     <div className="p-10">
       <TooltipProvider>
         <Tooltip {...args} defaultOpen>
-          <TooltipTrigger render={<Button variant="outline" />}>
-            受付番号
-          </TooltipTrigger>
-          <TooltipContent side="bottom">
-            問い合わせの際にお伝えください
-          </TooltipContent>
+          <TooltipTrigger render={<Button variant="outline" />}>受付番号</TooltipTrigger>
+          <TooltipContent side="bottom">問い合わせの際にお伝えください</TooltipContent>
         </Tooltip>
       </TooltipProvider>
     </div>

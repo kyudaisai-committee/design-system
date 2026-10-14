@@ -1,15 +1,30 @@
 "use client";
 
 import { Switch as SwitchPrimitive } from "@base-ui/react/switch";
+import { useImperativeHandle, useRef } from "react";
+
+import { useFormResetValue } from "../hooks/use-form-reset";
 import { mergeClassName } from "../lib/utils";
 
 function Switch({
   className,
   size = "default",
+  checked,
+  defaultChecked,
+  onCheckedChange,
+  ref,
   ...props
 }: SwitchPrimitive.Root.Props & {
   size?: "sm" | "default";
 }) {
+  const controlRef = useRef<HTMLElement>(null);
+  useImperativeHandle(ref, () => controlRef.current!);
+  const [currentChecked, setChecked] = useFormResetValue(
+    checked,
+    defaultChecked ?? false,
+    controlRef,
+    props.form,
+  );
   return (
     <SwitchPrimitive.Root
       data-slot="switch"
@@ -19,6 +34,12 @@ function Switch({
         className,
       )}
       {...props}
+      ref={controlRef}
+      checked={currentChecked}
+      onCheckedChange={(next, details) => {
+        onCheckedChange?.(next, details);
+        if (!details.isCanceled && checked === undefined) setChecked(next);
+      }}
     >
       <SwitchPrimitive.Thumb
         data-slot="switch-thumb"

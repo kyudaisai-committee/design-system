@@ -1,7 +1,9 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
+
 import { useState } from "react";
-import { useStoryControls } from "./story-controls";
 import { expect, userEvent, waitFor, within } from "storybook/test";
+
+import { Button } from "./button";
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
@@ -19,7 +21,7 @@ import {
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "./dropdown-menu";
-import { Button } from "./button";
+import { useStoryControls } from "./story-controls";
 
 const meta = {
   title: "Components/DropdownMenu",
@@ -65,14 +67,10 @@ const meta = {
           <DropdownMenuContent className="w-52">
             <DropdownMenuGroup>
               <DropdownMenuLabel>企画申請書</DropdownMenuLabel>
-              <DropdownMenuItem
-                onClick={() => setAction("控えを保存しました。")}
-              >
+              <DropdownMenuItem onClick={() => setAction("控えを保存しました。")}>
                 控えを保存
               </DropdownMenuItem>
-              <DropdownMenuItem
-                onClick={() => setAction("申請を複製しました。")}
-              >
+              <DropdownMenuItem onClick={() => setAction("申請を複製しました。")}>
                 複製
               </DropdownMenuItem>
               <DropdownMenuItem disabled>担当者を変更</DropdownMenuItem>
@@ -125,16 +123,11 @@ export const Selection: Story = {
     const [density, setDensity] = useState("standard");
     return (
       <DropdownMenu {...args} onOpenChange={(open) => updateArgs({ open })}>
-        <DropdownMenuTrigger render={<Button variant="outline" />}>
-          表示設定
-        </DropdownMenuTrigger>
+        <DropdownMenuTrigger render={<Button variant="outline" />}>表示設定</DropdownMenuTrigger>
         <DropdownMenuContent className="w-52">
           <DropdownMenuGroup>
             <DropdownMenuLabel>表示する項目</DropdownMenuLabel>
-            <DropdownMenuCheckboxItem
-              checked={showDate}
-              onCheckedChange={setShowDate}
-            >
+            <DropdownMenuCheckboxItem checked={showDate} onCheckedChange={setShowDate}>
               更新日
             </DropdownMenuCheckboxItem>
           </DropdownMenuGroup>
@@ -142,12 +135,8 @@ export const Selection: Story = {
           <DropdownMenuGroup>
             <DropdownMenuLabel>表示密度</DropdownMenuLabel>
             <DropdownMenuRadioGroup value={density} onValueChange={setDensity}>
-              <DropdownMenuRadioItem value="standard">
-                標準
-              </DropdownMenuRadioItem>
-              <DropdownMenuRadioItem value="compact">
-                コンパクト
-              </DropdownMenuRadioItem>
+              <DropdownMenuRadioItem value="standard">標準</DropdownMenuRadioItem>
+              <DropdownMenuRadioItem value="compact">コンパクト</DropdownMenuRadioItem>
             </DropdownMenuRadioGroup>
           </DropdownMenuGroup>
         </DropdownMenuContent>
@@ -161,9 +150,7 @@ export const Submenu: Story = {
     const [args, updateArgs] = useStoryControls(incoming);
     return (
       <DropdownMenu {...args} onOpenChange={(open) => updateArgs({ open })}>
-        <DropdownMenuTrigger render={<Button variant="outline" />}>
-          資料の操作
-        </DropdownMenuTrigger>
+        <DropdownMenuTrigger render={<Button variant="outline" />}>資料の操作</DropdownMenuTrigger>
         <DropdownMenuContent className="w-52">
           <DropdownMenuItem>表示</DropdownMenuItem>
           <DropdownMenuSub>

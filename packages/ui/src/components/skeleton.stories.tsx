@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
+
 import { Skeleton } from "./skeleton";
 
 const meta = {
@@ -19,7 +20,7 @@ const meta = {
     docs: {
       description: {
         component:
-          "読み込み後に表示する内容のおおよその形を示します。読み込んでいる対象は別のテキストで伝え、Skeleton自体には`aria-hidden=\"true\"`を指定してください。\n\n読み上げも含めて表示する場合はLoadingState、処理の進捗率を示す場合はProgressを使います。",
+          '読み込み後に表示する内容のおおよその形を示します。読み込んでいる対象は別のテキストで伝え、Skeleton自体には`aria-hidden="true"`を指定してください。\n\n読み上げも含めて表示する場合はLoadingState、処理の進捗率を示す場合はProgressを使います。',
       },
     },
   },

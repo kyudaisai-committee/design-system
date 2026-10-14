@@ -2,8 +2,9 @@
 
 import { AlertDialog } from "@base-ui/react/alert-dialog";
 import { useState, type ReactNode } from "react";
-import { Notice as Alert } from "./compositions";
+
 import { Button } from "./button";
+import { Notice as Alert } from "./compositions";
 
 /** Only closes after the operation succeeds. Errors preserve context and allow retry. */
 export function ConfirmDialog({
@@ -53,23 +54,17 @@ export function ConfirmDialog({
         if (next) setFailed(false);
       }}
     >
-      <AlertDialog.Trigger
-        render={<Button variant={destructive ? "destructive" : "default"} />}
-      >
+      <AlertDialog.Trigger render={<Button variant={destructive ? "destructive" : "default"} />}>
         {trigger}
       </AlertDialog.Trigger>
       <AlertDialog.Portal>
         <AlertDialog.Backdrop className="ds-backdrop" />
         <AlertDialog.Popup className="ds-dialog">
           <AlertDialog.Title>{title}</AlertDialog.Title>
-          <AlertDialog.Description render={<div />}>
-            {description}
-          </AlertDialog.Description>
+          <AlertDialog.Description render={<div />}>{description}</AlertDialog.Description>
           {failed && <Alert title={errorMessage} tone="danger" role="alert" />}
           <div className="ds-dialog-actions">
-            <AlertDialog.Close
-              render={<Button variant="outline" disabled={pending} />}
-            >
+            <AlertDialog.Close render={<Button variant="outline" disabled={pending} />}>
               キャンセル
             </AlertDialog.Close>
             <Button

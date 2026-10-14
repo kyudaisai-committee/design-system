@@ -1,5 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
+
 import { expect, within } from "storybook/test";
+
 import { LoadingState } from "./compositions";
 
 const meta = {
@@ -43,10 +45,7 @@ export const Default: Story = {
 export const InSection: Story = {
   name: "見出しを残す",
   render: (args) => (
-    <section
-      className="ds-stack max-w-xl"
-      aria-labelledby="loading-projects-title"
-    >
+    <section className="ds-stack max-w-xl" aria-labelledby="loading-projects-title">
       <h2 id="loading-projects-title">企画一覧</h2>
       <LoadingState {...args} />
     </section>

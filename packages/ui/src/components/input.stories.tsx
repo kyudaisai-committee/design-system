@@ -1,8 +1,14 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { useStoryControls } from "./story-controls";
+
 import { expect, fn, userEvent, within } from "storybook/test";
+
+import { Field } from "./compositions";
+import { DateInput } from "./form-controls";
 import { Input } from "./input";
 import { Label } from "./label";
+import { NativeSelect, NativeSelectOption } from "./native-select";
+import { useStoryControls } from "./story-controls";
+import { Textarea } from "./textarea";
 
 const meta = {
   title: "Components/Input",
@@ -28,18 +34,8 @@ const meta = {
     },
     type: {
       control: "select",
-      options: [
-        "text",
-        "email",
-        "tel",
-        "url",
-        "search",
-        "password",
-        "number",
-        "date",
-      ],
-      description:
-        "HTMLのinput要素の入力形式。emailやtelなど、入力内容に合う値を指定する。",
+      options: ["text", "email", "tel", "url", "search", "password", "number", "date"],
+      description: "HTMLのinput要素の入力形式。emailやtelなど、入力内容に合う値を指定する。",
     },
     placeholder: {
       control: "text",
@@ -53,7 +49,8 @@ const meta = {
     required: { control: "boolean" },
     "aria-invalid": {
       control: "boolean",
-      description: "入力内容にエラーがあるかどうか。エラーの説明はaria-describedbyで入力欄と関連付ける。",
+      description:
+        "入力内容にエラーがあるかどうか。エラーの説明はaria-describedbyで入力欄と関連付ける。",
     },
     onChange: { control: false },
   },
@@ -149,27 +146,47 @@ export const InputTypes: Story = {
       </div>
       <div className="grid gap-2">
         <Label htmlFor="contact-phone">当日の電話番号</Label>
-        <Input
-          id="contact-phone"
-          type="tel"
-          autoComplete="tel"
-          placeholder="090-1234-5678"
-        />
+        <Input id="contact-phone" type="tel" autoComplete="tel" placeholder="090-1234-5678" />
       </div>
       <div className="grid gap-2">
         <Label htmlFor="people-count">参加人数</Label>
-        <Input
-          id="people-count"
-          type="number"
-          min={1}
-          inputMode="numeric"
-          defaultValue={12}
-        />
+        <Input id="people-count" type="number" min={1} inputMode="numeric" defaultValue={12} />
       </div>
       <div className="grid gap-2">
         <Label htmlFor="delivery-date">搬入日</Label>
-        <Input id="delivery-date" type="date" defaultValue="2026-10-30" />
+        <DateInput id="delivery-date" defaultValue="2026-10-30" />
       </div>
+    </div>
+  ),
+};
+export const Alignment: Story = {
+  name: "文字と上下余白",
+  render: () => (
+    <div className="grid max-w-2xl gap-5 sm:grid-cols-2">
+      {[
+        { type: "text", label: "一行テキスト", value: "あいう ABC 0123" },
+        { type: "email", label: "メールアドレス", value: "name@example.com" },
+        { type: "url", label: "URL", value: "https://example.com" },
+        { type: "tel", label: "電話番号", value: "090-1234-5678" },
+        { type: "search", label: "検索", value: "あいう ABC 0123" },
+        { type: "password", label: "パスワード", value: "example123" },
+        { type: "number", label: "数値", value: "123.5" },
+      ].map(({ type, label, value }) => (
+        <Field key={type} label={label}>
+          {(props) => <Input {...props} type={type} defaultValue={value} />}
+        </Field>
+      ))}
+      <Field label="選択">
+        {(props) => (
+          <NativeSelect {...props} className="w-full">
+            <NativeSelectOption>あいう ABC 0123</NativeSelectOption>
+          </NativeSelect>
+        )}
+      </Field>
+      <Field label="ファイル">{(props) => <Input {...props} type="file" />}</Field>
+      <Field label="複数行テキスト" hint="複数行の文章は上から読み始められるように配置します。">
+        {(props) => <Textarea {...props} defaultValue={"あいう ABC 0123\nかきく DEF 4567"} />}
+      </Field>
     </div>
   ),
 };

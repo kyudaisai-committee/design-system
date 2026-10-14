@@ -1,8 +1,10 @@
-import { useState } from "react";
 import type { Meta, StoryObj } from "@storybook/react-vite";
+
+import { useState } from "react";
 import { expect, userEvent, within } from "storybook/test";
-import { Field, Notice } from "./compositions";
+
 import { Button } from "./button";
+import { Field, Notice } from "./compositions";
 import { Input } from "./input";
 
 const meta = {
@@ -25,15 +27,14 @@ const meta = {
       control: "select",
       options: ["static", "status", "alert"],
       mapping: { static: undefined },
-      description:
-        "静的な案内は指定なし。操作結果はstatus、直ちに伝える失敗はalert。",
+      description: "静的な案内は指定なし。操作結果はstatus、直ちに伝える失敗はalert。",
     },
   },
   parameters: {
     docs: {
       description: {
         component:
-          "案内・完了・注意・失敗を、意味に応じた色で画面内に表示します。タイトルに要点、本文に理由や次の行動を書いてください。\n\nroleを省略した場合は、自動読み上げを行いません。操作結果を追加表示する場合は`role=\"status\"`、すぐに伝える必要があるエラーには`role=\"alert\"`を指定します。",
+          '案内・完了・注意・失敗を、意味に応じた色で画面内に表示します。タイトルに要点、本文に理由や次の行動を書いてください。\n\nroleを省略した場合は、自動読み上げを行いません。操作結果を追加表示する場合は`role="status"`、すぐに伝える必要があるエラーには`role="alert"`を指定します。',
       },
     },
   },
@@ -65,8 +66,7 @@ export const Failure: Story = {
   args: {
     title: "保存できませんでした",
     tone: "danger",
-    children:
-      "入力内容は残っています。接続を確認して、もう一度保存してください。",
+    children: "入力内容は残っています。接続を確認して、もう一度保存してください。",
     role: "alert",
   },
   play: async ({ canvasElement }) => {
@@ -114,11 +114,7 @@ function SaveExample() {
         }
       />
       <div>
-        <Button
-          type="submit"
-          pending={state === "saving"}
-          disabled={state === "saved"}
-        >
+        <Button type="submit" pending={state === "saving"} disabled={state === "saved"}>
           {state === "saving" ? "保存中…" : "保存"}
         </Button>
       </div>
@@ -132,16 +128,10 @@ export const UpdatedResult: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     await userEvent.click(canvas.getByRole("button", { name: "保存" }));
-    await expect(canvas.getByRole("status")).toHaveTextContent(
-      "保存しています",
-    );
-    await expect(
-      canvas.getByRole("button", { name: "保存中…" }),
-    ).toBeDisabled();
+    await expect(canvas.getByRole("status")).toHaveTextContent("保存しています");
+    await expect(canvas.getByRole("button", { name: "保存中…" })).toBeDisabled();
     await expect(await canvas.findByText("企画名を保存しました")).toBeVisible();
-    await expect(canvas.getByRole("status")).toHaveTextContent(
-      "企画名を保存しました",
-    );
+    await expect(canvas.getByRole("status")).toHaveTextContent("企画名を保存しました");
     await expect(canvas.queryByRole("alert")).not.toBeInTheDocument();
   },
 };

@@ -1,4 +1,4 @@
-/* Portal-derived semantic tokens. Platform changes are recorded in platform/DESIGN.md. */
+/* Generated from packages/tokens/src/tokens.json. Do not edit; run pnpm tokens:build. */
 :root,
 [data-theme="light"] {
   color-scheme: light;

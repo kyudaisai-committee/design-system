@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
+
 import { Separator } from "./separator";
 
 const meta = {
@@ -17,7 +18,7 @@ const meta = {
     docs: {
       description: {
         component:
-          "隣接する情報のまとまりを線で区切ります。見出しや余白だけで区別できる場合は、追加する必要はありません。装飾だけの線には`aria-hidden=\"true\"`を指定します。",
+          '隣接する情報のまとまりを線で区切ります。見出しや余白だけで区別できる場合は、追加する必要はありません。装飾だけの線には`aria-hidden="true"`を指定します。',
       },
     },
   },

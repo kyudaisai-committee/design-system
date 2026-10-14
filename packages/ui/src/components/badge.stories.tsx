@@ -1,5 +1,8 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
+
 import { Utensils, Paperclip } from "lucide-react";
+import { expect, within } from "storybook/test";
+
 import { Badge } from "./badge";
 
 const meta = {
@@ -13,16 +16,8 @@ const meta = {
     },
     variant: {
       control: "select",
-      options: [
-        "default",
-        "secondary",
-        "destructive",
-        "outline",
-        "ghost",
-        "link",
-      ],
-      description:
-        "表示の強さ。状態に応じた色を使う場合はStatusBadgeを使用する。",
+      options: ["default", "secondary", "destructive", "outline", "ghost", "link"],
+      description: "表示の強さ。状態に応じた色を使う場合はStatusBadgeを使用する。",
       table: { defaultValue: { summary: "default" } },
     },
     render: {
@@ -49,21 +44,14 @@ export const Variants: Story = {
   name: "表示の強さ",
   render: () => (
     <div className="flex flex-wrap gap-6">
-      {(
-        [
-          "default",
-          "secondary",
-          "destructive",
-          "outline",
-          "ghost",
-          "link",
-        ] as const
-      ).map((variant) => (
-        <div key={variant} className="grid justify-items-start gap-2">
-          <span className="text-sm text-muted-foreground">{variant}</span>
-          <Badge variant={variant}>模擬店</Badge>
-        </div>
-      ))}
+      {(["default", "secondary", "destructive", "outline", "ghost", "link"] as const).map(
+        (variant) => (
+          <div key={variant} className="grid justify-items-start gap-2">
+            <span className="text-sm text-muted-foreground">{variant}</span>
+            <Badge variant={variant}>模擬店</Badge>
+          </div>
+        ),
+      )}
     </div>
   ),
 };
@@ -98,4 +86,21 @@ export const AsLink: Story = {
       </section>
     </div>
   ),
+};
+
+export const EnlargedText: Story = {
+  name: "文字拡大と長い分類名",
+  render: () => (
+    <div style={{ width: 256, maxWidth: "100%" }}>
+      <Badge style={{ fontSize: "1.5rem" }}>事前申込みが必要なワークショップ</Badge>
+    </div>
+  ),
+  play: async ({ canvasElement }) => {
+    const badge = within(canvasElement).getByText("事前申込みが必要なワークショップ");
+    await expect(badge.getBoundingClientRect().width).toBeLessThanOrEqual(
+      badge.parentElement!.getBoundingClientRect().width,
+    );
+    await expect(badge.scrollHeight).toBeLessThanOrEqual(badge.clientHeight);
+    await expect(badge.scrollWidth).toBeLessThanOrEqual(badge.clientWidth);
+  },
 };

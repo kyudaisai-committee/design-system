@@ -1,13 +1,14 @@
 "use client";
 
 import { useId, type ComponentProps, type ReactNode } from "react";
-import { Checkbox } from "./checkbox";
-import { Badge } from "./badge";
-import { Alert, AlertTitle, AlertDescription } from "./alert";
-import { Card } from "./card";
-import { Skeleton } from "./skeleton";
-import { Label } from "./label";
+
 import { cn, mergeClassName } from "../lib/utils";
+import { Alert, AlertTitle, AlertDescription } from "./alert";
+import { Badge } from "./badge";
+import { Card } from "./card";
+import { Checkbox } from "./checkbox";
+import { Label } from "./label";
+import { Skeleton } from "./skeleton";
 
 export type Tone = "info" | "success" | "warning" | "danger";
 
@@ -32,8 +33,7 @@ export function Field({
 }) {
   const id = useId();
   const describedBy =
-    [hint && `${id}-hint`, error && `${id}-error`].filter(Boolean).join(" ") ||
-    undefined;
+    [hint && `${id}-hint`, error && `${id}-error`].filter(Boolean).join(" ") || undefined;
   return (
     <div className="ds-field">
       <Label className="ds-label" htmlFor={id}>
@@ -97,32 +97,16 @@ export function Notice({
   tone?: Tone;
 }) {
   return (
-    <Alert
-      role={undefined}
-      {...props}
-      className={cn("ds-alert", className)}
-      data-tone={tone}
-    >
+    <Alert role={undefined} {...props} className={cn("ds-alert", className)} data-tone={tone}>
       <AlertTitle>{title}</AlertTitle>
-      {children && (
-        <AlertDescription className="text-inherit">{children}</AlertDescription>
-      )}
+      {children && <AlertDescription className="text-inherit">{children}</AlertDescription>}
     </Alert>
   );
 }
-export function ContentCard({
-  className,
-  ...props
-}: ComponentProps<typeof Card>) {
+export function ContentCard({ className, ...props }: ComponentProps<typeof Card>) {
   return <Card {...props} className={cn("ds-card", className)} />;
 }
-export function EmptyState({
-  title,
-  children,
-}: {
-  title: string;
-  children?: ReactNode;
-}) {
+export function EmptyState({ title, children }: { title: string; children?: ReactNode }) {
   return (
     <div className="ds-empty">
       <h2>{title}</h2>

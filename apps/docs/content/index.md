@@ -11,30 +11,29 @@ description: 九大祭のWebサイトとシステムに共通する、デザイ�
 
 まず[共通原則](./principles.md)を読み、つくる画面に応じて各ガイドを参照してください。部品の見た目や操作は、[コンポーネント一覧](/storybook/?path=/story/overview-component-catalog--browse)から確認できます。
 
-| つくりたいもの・知りたいこと | ガイド |
-| --- | --- |
-| システムの配色・文字・余白 | [システムのデザイン](./system/DESIGN.md) |
-| 入力、保存、提出、結果表示 | [画面と操作](./system/patterns.md) |
-| 手続きの進み具合、過去の操作、期限 | [進行状況と履歴](./system/sequences.md) |
-| Web・iOS・Androidで共通にすること | [Web・アプリの設計](./system/native.md) |
-| Webコンポーネントの使い方 | [Webへの組み込み](./system/implementation.md) |
-| 年度のテーマを生かしたホームページ | [ホームページの設計](./websites/guidelines.md) |
+- [システムのデザイン](./system/DESIGN.md)：配色・文字・余白
+- [画面と操作](./system/patterns.md)：入力、保存、提出、結果表示
+- [進行状況と履歴](./system/sequences.md)：手続きの進み具合、過去の操作、期限
+- [Web・アプリの設計](./system/native.md)：Web・iOS・Androidで共通にすること
+- [Webへの組み込み](./system/implementation.md)：Webコンポーネントの使い方
+- [React Nativeへの組み込み](./system/native-implementation.md)：React Nativeコンポーネントの使い方
+- [ホームページの設計](./websites/guidelines.md)：年度のテーマを生かしたホームページ
 
 ## 年度ごとのホームページ
 
 各年度のテーマと、その表現を支える配色・書体・レイアウトを紹介します。年度固有の装飾を検討するときに参照してください。
 
-| 開催回 | テーマ | デザインの特徴 |
-| --- | --- | --- |
+| 開催回                              | テーマ     | デザインの特徴                     |
+| ----------------------------------- | ---------- | ---------------------------------- |
 | [第74回](./websites/74th/DESIGN.md) | いとをかし | 紺と桃色、糸を思わせる線、会場写真 |
-| [第75回](./websites/75th/DESIGN.md) | 蒼生 | 青い多角形、星、斜めの背景帯 |
-| [第76回](./websites/76th/DESIGN.md) | もみいづる | 深い赤褐色、紅葉、縦組み |
-| [第77回](./websites/77th/DESIGN.md) | 紫季彩 | 紫の濃淡、写真、明朝体の見出し |
-| [第78回](./websites/78th/DESIGN.md) | 星瞬 | 星空、白い明朝体、円弧と四芒星 |
-| [第79回](./websites/79th/DESIGN.md) | 暁 | 生成りと赤茶、椿、切符の形 |
+| [第75回](./websites/75th/DESIGN.md) | 蒼生       | 青い多角形、星、斜めの背景帯       |
+| [第76回](./websites/76th/DESIGN.md) | もみいづる | 深い赤褐色、紅葉、縦組み           |
+| [第77回](./websites/77th/DESIGN.md) | 紫季彩     | 紫の濃淡、写真、明朝体の見出し     |
+| [第78回](./websites/78th/DESIGN.md) | 星瞬       | 星空、白い明朝体、円弧と四芒星     |
+| [第79回](./websites/79th/DESIGN.md) | 暁         | 生成りと赤茶、椿、切符の形         |
 
 ## ガイドと見本を使う
 
 このガイドでは、デザインを選ぶ理由と使用条件を説明します。Storybookは、部品の表示や操作を試せる見本集です。各部品のページで、状態ごとの表示と使用コードを確認できます。
 
-現在のコンポーネントはWeb向けです。iOS・Androidについては設計指針を掲載しています。色や寸法を含む資料の形式は[デザイン仕様の読み方](./design-format.md)を参照してください。
+Web向けとReact Native向けのコンポーネントを用意しています。WebのStorybookはこのサイトから、iOS・AndroidのStorybookは開発ビルドから確認できます。色や寸法を含む資料の形式は[デザイン仕様の読み方](./design-format.md)を参照してください。

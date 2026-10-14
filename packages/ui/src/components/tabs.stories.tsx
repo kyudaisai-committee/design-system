@@ -1,17 +1,15 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { useStoryControls } from "./story-controls";
+
 import { expect, userEvent, within } from "storybook/test";
+
+import { useStoryControls } from "./story-controls";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "./tabs";
 
 function renderTabs(variant: "default" | "line"): Meta<typeof Tabs>["render"] {
   return function Render(incoming) {
     const [args, updateArgs] = useStoryControls(incoming);
     return (
-      <Tabs
-        {...args}
-        className="max-w-xl gap-5"
-        onValueChange={(value) => updateArgs({ value })}
-      >
+      <Tabs {...args} className="max-w-xl gap-5" onValueChange={(value) => updateArgs({ value })}>
         <TabsList variant={variant} aria-label="企画情報">
           <TabsTrigger value="overview">基本情報</TabsTrigger>
           <TabsTrigger value="documents">提出資料</TabsTrigger>
@@ -78,9 +76,7 @@ export const Default: Story = {
       "aria-selected",
       "true",
     );
-    await expect(
-      canvas.getByRole("tabpanel", { name: "提出資料" }),
-    ).toBeVisible();
+    await expect(canvas.getByRole("tabpanel", { name: "提出資料" })).toBeVisible();
     await userEvent.keyboard("{ArrowRight}{Enter}");
     await expect(canvas.getByRole("tab", { name: "審査結果" })).toHaveAttribute(
       "aria-selected",
@@ -101,15 +97,45 @@ export const Vertical: Story = {
   render: renderTabs("line"),
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    await expect(canvas.getByRole("tablist")).toHaveAttribute(
-      "aria-orientation",
-      "vertical",
-    );
+    await expect(canvas.getByRole("tablist")).toHaveAttribute("aria-orientation", "vertical");
     canvas.getByRole("tab", { name: "基本情報" }).focus();
     await userEvent.keyboard("{ArrowDown}{Enter}");
     await expect(canvas.getByRole("tab", { name: "提出資料" })).toHaveAttribute(
       "aria-selected",
       "true",
     );
+  },
+};
+
+export const Narrow: Story = {
+  name: "狭い領域のタブ",
+  render: () => (
+    <div style={{ width: 256, maxWidth: "100%" }}>
+      <Tabs defaultValue="overview">
+        <TabsList aria-label="企画情報">
+          <TabsTrigger value="overview">企画の基本情報</TabsTrigger>
+          <TabsTrigger value="documents">提出した申請書類</TabsTrigger>
+          <TabsTrigger value="review">審査結果と修正依頼</TabsTrigger>
+        </TabsList>
+        <TabsContent value="overview">名称と責任者を確認できます。</TabsContent>
+        <TabsContent value="documents">提出した申請書を確認できます。</TabsContent>
+        <TabsContent value="review">審査結果を確認できます。</TabsContent>
+      </Tabs>
+    </div>
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const list = canvas.getByRole("tablist");
+    await expect(list.getBoundingClientRect().width).toBeLessThanOrEqual(
+      list.parentElement!.parentElement!.getBoundingClientRect().width,
+    );
+    canvas.getByRole("tab", { name: "企画の基本情報" }).focus();
+    await userEvent.keyboard("{End}{Enter}");
+    const last = canvas.getByRole("tab", { name: "審査結果と修正依頼" });
+    await expect(last).toHaveAttribute("aria-selected", "true");
+    await expect(last.getBoundingClientRect().right).toBeLessThanOrEqual(
+      list.getBoundingClientRect().right + 1,
+    );
+    await expect(canvas.getByRole("tabpanel", { name: "審査結果と修正依頼" })).toBeVisible();
   },
 };

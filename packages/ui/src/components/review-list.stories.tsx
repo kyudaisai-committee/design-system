@@ -1,20 +1,20 @@
-import { useId, useRef, useState } from "react";
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { expect, userEvent, within, waitFor } from "storybook/test";
+
+import { useState } from "react";
+import { expect, userEvent, within } from "storybook/test";
+
 import { Button } from "./button";
-import { Input } from "./input";
-import { Textarea } from "./textarea";
-import { NativeSelect as Select } from "./native-select";
-import { Table } from "./table";
 import {
   Notice as Alert,
   StatusBadge as Badge,
   ContentCard as Card,
-  LabeledCheckbox as Checkbox,
   Field,
   LoadingState as Skeleton,
   EmptyState,
 } from "./compositions";
+import { Input } from "./input";
+import { NativeSelect as Select } from "./native-select";
+import { Table } from "./table";
 
 const records = [
   { id: "K-080", name: "九大カフェ", group: "喫茶研究会", state: "審査中" },
@@ -43,15 +43,9 @@ function ReviewList({
         <h1>企画の審査</h1>
       </header>
       {forbidden ? (
-        <Alert title="この一覧を閲覧する権限がありません">
-          担当者への権限申請が必要です。
-        </Alert>
+        <Alert title="この一覧を閲覧する権限がありません">担当者への権限申請が必要です。</Alert>
       ) : error ? (
-        <Alert
-          title="企画一覧を取得できませんでした"
-          tone="danger"
-          role="alert"
-        >
+        <Alert title="企画一覧を取得できませんでした" tone="danger" role="alert">
           時間をおいてページを再読み込みしてください。
         </Alert>
       ) : loading ? (
@@ -174,12 +168,8 @@ export const Default: Story = {
     await expect(canvas.getByRole("status")).toHaveTextContent("1件");
     await expect(canvas.getByText("秋の演奏会")).toBeInTheDocument();
     await userEvent.type(canvas.getByRole("searchbox"), "該当なし");
-    await expect(
-      canvas.getByText("条件に合う企画がありません"),
-    ).toBeInTheDocument();
-    await userEvent.click(
-      canvas.getByRole("button", { name: "条件をリセット" }),
-    );
+    await expect(canvas.getByText("条件に合う企画がありません")).toBeInTheDocument();
+    await userEvent.click(canvas.getByRole("button", { name: "条件をリセット" }));
     await expect(canvas.getByRole("status")).toHaveTextContent("3件");
   },
 };

@@ -1,4 +1,5 @@
 import type { ComponentProps } from "react";
+
 import { cn } from "../lib/utils";
 import {
   SequenceDetails,
@@ -21,6 +22,8 @@ export type ProcessStepsProps = Omit<ComponentProps<"div">, "children"> & {
   steps: readonly ProcessStep[];
   /** Horizontal layouts become vertical inside narrow containers. */
   orientation?: "horizontal" | "vertical";
+  /** Subtle background on the current stage. Neutral is the default emphasis. */
+  currentTint?: "neutral" | "info";
   emptyMessage?: string;
 };
 
@@ -36,6 +39,7 @@ export function ProcessSteps({
   label,
   steps,
   orientation = "horizontal",
+  currentTint = "neutral",
   emptyMessage = "表示する段階がありません。",
   className,
   ...props
@@ -46,6 +50,7 @@ export function ProcessSteps({
       className={cn("ds-sequence", className)}
       data-slot="process-steps"
       data-orientation={orientation}
+      data-current-tint={currentTint}
     >
       {steps.length === 0 ? (
         <p className="ds-hint">{emptyMessage}</p>
@@ -67,9 +72,6 @@ export function ProcessSteps({
                 <span className="ds-sequence-status">
                   {step.statusLabel ?? statusLabels[step.status]}
                 </span>
-                {step.status === "current" && (
-                  <span className="ds-sr-only">現在の段階</span>
-                )}
                 <SequenceDetails {...step} />
               </div>
             </li>

@@ -1,5 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
+
 import { expect, fn, userEvent, within, waitFor } from "storybook/test";
+
 import { ConfirmDialog } from "./confirm-dialog";
 
 const meta = {
@@ -31,8 +33,7 @@ const meta = {
     },
     errorMessage: {
       control: "text",
-      description:
-        "失敗理由と次にできる行動。入力と確認内容を保ったまま表示する。",
+      description: "失敗理由と次にできる行動。入力と確認内容を保ったまま表示する。",
     },
     destructive: {
       control: "boolean",
@@ -41,8 +42,7 @@ const meta = {
     },
     onConfirm: {
       control: false,
-      description:
-        "確定する処理。Promise の成功時だけ閉じ、失敗時は再試行できる。",
+      description: "確定する処理。Promise の成功時だけ閉じ、失敗時は再試行できる。",
     },
   },
   parameters: {
@@ -65,8 +65,7 @@ export const Submit: Story = {
   args: {
     trigger: "申請を提出",
     title: "「九大カフェ」の申請を提出しますか？",
-    description:
-      "企画申請書と添付資料3件を提出します。提出後の修正は担当者へ連絡してください。",
+    description: "企画申請書と添付資料3件を提出します。提出後の修正は担当者へ連絡してください。",
     confirmLabel: "申請を提出",
     pendingLabel: "提出中…",
     destructive: false,
@@ -83,14 +82,10 @@ export const Cancel: Story = {
     const dialog = await body.findByRole("alertdialog");
     await expect(dialog).toHaveAccessibleName("「九大カフェ」を削除しますか？");
     await waitFor(() =>
-      expect(
-        within(dialog).getByRole("button", { name: "キャンセル" }),
-      ).toHaveFocus(),
+      expect(within(dialog).getByRole("button", { name: "キャンセル" })).toHaveFocus(),
     );
     await userEvent.keyboard("{Escape}");
-    await waitFor(() =>
-      expect(body.queryByRole("alertdialog")).not.toBeInTheDocument(),
-    );
+    await waitFor(() => expect(body.queryByRole("alertdialog")).not.toBeInTheDocument());
     await expect(trigger).toHaveFocus();
     await expect(args.onConfirm).not.toHaveBeenCalled();
   },
@@ -98,18 +93,12 @@ export const Cancel: Story = {
 export const Confirm: Story = {
   name: "削除の確定",
   play: async ({ canvasElement, args }) => {
-    await userEvent.click(
-      within(canvasElement).getByRole("button", { name: "企画を削除" }),
-    );
+    await userEvent.click(within(canvasElement).getByRole("button", { name: "企画を削除" }));
     const body = within(canvasElement.ownerDocument.body);
     const dialog = await body.findByRole("alertdialog");
-    await userEvent.click(
-      within(dialog).getByRole("button", { name: "企画を削除" }),
-    );
+    await userEvent.click(within(dialog).getByRole("button", { name: "企画を削除" }));
     await expect(args.onConfirm).toHaveBeenCalledOnce();
-    await waitFor(() =>
-      expect(body.queryByRole("alertdialog")).not.toBeInTheDocument(),
-    );
+    await waitFor(() => expect(body.queryByRole("alertdialog")).not.toBeInTheDocument());
   },
 };
 export const Failure: Story = {
@@ -121,27 +110,19 @@ export const Failure: Story = {
     }),
   },
   play: async ({ canvasElement, args }) => {
-    await userEvent.click(
-      within(canvasElement).getByRole("button", { name: "企画を削除" }),
-    );
-    const dialog = await within(canvasElement.ownerDocument.body).findByRole(
-      "alertdialog",
-    );
+    await userEvent.click(within(canvasElement).getByRole("button", { name: "企画を削除" }));
+    const dialog = await within(canvasElement.ownerDocument.body).findByRole("alertdialog");
     const confirm = within(dialog).getByRole("button", { name: "企画を削除" });
     confirm.focus();
     await userEvent.keyboard("{Enter}");
     await expect(await within(dialog).findByRole("alert")).toHaveTextContent(
       "処理できませんでした",
     );
-    await expect(
-      within(dialog).getByRole("button", { name: "企画を削除" }),
-    ).toBeEnabled();
+    await expect(within(dialog).getByRole("button", { name: "企画を削除" })).toBeEnabled();
     await expect(confirm).toHaveFocus();
     await userEvent.keyboard("{Enter}");
     await waitFor(() => expect(args.onConfirm).toHaveBeenCalledTimes(2));
-    await waitFor(() =>
-      expect(confirm).not.toHaveAttribute("aria-disabled", "true"),
-    );
+    await waitFor(() => expect(confirm).not.toHaveAttribute("aria-disabled", "true"));
     await expect(confirm).toHaveFocus();
   },
 };
@@ -149,20 +130,15 @@ export const Pending: Story = {
   name: "処理中の二重操作防止",
   args: { onConfirm: fn(() => new Promise<void>(() => {})) },
   play: async ({ canvasElement, args }) => {
-    await userEvent.click(
-      within(canvasElement).getByRole("button", { name: "企画を削除" }),
-    );
+    await userEvent.click(within(canvasElement).getByRole("button", { name: "企画を削除" }));
     const body = within(canvasElement.ownerDocument.body);
     const dialog = await body.findByRole("alertdialog");
-    await userEvent.click(
-      within(dialog).getByRole("button", { name: "企画を削除" }),
+    await userEvent.click(within(dialog).getByRole("button", { name: "企画を削除" }));
+    await expect(within(dialog).getByRole("button", { name: "処理中…" })).toHaveAttribute(
+      "aria-disabled",
+      "true",
     );
-    await expect(
-      within(dialog).getByRole("button", { name: "処理中…" }),
-    ).toHaveAttribute("aria-disabled", "true");
-    await expect(
-      within(dialog).getByRole("button", { name: "キャンセル" }),
-    ).toBeDisabled();
+    await expect(within(dialog).getByRole("button", { name: "キャンセル" })).toBeDisabled();
     await userEvent.keyboard("{Escape}");
     await expect(dialog).toBeInTheDocument();
     await expect(args.onConfirm).toHaveBeenCalledOnce();

@@ -1,8 +1,10 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { useStoryControls } from "./story-controls";
+
 import { expect, userEvent, within } from "storybook/test";
-import { Textarea } from "./textarea";
+
 import { Label } from "./label";
+import { useStoryControls } from "./story-controls";
+import { Textarea } from "./textarea";
 
 const meta = {
   title: "Components/Textarea",
@@ -72,13 +74,8 @@ export const Default: Story = {
       name: "企画紹介",
     });
     await userEvent.clear(input);
-    await userEvent.type(
-      input,
-      "コーヒーをご用意しています。{Enter}ぜひお立ち寄りください。",
-    );
-    await expect(input).toHaveValue(
-      "コーヒーをご用意しています。\nぜひお立ち寄りください。",
-    );
+    await userEvent.type(input, "コーヒーをご用意しています。{Enter}ぜひお立ち寄りください。");
+    await expect(input).toHaveValue("コーヒーをご用意しています。\nぜひお立ち寄りください。");
   },
 };
 export const Empty: Story = { name: "未入力", args: { value: "" } };

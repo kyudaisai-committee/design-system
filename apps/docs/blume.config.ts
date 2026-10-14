@@ -14,24 +14,14 @@ export default defineConfig({
       version: z.literal("alpha").optional(),
       colors: z.record(z.string(), z.string()).optional(),
       typography: z
-        .record(
-          z.string(),
-          z.record(z.string(), z.union([z.string(), z.number()])),
-        )
+        .record(z.string(), z.record(z.string(), z.union([z.string(), z.number()])))
         .optional(),
-      spacing: z
-        .record(z.string(), z.union([z.string(), z.number()]))
-        .optional(),
+      spacing: z.record(z.string(), z.union([z.string(), z.number()])).optional(),
       rounded: z.record(z.string(), z.string()).optional(),
-      components: z
-        .record(z.string(), z.record(z.string(), z.unknown()))
-        .optional(),
+      components: z.record(z.string(), z.record(z.string(), z.unknown())).optional(),
       omitted: z
         .array(
-          z.union([
-            z.string(),
-            z.object({ section: z.string(), reason: z.string().optional() }),
-          ]),
+          z.union([z.string(), z.object({ section: z.string(), reason: z.string().optional() })]),
         )
         .optional(),
     },
@@ -50,6 +40,7 @@ export default defineConfig({
           "system/sequences",
           "system/native",
           "system/implementation",
+          "system/native-implementation",
         ],
       },
       {
@@ -66,6 +57,11 @@ export default defineConfig({
       },
       "design-format",
     ],
+  },
+  markdown: {
+    code: {
+      theme: { light: "github-light-high-contrast", dark: "github-dark-high-contrast" },
+    },
   },
   search: orama(),
   feedback: false,

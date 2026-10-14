@@ -2,6 +2,13 @@
   "name": "@kyudaisai/storybook",
   "private": true,
   "type": "module",
-  "scripts": { "dev": "storybook dev -p 6006", "build": "storybook build -o storybook-static" },
-  "dependencies": { "@kyudaisai/ui": "workspace:*", "react": "19.3.0", "react-dom": "19.3.0" }
+  "scripts": {
+    "dev": "storybook dev -p 6006",
+    "build": "storybook build -o storybook-static"
+  },
+  "dependencies": {
+    "@kyudaisai/ui": "workspace:*",
+    "react": "19.3.0",
+    "react-dom": "19.3.0"
+  }
 }

@@ -5,3 +5,8 @@
   max-width: 100%;
   object-fit: contain;
 }
+
+/* Keep short row labels legible on narrow screens; the table wrapper can scroll. */
+.prose td:first-child > a {
+  white-space: nowrap;
+}

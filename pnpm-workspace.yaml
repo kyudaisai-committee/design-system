@@ -3,23 +3,39 @@ packages:
   - packages/*
 allowBuilds:
   esbuild: true
+  lefthook: true
   sharp: true
   "@parcel/watcher": true
 minimumReleaseAgeExclude:
-  - '@storybook/addon-a11y@10.6.2'
-  - '@storybook/addon-docs@10.6.2'
-  - '@storybook/addon-vitest@10.6.2'
-  - '@storybook/builder-vite@10.6.2'
-  - '@storybook/react-dom-shim@10.6.2'
-  - '@storybook/react-vite@10.6.2'
-  - '@storybook/react@10.6.2'
-  - '@vitest/browser-playwright@5.0.4'
-  - '@vitest/browser@5.0.4'
-  - '@vitest/mocker@5.0.4'
-  - '@vitest/pretty-format@5.0.4'
-  - '@vitest/spy@5.0.4'
-  - '@vitest/ui@5.0.4'
-  - '@vitest/utils@5.0.4'
+  - "@storybook/addon-a11y@10.6.2"
+  - "@storybook/addon-docs@10.6.2"
+  - "@storybook/addon-vitest@10.6.2"
+  - "@storybook/builder-vite@10.6.2"
+  - "@storybook/react-dom-shim@10.6.2"
+  - "@storybook/react-vite@10.6.2"
+  - "@storybook/react@10.6.2"
+  - "@vitest/browser-playwright@5.0.4"
+  - "@vitest/browser@5.0.4"
+  - "@vitest/mocker@5.0.4"
+  - "@vitest/pretty-format@5.0.4"
+  - "@vitest/spy@5.0.4"
+  - "@vitest/ui@5.0.4"
+  - "@vitest/utils@5.0.4"
   - storybook@10.6.2
   - vitest@5.0.4
   - lucide-react@1.56.0
+  - "@expo/cli@57.0.29"
+  - "@expo/fingerprint@0.20.14"
+  - "@expo/inline-modules@0.1.8"
+  - "@expo/local-build-cache-provider@57.0.9"
+  - "@expo/prebuild-config@57.0.18"
+  - babel-preset-expo@57.0.15
+  - expo-modules-autolinking@57.0.15
+  - expo-modules-core@57.0.22
+  - expo-modules-jsi@57.1.2
+  - expo@57.0.28
+  - jest-expo@57.0.6
+  - expo-dev-client@57.0.20
+  - expo-dev-launcher@57.0.21
+  - expo-dev-menu@57.0.20
+  - expo-sharing@57.0.23

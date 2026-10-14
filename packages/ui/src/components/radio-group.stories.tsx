@@ -1,8 +1,10 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { useStoryControls } from "./story-controls";
+
 import { expect, userEvent, within } from "storybook/test";
-import { RadioGroup, RadioGroupItem } from "./radio-group";
+
 import { Label } from "./label";
+import { RadioGroup, RadioGroupItem } from "./radio-group";
+import { useStoryControls } from "./story-controls";
 
 const meta = {
   title: "Components/RadioGroup",
@@ -10,6 +12,11 @@ const meta = {
   subcomponents: { RadioGroupItem },
   args: { value: "indoor", disabled: false, readOnly: false, required: false },
   argTypes: {
+    defaultValue: {
+      control: false,
+      description:
+        "初回表示時とフォームリセット後の値。新しい初期値で始める場合はkeyを変えて再表示します。",
+    },
     value: {
       control: "select",
       options: ["indoor", "outdoor", "stage"],
@@ -90,8 +97,7 @@ export const Invalid: Story = {
   render: (args, { id }) => (
     <fieldset>
       <legend className="mb-3 font-medium">
-        企画の開催場所{" "}
-        <span className="text-sm text-muted-foreground">必須</span>
+        企画の開催場所 <span className="text-sm text-muted-foreground">必須</span>
       </legend>
       <RadioGroup
         {...args}

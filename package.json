@@ -2,19 +2,34 @@
   "name": "design-system",
   "private": true,
   "license": "MIT",
-  "packageManager": "pnpm@11.1.3",
-  "engines": {
-    "node": ">=24"
-  },
+  "type": "module",
   "scripts": {
     "dev": "pnpm --parallel --filter @kyudaisai/docs --filter @kyudaisai/storybook dev",
     "build": "pnpm --filter @kyudaisai/ui build && pnpm --filter @kyudaisai/docs build && pnpm --filter @kyudaisai/storybook build && node scripts/assemble.mjs",
     "typecheck": "tsc --noEmit",
+    "lint": "oxlint --deny-warnings .",
+    "lint:fix": "pnpm lint --fix",
+    "format": "oxfmt --write .",
+    "format:check": "oxfmt --check .",
     "test": "vitest run",
     "preview": "http-server dist -p 4321 -c-1",
-    "check": "pnpm design:check && pnpm typecheck && pnpm test && pnpm build && node scripts/check-catalog.mjs",
-    "design:sync": "node scripts/design-tokens.mjs --write",
-    "design:check": "node scripts/check-design.mjs"
+    "check": "pnpm lint && pnpm format:check && pnpm tokens:check && pnpm tokens:test && pnpm design:check && pnpm typecheck && pnpm native:typecheck && pnpm native:test && pnpm test && pnpm build && pnpm native:export && node scripts/check-catalog.mjs && pnpm site:check && pnpm package:check",
+    "design:sync": "pnpm tokens:build && node scripts/design-tokens.mjs --write",
+    "design:check": "node scripts/check-design.mjs",
+    "native:dev": "pnpm --filter @kyudaisai/storybook-native dev",
+    "native:ios": "pnpm --filter @kyudaisai/storybook-native ios",
+    "native:android": "pnpm --filter @kyudaisai/storybook-native android",
+    "native:typecheck": "pnpm --filter @kyudaisai/storybook-native generate && pnpm --filter @kyudaisai/storybook-native typecheck",
+    "native:test": "pnpm --filter @kyudaisai/storybook-native test",
+    "native:export": "pnpm --filter @kyudaisai/storybook-native export",
+    "tokens:build": "node scripts/token-build.mjs",
+    "tokens:check": "node scripts/token-build.mjs --check",
+    "tokens:test": "node --test scripts/token-build.test.mjs",
+    "prepare": "lefthook install",
+    "native:build:ios": "pnpm --filter @kyudaisai/storybook-native build:ios",
+    "native:build:android": "pnpm --filter @kyudaisai/storybook-native build:android",
+    "package:check": "node scripts/check-package.mjs",
+    "site:check": "node scripts/check-site.mjs"
   },
   "devDependencies": {
     "@axe-core/playwright": "4.11.1",
@@ -28,6 +43,9 @@
     "@types/react-dom": "19.2.3",
     "@vitest/browser-playwright": "5.0.4",
     "http-server": "14.1.1",
+    "lefthook": "2.1.17",
+    "oxfmt": "0.71.0",
+    "oxlint": "1.86.0",
     "playwright": "1.64.0",
     "storybook": "10.6.2",
     "typescript": "6.0.3",
@@ -35,5 +53,8 @@
     "vitest": "5.0.4",
     "yaml": "2.9.1"
   },
-  "type": "module"
+  "engines": {
+    "node": ">=24"
+  },
+  "packageManager": "pnpm@11.1.3"
 }

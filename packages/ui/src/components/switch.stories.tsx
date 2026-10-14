@@ -1,8 +1,10 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { useStoryControls } from "./story-controls";
+
 import { expect, userEvent, within } from "storybook/test";
-import { Switch } from "./switch";
+
 import { Label } from "./label";
+import { useStoryControls } from "./story-controls";
+import { Switch } from "./switch";
 
 const meta = {
   title: "Components/Switch",
@@ -10,6 +12,11 @@ const meta = {
   args: { checked: false, disabled: false, size: "default" },
   argTypes: {
     checked: { control: "boolean", description: "設定が有効かどうか。" },
+    defaultChecked: {
+      control: false,
+      description:
+        "初回表示時とフォームリセット後の選択状態。新しい初期値で始める場合はkeyを変えて再表示します。",
+    },
     disabled: { control: "boolean" },
     size: {
       control: "inline-radio",
@@ -34,11 +41,7 @@ const meta = {
     const [args, updateArgs] = useStoryControls(incoming);
     return (
       <div className="flex min-h-11 items-center gap-4">
-        <Switch
-          {...args}
-          id={id}
-          onCheckedChange={(checked) => updateArgs({ checked })}
-        />
+        <Switch {...args} id={id} onCheckedChange={(checked) => updateArgs({ checked })} />
         <Label htmlFor={id} className="min-h-11 leading-normal">
           メール通知を受け取る
         </Label>

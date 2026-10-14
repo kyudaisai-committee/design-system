@@ -10,3 +10,10 @@ playwright-report/
 .DS_Store
 *.tsbuildinfo
 .build-*/
+.expo/
+apps/storybook-native/.rnstorybook/storybook.requires.ts
+apps/storybook-native/.rnstorybook/storybook-entry.tsx
+apps/storybook-native/ios/
+apps/storybook-native/android/
+
+debug-storybook.log

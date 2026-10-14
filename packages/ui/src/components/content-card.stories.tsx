@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
+
 import { ContentCard, StatusBadge } from "./compositions";
 
 const meta = {

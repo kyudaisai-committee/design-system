@@ -1,8 +1,10 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
+
 import { expect, userEvent, within } from "storybook/test";
-import { Label } from "./label";
-import { Input } from "./input";
+
 import { Checkbox } from "./checkbox";
+import { Input } from "./input";
+import { Label } from "./label";
 
 const meta = {
   title: "Components/Label",
@@ -62,4 +64,25 @@ export const LongLabel: Story = {
       </Label>
     </div>
   ),
+};
+
+export const NarrowUnbrokenLabel: Story = {
+  name: "狭い画面と長い英字ラベル",
+  render: () => (
+    <div style={{ width: 240, maxWidth: "100%" }}>
+      <Label htmlFor="unbroken-label">
+        InternationalFestivalRegistrationConfirmationNumber <span>（必須）</span>
+      </Label>
+      <Input id="unbroken-label" required />
+    </div>
+  ),
+  play: async ({ canvasElement }) => {
+    const input = within(canvasElement).getByRole("textbox");
+    const container = input.parentElement!;
+    await expect(container.scrollWidth).toBeLessThanOrEqual(container.clientWidth + 1);
+    await userEvent.click(
+      within(canvasElement).getByText("InternationalFestivalRegistrationConfirmationNumber"),
+    );
+    await expect(input).toHaveFocus();
+  },
 };

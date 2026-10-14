@@ -1,8 +1,10 @@
-import { useRef, useState } from "react";
 import type { Meta, StoryObj } from "@storybook/react-vite";
+
+import { useRef, useState } from "react";
 import { expect, userEvent, waitFor, within } from "storybook/test";
-import { ContentCard, EmptyState, Field } from "./compositions";
+
 import { Button } from "./button";
+import { ContentCard, EmptyState, Field } from "./compositions";
 import { Input } from "./input";
 
 const meta = {
@@ -114,32 +116,22 @@ export const WithAction: Story = {
     canvas.getByRole("button", { name: "企画を作成" }).focus();
     await userEvent.keyboard("{Enter}");
     await userEvent.click(canvas.getByRole("button", { name: "キャンセル" }));
-    await waitFor(() =>
-      expect(canvas.getByRole("button", { name: "企画を作成" })).toHaveFocus(),
-    );
+    await waitFor(() => expect(canvas.getByRole("button", { name: "企画を作成" })).toHaveFocus());
     await userEvent.keyboard("{Enter}");
     const input = canvas.getByRole("textbox", { name: /企画名\s*（必須）/ });
     await waitFor(() => expect(input).toHaveFocus());
     await userEvent.type(input, "九大カフェ");
     await userEvent.click(canvas.getByRole("button", { name: "作成" }));
-    await expect(canvas.getByRole("status")).toHaveTextContent(
-      "企画を作成しました。",
-    );
-    await waitFor(() =>
-      expect(canvas.getByRole("heading", { name: "九大カフェ" })).toHaveFocus(),
-    );
-    await expect(
-      canvas.queryByText("企画はまだありません"),
-    ).not.toBeInTheDocument();
+    await expect(canvas.getByRole("status")).toHaveTextContent("企画を作成しました。");
+    await waitFor(() => expect(canvas.getByRole("heading", { name: "九大カフェ" })).toHaveFocus());
+    await expect(canvas.queryByText("企画はまだありません")).not.toBeInTheDocument();
   },
 };
 
 function FilterExample() {
   const [query, setQuery] = useState("ステージ");
   const inputRef = useRef<HTMLInputElement>(null);
-  const projects = ["九大カフェ", "星空写真展"].filter((name) =>
-    name.includes(query),
-  );
+  const projects = ["九大カフェ", "星空写真展"].filter((name) => name.includes(query));
   return (
     <div className="ds-stack max-w-xl">
       <Field label="企画名で検索">
@@ -185,12 +177,8 @@ export const Filtered: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     await expect(canvas.getByRole("status")).toHaveTextContent("0件");
-    await userEvent.click(
-      canvas.getByRole("button", { name: "検索条件をクリア" }),
-    );
-    await expect(
-      canvas.getByRole("searchbox", { name: "企画名で検索" }),
-    ).toHaveValue("");
+    await userEvent.click(canvas.getByRole("button", { name: "検索条件をクリア" }));
+    await expect(canvas.getByRole("searchbox", { name: "企画名で検索" })).toHaveValue("");
     await expect(canvas.getByRole("searchbox")).toHaveFocus();
     await expect(canvas.getByRole("status")).toHaveTextContent("2件");
     await expect(canvas.getByText("九大カフェ")).toBeVisible();

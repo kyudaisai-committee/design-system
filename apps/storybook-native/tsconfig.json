@@ -1,0 +1,6 @@
+{
+  "extends": "expo/tsconfig.base",
+  "compilerOptions": { "strict": true, "noEmit": true, "types": ["jest"] },
+  "include": ["**/*.ts", "**/*.tsx", "../../packages/ui-native/src", "../../packages/tokens/src"],
+  "exclude": ["node_modules", "dist"]
+}

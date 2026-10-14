@@ -1,12 +1,14 @@
-import { useState } from "react";
 import type { Meta, StoryObj } from "@storybook/react-vite";
+
+import { useState } from "react";
 import { expect, userEvent, within } from "storybook/test";
+
 import { Button } from "./button";
 import { Notice } from "./compositions";
-import { ProcessSteps, type ProcessStep } from "./process-steps";
-import { Timeline } from "./timeline";
 import { DateDetails, type DateDetail } from "./date-details";
+import { ProcessSteps, type ProcessStep } from "./process-steps";
 import { applicationSequenceIcons as icons } from "./sequence-example-icons";
+import { Timeline } from "./timeline";
 
 const submissionDeadline: DateDetail = {
   id: "due",
@@ -123,7 +125,6 @@ function awaitingSubmission(dates: readonly DateDetail[]): ProcessStep[] {
       status: "current",
       statusLabel: "提出待ち",
       metadata: <DateDetails items={dates} />,
-      description: "期限までに入力・提出してください。",
     },
     {
       ...reviewSteps[2],
@@ -152,9 +153,7 @@ function resolvedSteps(approved: boolean): ProcessStep[] {
       icon: approved ? icons.approved : icons.rejected,
       statusLabel: approved ? "承認" : "却下",
       tone: approved ? "success" : "danger",
-      description: approved
-        ? "提出内容が承認されました。"
-        : "申請条件を満たしていません。理由の詳細を確認してください。",
+      description: approved ? undefined : "必要な添付資料が不足しています。",
     },
   ];
 }
@@ -166,6 +165,7 @@ const meta = {
     label: "申請の進行状況",
     steps: reviewSteps,
     orientation: "horizontal",
+    currentTint: "neutral",
   },
   argTypes: {
     label: { control: "text", description: "進行表示の読み上げ名。" },
@@ -173,6 +173,11 @@ const meta = {
       control: "inline-radio",
       options: ["horizontal", "vertical"],
       description: "横並びは狭いコンテナで縦並びになります。",
+    },
+    currentTint: {
+      control: "inline-radio",
+      options: ["neutral", "info"],
+      description: "現在段階の薄い背景。既定は状態色と区別しやすい中立色です。",
     },
     steps: {
       control: false,
@@ -198,10 +203,8 @@ export const InReview: Story = {
     const canvas = within(canvasElement);
     const list = canvas.getByRole("list", { name: "申請の進行状況" });
     await expect(within(list).getAllByRole("listitem")).toHaveLength(4);
-    await expect(within(list).getAllByRole("listitem")[2]).toHaveAttribute(
-      "aria-current",
-      "step",
-    );
+    await expect(within(list).getAllByRole("listitem")[2]).toHaveAttribute("aria-current", "step");
+    await expect(canvas.queryByText("現在の段階")).not.toBeInTheDocument();
     await expect(canvas.queryByRole("progressbar")).not.toBeInTheDocument();
     await expect(canvas.queryByRole("tablist")).not.toBeInTheDocument();
     await expect(canvas.getByText("10月5日 14:30")).toHaveAttribute(
@@ -211,10 +214,7 @@ export const InReview: Story = {
     const steps = within(list).getAllByRole("listitem");
     await expect(within(steps[1]).getByText("提出期限")).toBeVisible();
     await expect(within(steps[1]).getByText("提出日時")).toBeVisible();
-    await expect(within(steps[3]).getByText("10月22日")).toHaveAttribute(
-      "datetime",
-      "2026-10-22",
-    );
+    await expect(within(steps[3]).getByText("10月22日")).toHaveAttribute("datetime", "2026-10-22");
   },
 };
 export const Assigned: Story = {
@@ -222,49 +222,83 @@ export const Assigned: Story = {
   args: { steps: awaitingSubmission([submissionDeadline]) },
 };
 export const ExtendedDeadline: Story = {
-  name: "期限延長・適用期限を優先",
+  name: "期限延長・適用期限のみ表示",
   args: {
-    steps: awaitingSubmission([
-      extendedDeadline,
-      { ...submissionDeadline, id: "standard", label: "標準期限" },
-    ]),
+    steps: awaitingSubmission([extendedDeadline]),
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     const steps = canvas.getAllByRole("listitem");
     const submission = within(steps[1]);
     const effective = submission.getByText("10月20日 17:00");
-    const standard = submission.getByText("10月15日 17:00");
-    await expect(effective).toHaveAttribute(
-      "datetime",
-      "2026-10-20T17:00:00+09:00",
-    );
+    await expect(effective).toHaveAttribute("datetime", "2026-10-20T17:00:00+09:00");
     await expect(effective.closest("strong")).not.toBeNull();
-    await expect(standard.closest("strong")).toBeNull();
+    await expect(submission.queryByText("10月15日 17:00")).not.toBeInTheDocument();
+    await expect(submission.queryByText("標準期限")).not.toBeInTheDocument();
     await expect(submission.getByText("延長済み").closest("time")).toBeNull();
     await expect(steps[1]).toHaveAttribute("aria-current", "step");
-    await expect(within(steps[3]).getByText("10月22日")).toHaveAttribute(
-      "datetime",
-      "2026-10-22",
-    );
+    await expect(within(steps[3]).getByText("10月22日")).toHaveAttribute("datetime", "2026-10-22");
   },
 };
-export const ExtendedDeadlineUnknownStandard: Story = {
-  name: "期限延長・標準期限を確認できない",
-  args: {
-    steps: awaitingSubmission([
-      extendedDeadline,
-      { id: "standard", label: "標準期限", value: "未確認" },
-    ]),
+function DeadlineDataFailureExample() {
+  const [loaded, setLoaded] = useState(false);
+  return (
+    <section className="ds-stack" aria-label="進行状況の画面">
+      <h2>進行状況</h2>
+      {loaded ? (
+        <ProcessSteps label="申請の進行状況" steps={awaitingSubmission([extendedDeadline])} />
+      ) : (
+        <Notice title="この画面を表示できません" tone="danger" role="alert">
+          <p>期限の情報を取得できませんでした。再度読み込んでください。</p>
+          <div>
+            <Button variant="outline" onClick={() => setLoaded(true)}>
+              再読み込み
+            </Button>
+          </div>
+        </Notice>
+      )}
+    </section>
+  );
+}
+export const MissingDeadlineData: Story = {
+  name: "期限データの取得失敗・画面全体のエラー",
+  render: () => <DeadlineDataFailureExample />,
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "期限データが不完全なときは、進行状況や提出操作を表示しません。既知の期限で補ったり、一部の日付だけを『未確認』にして通常画面を出したりせず、必要なデータを再取得してから表示します。期限を持たない手続きや『通知予定は未定』の表示とは区別します。",
+      },
+    },
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    await expect(canvas.getByText("未確認").closest("time")).toBeNull();
-    await expect(canvas.getByText("10月20日 17:00")).toHaveAttribute(
-      "datetime",
-      "2026-10-20T17:00:00+09:00",
-    );
+    await expect(canvas.getByRole("alert")).toHaveTextContent("この画面を表示できません");
+    await expect(canvas.queryByRole("list")).not.toBeInTheDocument();
+    await expect(canvas.queryByText("10月20日 17:00")).not.toBeInTheDocument();
+    await expect(canvas.queryByText("標準期限")).not.toBeInTheDocument();
+    await userEvent.click(canvas.getByRole("button", { name: "再読み込み" }));
+    await expect(canvas.queryByRole("alert")).not.toBeInTheDocument();
+    await expect(canvas.getByRole("list", { name: "申請の進行状況" })).toBeVisible();
+    await expect(canvas.getByText("10月20日 17:00")).toBeVisible();
   },
+};
+
+export const CurrentBackgroundComparison: Story = {
+  name: "現在段階の背景比較・中立色と情報色",
+  render: (args) => (
+    <div className="ds-stack">
+      <p>既定は中立色です。成功・注意などの状態色と区別しながら、現在位置を見つけられます。</p>
+      <section className="ds-stack">
+        <h2>中立色（既定）</h2>
+        <ProcessSteps {...args} label="中立色の進行状況" currentTint="neutral" />
+      </section>
+      <section className="ds-stack">
+        <h2>情報色</h2>
+        <ProcessSteps {...args} label="情報色の進行状況" currentTint="info" />
+      </section>
+    </div>
+  ),
 };
 
 export const ConsistentIcons: Story = {
@@ -308,12 +342,12 @@ export const ConsistentIcons: Story = {
   ),
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    const steps = within(
-      canvas.getByRole("list", { name: "申請の進行状況" }),
-    ).getAllByRole("listitem");
-    const events = within(
-      canvas.getByRole("list", { name: "申請履歴（古い順）" }),
-    ).getAllByRole("listitem");
+    const steps = within(canvas.getByRole("list", { name: "申請の進行状況" })).getAllByRole(
+      "listitem",
+    );
+    const events = within(canvas.getByRole("list", { name: "申請履歴（古い順）" })).getAllByRole(
+      "listitem",
+    );
     for (let index = 0; index < events.length; index++) {
       await expect(steps[index].querySelector("svg")?.outerHTML).toBe(
         events[index].querySelector("svg")?.outerHTML,
@@ -330,20 +364,13 @@ export const UnspecifiedIcons: Story = {
         label="進行状況"
         steps={[{ id: "assigned", title: "提出割当て", status: "complete" }]}
       />
-      <Timeline
-        label="履歴"
-        events={[{ id: "assigned-1", title: "提出を割り当てました" }]}
-      />
+      <Timeline label="履歴" events={[{ id: "assigned-1", title: "提出を割り当てました" }]} />
     </div>
   ),
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    const progressIcon = canvas
-      .getByRole("list", { name: "進行状況" })
-      .querySelector("svg");
-    const historyIcon = canvas
-      .getByRole("list", { name: "履歴" })
-      .querySelector("svg");
+    const progressIcon = canvas.getByRole("list", { name: "進行状況" }).querySelector("svg");
+    const historyIcon = canvas.getByRole("list", { name: "履歴" }).querySelector("svg");
     await expect(progressIcon).not.toBeNull();
     await expect(progressIcon?.outerHTML).toBe(historyIcon?.outerHTML);
   },
@@ -356,7 +383,6 @@ export const Submitted: Story = {
       {
         ...reviewSteps[1],
         status: "current",
-        description: "提出を受け付けました。審査開始をお待ちください。",
       },
       {
         ...reviewSteps[2],
@@ -382,13 +408,8 @@ export const Rejected: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     await expect(canvas.getByText("却下")).toBeVisible();
-    await expect(
-      canvasElement.querySelectorAll('[aria-current="step"]'),
-    ).toHaveLength(0);
-    await expect(canvas.getAllByRole("listitem").at(-1)).toHaveAttribute(
-      "data-status",
-      "complete",
-    );
+    await expect(canvasElement.querySelectorAll('[aria-current="step"]')).toHaveLength(0);
+    await expect(canvas.getAllByRole("listitem").at(-1)).toHaveAttribute("data-status", "complete");
   },
 };
 export const Vertical: Story = {
@@ -424,10 +445,7 @@ export const WithDates: Story = {
       "2026-10-15T17:00:00+09:00",
     );
     await expect(canvas.getByText("未通知").closest("time")).toBeNull();
-    await expect(canvas.getAllByRole("listitem")[3]).toHaveAttribute(
-      "data-status",
-      "upcoming",
-    );
+    await expect(canvas.getAllByRole("listitem")[3]).toHaveAttribute("data-status", "upcoming");
   },
 };
 export const NarrowContainer: Story = {
@@ -460,7 +478,6 @@ export const Skipped: Story = {
         title: "支払確認",
         status: "skipped",
         statusLabel: "支払不要",
-        description: "無料のため、この段階はありません。",
       },
       {
         id: "confirmed",
@@ -494,7 +511,6 @@ export const SingleStep: Story = {
         title: "出力処理",
         status: "current",
         statusLabel: "処理中",
-        description: "ファイルを準備しています。",
       },
     ],
   },
@@ -504,15 +520,8 @@ function RevisionExample() {
   const [submitted, setSubmitted] = useState(false);
   return (
     <div className="ds-stack">
-      <ProcessSteps
-        label="申請の進行状況"
-        steps={submitted ? reviewSteps : returnedSteps}
-      />
-      <p role="status">
-        {submitted
-          ? "再提出を受け付けました。"
-          : "会場配置図に避難経路を追記してください。"}
-      </p>
+      <ProcessSteps label="申請の進行状況" steps={submitted ? reviewSteps : returnedSteps} />
+      <p role="status">{submitted ? "審査中" : "会場配置図に避難経路を追記してください。"}</p>
       <div>
         <Button disabled={submitted} onClick={() => setSubmitted(true)}>
           {submitted ? "再提出済み" : "修正内容を再提出"}
@@ -527,75 +536,14 @@ export const Revision: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     await userEvent.tab();
-    await expect(
-      canvas.getByRole("button", { name: "修正内容を再提出" }),
-    ).toHaveFocus();
+    await expect(canvas.getByRole("button", { name: "修正内容を再提出" })).toHaveFocus();
     const steps = canvas.getAllByRole("listitem");
     await expect(steps[1]).toHaveAttribute("aria-current", "step");
     await expect(steps[2]).not.toHaveAttribute("aria-current");
     await expect(steps[2]).toHaveAttribute("data-status", "upcoming");
     await userEvent.keyboard("{Enter}");
-    await expect(canvas.getAllByRole("listitem")[2]).toHaveAttribute(
-      "aria-current",
-      "step",
-    );
-    await expect(canvas.getByRole("status")).toHaveTextContent(
-      "再提出を受け付けました",
-    );
-    await expect(
-      canvas.getByRole("button", { name: "再提出済み" }),
-    ).toBeDisabled();
+    await expect(canvas.getAllByRole("listitem")[2]).toHaveAttribute("aria-current", "step");
+    await expect(canvas.getByRole("status")).toHaveTextContent("審査中");
+    await expect(canvas.getByRole("button", { name: "再提出済み" })).toBeDisabled();
   },
-};
-export const Processing: Story = {
-  name: "検査中・操作不可",
-  render: () => (
-    <div className="ds-stack">
-      <ProcessSteps
-        label="ファイルの処理状況"
-        orientation="vertical"
-        steps={[
-          { id: "upload", title: "アップロード", status: "complete" },
-          {
-            id: "check",
-            title: "内容の検査",
-            status: "current",
-            statusLabel: "処理中",
-            description: "検査中はダウンロードできません。",
-            actions: <Button disabled>ダウンロード</Button>,
-          },
-          { id: "ready", title: "利用開始", status: "upcoming" },
-        ]}
-      />
-    </div>
-  ),
-  play: async ({ canvasElement }) => {
-    await expect(
-      within(canvasElement).getByRole("button", { name: "ダウンロード" }),
-    ).toBeDisabled();
-  },
-};
-export const ProcessingFailure: Story = {
-  name: "変換失敗",
-  render: () => (
-    <div className="ds-stack">
-      <Notice title="配置図の変換に失敗しました" tone="danger">
-        原本は保存されています。PDF形式のファイルをアップロードしてください。
-      </Notice>
-      <ProcessSteps
-        label="配置図の処理状況"
-        steps={[
-          { id: "read", title: "アップロード", status: "complete" },
-          {
-            id: "convert",
-            title: "変換",
-            status: "current",
-            statusLabel: "失敗",
-            tone: "danger",
-          },
-          { id: "publish", title: "利用開始", status: "upcoming" },
-        ]}
-      />
-    </div>
-  ),
 };

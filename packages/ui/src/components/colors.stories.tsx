@@ -3,12 +3,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 const pairs = [
   ["画面", "background", "foreground", "ページの地と本文"],
   ["情報面", "card", "card-foreground", "背景から区別する情報のまとまり"],
-  [
-    "主要操作",
-    "primary",
-    "primary-foreground",
-    "保存・提出など、その画面で優先する操作",
-  ],
+  ["主要操作", "primary", "primary-foreground", "保存・提出など、その画面で優先する操作"],
   ["補助操作", "secondary", "secondary-foreground", "主要操作を支える選択肢"],
   ["補足", "muted", "muted-foreground", "注記・更新日時・説明"],
   ["成功", "success-background", "success", "受理・処理完了"],
@@ -67,19 +62,16 @@ function ColorPalette() {
         </p>
         <div className="ds-row">
           {["border", "input", "ring"].map((token) => (
-            <div
-              key={token}
-              style={{ flex: "1 1 10rem", display: "grid", gap: "1rem" }}
-            >
-              <div
-                style={{ height: "3rem", border: `2px solid var(--${token})` }}
-              />
+            <div key={token} style={{ flex: "1 1 10rem", display: "grid", gap: "1rem" }}>
+              <div style={{ height: "3rem", border: `2px solid var(--${token})` }} />
               <code>--{token}</code>
             </div>
           ))}
         </div>
       </section>
-      <a href="/system/DESIGN/#colors" target="_top">配色の使い方</a>
+      <a href="/system/DESIGN/#colors" target="_top">
+        配色の使い方
+      </a>
     </main>
   );
 }

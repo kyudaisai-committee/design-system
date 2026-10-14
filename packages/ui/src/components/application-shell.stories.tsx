@@ -1,32 +1,14 @@
-import { useRef, useState } from "react";
-import applicationShellCode from "./application-shell.stories.tsx?raw";
 import type { Meta, StoryObj } from "@storybook/react-vite";
+
+import { Building2, CalendarDays, ClipboardList, Inbox, PanelsTopLeft } from "lucide-react";
+import { useRef, useState } from "react";
 import { expect, userEvent, waitFor, within } from "storybook/test";
-import {
-  Building2,
-  CalendarDays,
-  ClipboardList,
-  Inbox,
-  PanelsTopLeft,
-} from "lucide-react";
+
+import applicationShellCode from "./application-shell.stories.tsx?raw";
 import { Button } from "./button";
-import {
-  EmptyState,
-  Field,
-  Notice,
-  StatusBadge,
-  type Tone,
-} from "./compositions";
+import { EmptyState, Field, Notice, StatusBadge, type Tone } from "./compositions";
 import { Input } from "./input";
 import { NativeSelect, NativeSelectOption } from "./native-select";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "./table";
 import {
   Sidebar,
   SidebarContent,
@@ -45,6 +27,7 @@ import {
   SidebarTrigger,
   useSidebar,
 } from "./sidebar";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "./table";
 
 const applications = [
   {
@@ -89,18 +72,14 @@ const navigationGroups = [
   },
 ] as const;
 type NavigationItem = (typeof navigationGroups)[number]["items"][number];
-const navigation = navigationGroups.flatMap<NavigationItem>(
-  (group) => group.items,
-);
+const navigation = navigationGroups.flatMap<NavigationItem>((group) => group.items);
 type Page = (typeof navigation)[number]["id"] | "settings";
 
 function ShellContent({ groupName }: { groupName: string }) {
   const [page, setPage] = useState<Page>("applications");
   const [query, setQuery] = useState("");
   const [status, setStatus] = useState("すべて");
-  const [selected, setSelected] = useState<
-    (typeof applications)[number] | null
-  >(null);
+  const [selected, setSelected] = useState<(typeof applications)[number] | null>(null);
   const [projectName, setProjectName] = useState("九大カフェ");
   const [saved, setSaved] = useState(false);
   const headingRef = useRef<HTMLHeadingElement>(null);
@@ -111,18 +90,14 @@ function ShellContent({ groupName }: { groupName: string }) {
     setOpenMobile(false);
     if (!isMobile) requestAnimationFrame(() => headingRef.current?.focus());
   };
-  const focusHeading = () =>
-    requestAnimationFrame(() => headingRef.current?.focus());
+  const focusHeading = () => requestAnimationFrame(() => headingRef.current?.focus());
   const filtered = applications.filter(
     (application) =>
-      application.name.includes(query) &&
-      (status === "すべて" || application.status === status),
+      application.name.includes(query) && (status === "すべて" || application.status === status),
   );
   const title =
     selected?.name ??
-    (page === "settings"
-      ? "団体設定"
-      : navigation.find((item) => item.id === page)!.title);
+    (page === "settings" ? "団体設定" : navigation.find((item) => item.id === page)!.title);
   return (
     <>
       <Sidebar collapsible="icon">
@@ -134,9 +109,7 @@ function ShellContent({ groupName }: { groupName: string }) {
             />
             <div className="min-w-0 group-data-[collapsible=icon]:sr-only">
               <p className="font-semibold">九大祭 システム</p>
-              <p className="mt-1 break-words text-xs text-muted-foreground">
-                {groupName}
-              </p>
+              <p className="mt-1 text-xs break-words text-muted-foreground">{groupName}</p>
             </div>
           </div>
         </SidebarHeader>
@@ -144,11 +117,7 @@ function ShellContent({ groupName }: { groupName: string }) {
         <SidebarContent>
           <nav aria-label="企画団体のメニュー" className="space-y-3">
             {navigationGroups.map((group) => (
-              <SidebarGroup
-                key={group.label}
-                role="group"
-                aria-label={group.label}
-              >
+              <SidebarGroup key={group.label} role="group" aria-label={group.label}>
                 <SidebarGroupLabel>{group.label}</SidebarGroupLabel>
                 <SidebarGroupContent>
                   <SidebarMenu>
@@ -157,9 +126,7 @@ function ShellContent({ groupName }: { groupName: string }) {
                         <SidebarMenuButton
                           isActive={page === id}
                           tooltip={name}
-                          aria-label={
-                            id === "messages" ? "連絡（未読2件）" : name
-                          }
+                          aria-label={id === "messages" ? "連絡（未読2件）" : name}
                           className={id === "messages" ? "pr-10" : undefined}
                           onClick={() => selectPage(id)}
                         >
@@ -167,9 +134,7 @@ function ShellContent({ groupName }: { groupName: string }) {
                           <span>{name}</span>
                         </SidebarMenuButton>
                         {id === "messages" && (
-                          <SidebarMenuBadge aria-hidden="true">
-                            2
-                          </SidebarMenuBadge>
+                          <SidebarMenuBadge aria-hidden="true">2</SidebarMenuBadge>
                         )}
                       </SidebarMenuItem>
                     ))}
@@ -205,9 +170,7 @@ function ShellContent({ groupName }: { groupName: string }) {
           <SidebarTrigger />
           <span className="h-5 border-l" aria-hidden="true" />
           <p className="min-w-0 truncate text-sm">{projectName}</p>
-          <p className="ml-auto shrink-0 text-xs text-muted-foreground">
-            企画団体
-          </p>
+          <p className="ml-auto shrink-0 text-xs text-muted-foreground">企画団体</p>
         </header>
         <div className="grid w-full max-w-6xl gap-6 p-4 sm:p-8">
           <div className="grid gap-3">
@@ -249,13 +212,9 @@ function ShellContent({ groupName }: { groupName: string }) {
                       value={status}
                       onChange={(event) => setStatus(event.target.value)}
                     >
-                      {["すべて", "下書き", "要修正", "提出済み"].map(
-                        (value) => (
-                          <NativeSelectOption key={value}>
-                            {value}
-                          </NativeSelectOption>
-                        ),
-                      )}
+                      {["すべて", "下書き", "要修正", "提出済み"].map((value) => (
+                        <NativeSelectOption key={value}>{value}</NativeSelectOption>
+                      ))}
                     </NativeSelect>
                   )}
                 </Field>
@@ -283,9 +242,7 @@ function ShellContent({ groupName }: { groupName: string }) {
                       <TableBody>
                         {filtered.map((application) => (
                           <TableRow key={application.id}>
-                            <TableCell className="font-medium">
-                              {application.name}
-                            </TableCell>
+                            <TableCell className="font-medium">{application.name}</TableCell>
                             <TableCell>
                               <StatusBadge tone={application.tone}>
                                 {application.status}
@@ -321,16 +278,11 @@ function ShellContent({ groupName }: { groupName: string }) {
                       <li key={application.id} className="grid gap-3 py-4">
                         <div className="flex flex-wrap items-center justify-between gap-3">
                           <h2 className="text-base!">{application.name}</h2>
-                          <StatusBadge tone={application.tone}>
-                            {application.status}
-                          </StatusBadge>
+                          <StatusBadge tone={application.tone}>{application.status}</StatusBadge>
                         </div>
                         <p className="text-sm text-muted-foreground">
                           期限{" "}
-                          <time
-                            className="tabular-nums"
-                            dateTime={application.dateTime}
-                          >
+                          <time className="tabular-nums" dateTime={application.dateTime}>
                             {application.deadline}
                           </time>
                         </p>
@@ -368,16 +320,12 @@ function ShellContent({ groupName }: { groupName: string }) {
           {selected && (
             <section className="grid max-w-2xl gap-6">
               <div>
-                <StatusBadge tone={selected.tone}>
-                  {selected.status}
-                </StatusBadge>
+                <StatusBadge tone={selected.tone}>{selected.status}</StatusBadge>
               </div>
               <dl className="grid gap-2">
                 <dt className="text-sm text-muted-foreground">提出期限</dt>
                 <dd>
-                  <time dateTime={selected.dateTime}>
-                    {selected.deadline}（日本時間）
-                  </time>
+                  <time dateTime={selected.dateTime}>{selected.deadline}（日本時間）</time>
                 </dd>
               </dl>
               {selected.status === "要修正" ? (
@@ -394,31 +342,20 @@ function ShellContent({ groupName }: { groupName: string }) {
               <article className="grid gap-2 py-5">
                 <div className="flex flex-wrap items-baseline justify-between gap-3">
                   <h2>搬入日時の確認</h2>
-                  <time
-                    className="text-sm text-muted-foreground"
-                    dateTime="2026-10-12"
-                  >
+                  <time className="text-sm text-muted-foreground" dateTime="2026-10-12">
                     10月12日
                   </time>
                 </div>
-                <p>
-                  搬入は10月30日
-                  14:00〜16:00です。会場の受付で企画番号をお伝えください。
-                </p>
+                <p>搬入は10月30日 14:00〜16:00です。会場の受付で企画番号をお伝えください。</p>
               </article>
               <article className="grid gap-2 py-5">
                 <div className="flex flex-wrap items-baseline justify-between gap-3">
                   <h2>会場配置図の修正について</h2>
-                  <time
-                    className="text-sm text-muted-foreground"
-                    dateTime="2026-10-10"
-                  >
+                  <time className="text-sm text-muted-foreground" dateTime="2026-10-10">
                     10月10日
                   </time>
                 </div>
-                <p>
-                  来場者の避難経路が分かるよう、配置図に矢印を追記してください。
-                </p>
+                <p>来場者の避難経路が分かるよう、配置図に矢印を追記してください。</p>
               </article>
             </div>
           )}
@@ -428,9 +365,7 @@ function ShellContent({ groupName }: { groupName: string }) {
               <dl className="grid grid-cols-[auto_1fr] gap-x-6 gap-y-4">
                 <dt className="text-muted-foreground">集合日時</dt>
                 <dd>
-                  <time dateTime="2026-10-31T08:30:00+09:00">
-                    10月31日 8:30
-                  </time>
+                  <time dateTime="2026-10-31T08:30:00+09:00">10月31日 8:30</time>
                 </dd>
                 <dt className="text-muted-foreground">集合場所</dt>
                 <dd>センター2号館 1階ロビー</dd>
@@ -518,10 +453,7 @@ import { Button, EmptyState, Field, Notice, StatusBadge, type Tone, Input,
               applicationShellCode.indexOf("const applications ="),
               applicationShellCode.indexOf("\nconst meta ="),
             )
-            .replace(
-              "function ApplicationShell(",
-              "export function ApplicationShell(",
-            ),
+            .replace("function ApplicationShell(", "export function ApplicationShell("),
       },
       description: {
         component:
@@ -539,7 +471,7 @@ export const Default: Story = {
   decorators: [
     (Story, context) =>
       context.viewMode === "docs" ? (
-        <div className="relative isolate h-[600px] overflow-hidden [transform:translateZ(0)] [&_[data-slot=sidebar-wrapper]]:h-full [&_[data-slot=sidebar-wrapper]]:min-h-full [&_[data-slot=sidebar-container]]:absolute [&_[data-slot=sidebar-container]]:h-full [&_[data-slot=sidebar-inset]]:overflow-auto">
+        <div className="relative isolate h-[600px] [transform:translateZ(0)] overflow-hidden [&_[data-slot=sidebar-container]]:absolute [&_[data-slot=sidebar-container]]:h-full [&_[data-slot=sidebar-inset]]:overflow-auto [&_[data-slot=sidebar-wrapper]]:h-full [&_[data-slot=sidebar-wrapper]]:min-h-full">
           <Story />
         </div>
       ) : (
@@ -562,48 +494,22 @@ export const Navigation: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     const body = within(canvasElement.ownerDocument.body);
-    const mobile =
-      canvasElement.ownerDocument.defaultView!.matchMedia(
-        "(width < 48rem)",
-      ).matches;
-    await userEvent.type(
-      canvas.getByRole("searchbox", { name: "申請名で検索" }),
-      "企画",
-    );
+    const mobile = canvasElement.ownerDocument.defaultView!.matchMedia("(width < 48rem)").matches;
+    await userEvent.type(canvas.getByRole("searchbox", { name: "申請名で検索" }), "企画");
     await expect(canvas.getByRole("status")).toHaveTextContent("1件の申請");
-    if (mobile)
-      await userEvent.click(
-        canvas.getByRole("button", { name: "メニューを開く" }),
-      );
-    await userEvent.click(
-      body.getByRole("button", { name: "連絡（未読2件）" }),
-    );
-    await expect(
-      canvas.getByRole("heading", { name: "連絡", level: 1 }),
-    ).toBeVisible();
+    if (mobile) await userEvent.click(canvas.getByRole("button", { name: "メニューを開く" }));
+    await userEvent.click(body.getByRole("button", { name: "連絡（未読2件）" }));
+    await expect(canvas.getByRole("heading", { name: "連絡", level: 1 })).toBeVisible();
     if (mobile) {
-      await waitFor(() =>
-        expect(body.queryByRole("dialog")).not.toBeInTheDocument(),
-      );
-      await userEvent.click(
-        canvas.getByRole("button", { name: "メニューを開く" }),
-      );
+      await waitFor(() => expect(body.queryByRole("dialog")).not.toBeInTheDocument());
+      await userEvent.click(canvas.getByRole("button", { name: "メニューを開く" }));
     }
     await userEvent.click(body.getByRole("button", { name: "申請" }));
-    if (mobile)
-      await waitFor(() =>
-        expect(body.queryByRole("dialog")).not.toBeInTheDocument(),
-      );
+    if (mobile) await waitFor(() => expect(body.queryByRole("dialog")).not.toBeInTheDocument());
     await expect(canvas.getByRole("searchbox")).toHaveValue("企画");
-    await userEvent.click(
-      canvas.getByRole("button", { name: "企画申請書の内容を確認" }),
-    );
-    await expect(
-      canvas.getByRole("heading", { name: "企画申請書", level: 1 }),
-    ).toBeVisible();
-    await userEvent.click(
-      canvas.getByRole("button", { name: "申請一覧へ戻る" }),
-    );
+    await userEvent.click(canvas.getByRole("button", { name: "企画申請書の内容を確認" }));
+    await expect(canvas.getByRole("heading", { name: "企画申請書", level: 1 })).toBeVisible();
+    await userEvent.click(canvas.getByRole("button", { name: "申請一覧へ戻る" }));
     await expect(canvas.getByRole("searchbox")).toHaveValue("企画");
     await userEvent.clear(canvas.getByRole("searchbox"));
     await expect(canvas.getByRole("status")).toHaveTextContent("3件の申請");

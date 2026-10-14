@@ -1,5 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
+
 import { expect, within } from "storybook/test";
+
 import {
   Progress,
   ProgressIndicator,
@@ -28,8 +30,7 @@ const meta = {
     locale: { control: "text", description: "数値表記のロケール。" },
     children: {
       control: false,
-      description:
-        "ProgressLabel と ProgressValue。Track と Indicator は自動で含まれる。",
+      description: "ProgressLabel と ProgressValue。Track と Indicator は自動で含まれる。",
     },
   },
   parameters: {
@@ -78,8 +79,8 @@ export const Indeterminate: Story = {
     </Progress>
   ),
   play: async ({ canvasElement }) => {
-    await expect(
-      within(canvasElement).getByRole("progressbar"),
-    ).not.toHaveAttribute("aria-valuenow");
+    await expect(within(canvasElement).getByRole("progressbar")).not.toHaveAttribute(
+      "aria-valuenow",
+    );
   },
 };

@@ -1,6 +1,8 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
+
 import { ArrowDownToLine, ArrowRight, Plus, Search } from "lucide-react";
 import { expect, fn, userEvent, within } from "storybook/test";
+
 import { Button, buttonVariants } from "./button";
 
 const meta = {
@@ -17,35 +19,18 @@ const meta = {
   argTypes: {
     children: {
       control: "text",
-      description:
-        "操作の結果が分かる名前。アイコンのみの場合は aria-label を指定する。",
+      description: "操作の結果が分かる名前。アイコンのみの場合は aria-label を指定する。",
     },
     variant: {
       control: "select",
-      options: [
-        "default",
-        "outline",
-        "secondary",
-        "ghost",
-        "destructive",
-        "link",
-      ],
+      options: ["default", "outline", "secondary", "ghost", "destructive", "link"],
       description:
         "操作の優先度と影響に応じた表示。主な操作はdefault、削除など影響のある操作はdestructive。",
       table: { defaultValue: { summary: "default" } },
     },
     size: {
       control: "select",
-      options: [
-        "default",
-        "xs",
-        "sm",
-        "lg",
-        "icon",
-        "icon-xs",
-        "icon-sm",
-        "icon-lg",
-      ],
+      options: ["default", "xs", "sm", "lg", "icon", "icon-xs", "icon-sm", "icon-lg"],
       description:
         "標準の高さは44px。一覧などで小さいサイズを使う場合は、隣のボタンを押し間違えない間隔を確保する。",
       table: { defaultValue: { summary: "default" } },
@@ -56,8 +41,7 @@ const meta = {
     },
     pending: {
       control: "boolean",
-      description:
-        "aria-busy を付けて操作を無効にする。処理内容は children で示す。",
+      description: "aria-busy を付けて操作を無効にする。処理内容は children で示す。",
     },
     onClick: {
       control: false,
@@ -176,14 +160,10 @@ export const StateClassName: Story = {
   args: {
     disabled: true,
     children: "受付期間外",
-    className: fn((state: { disabled: boolean }) =>
-      state.disabled ? "border-dashed" : undefined,
-    ),
+    className: fn((state: { disabled: boolean }) => (state.disabled ? "border-dashed" : undefined)),
   },
   play: async ({ args }) => {
-    await expect(args.className).toHaveBeenCalledWith(
-      expect.objectContaining({ disabled: true }),
-    );
+    await expect(args.className).toHaveBeenCalledWith(expect.objectContaining({ disabled: true }));
   },
 };
 export const Pending: Story = {
@@ -201,6 +181,23 @@ export const Pending: Story = {
   },
 };
 
+export const LongLabel: Story = {
+  name: "狭い領域の長い操作名",
+  render: () => (
+    <div style={{ width: 256, maxWidth: "100%" }}>
+      <Button style={{ fontSize: "1.75rem" }}>入力した内容を確認して申請書を提出する</Button>
+    </div>
+  ),
+  play: async ({ canvasElement }) => {
+    const button = within(canvasElement).getByRole("button");
+    await expect(button.getBoundingClientRect().width).toBeLessThanOrEqual(
+      button.parentElement!.getBoundingClientRect().width,
+    );
+    await expect(button.scrollWidth).toBeLessThanOrEqual(button.clientWidth);
+    await expect(button.scrollHeight).toBeLessThanOrEqual(button.clientHeight);
+  },
+};
+
 export const AsLink: Story = {
   name: "リンク",
   args: {
@@ -209,10 +206,7 @@ export const AsLink: Story = {
   },
   render: (args) => (
     <div className="ds-stack">
-      <a
-        href="#submission"
-        className={buttonVariants({ variant: args.variant, size: args.size })}
-      >
+      <a href="#submission" className={buttonVariants({ variant: args.variant, size: args.size })}>
         {args.children}
       </a>
       <section id="submission" tabIndex={-1}>
@@ -224,15 +218,15 @@ export const AsLink: Story = {
   parameters: {
     docs: {
       description: {
-        story:
-          "リンクをボタンと同じ見た目で表示する例です。buttonVariantsをa要素に適用します。",
+        story: "リンクをボタンと同じ見た目で表示する例です。buttonVariantsをa要素に適用します。",
       },
     },
   },
   play: async ({ canvasElement }) => {
-    await expect(
-      within(canvasElement).getByRole("link", { name: "提出内容へ" }),
-    ).toHaveAttribute("href", "#submission");
+    await expect(within(canvasElement).getByRole("link", { name: "提出内容へ" })).toHaveAttribute(
+      "href",
+      "#submission",
+    );
   },
 };
 
@@ -243,8 +237,7 @@ export const PrimaryLink: Story = {
   parameters: {
     docs: {
       description: {
-        story:
-          "主要な移動先を、主な操作と同じ見た目で示す例です。",
+        story: "主要な移動先を、主な操作と同じ見た目で示す例です。",
       },
     },
   },
@@ -263,17 +256,14 @@ export const PrimaryLink: Story = {
         .slice(0, 3)
         .map((channel) => {
           const value = channel / 255;
-          return value <= 0.04045
-            ? value / 12.92
-            : ((value + 0.055) / 1.055) ** 2.4;
+          return value <= 0.04045 ? value / 12.92 : ((value + 0.055) / 1.055) ** 2.4;
         });
       return channels[0] * 0.2126 + channels[1] * 0.7152 + channels[2] * 0.0722;
     };
     const foreground = luminance(style.color);
     const background = luminance(style.backgroundColor);
     await expect(
-      (Math.max(foreground, background) + 0.05) /
-        (Math.min(foreground, background) + 0.05),
+      (Math.max(foreground, background) + 0.05) / (Math.min(foreground, background) + 0.05),
     ).toBeGreaterThanOrEqual(4.5);
   },
 };

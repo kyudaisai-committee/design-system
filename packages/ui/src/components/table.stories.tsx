@@ -1,5 +1,8 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
+
 import { expect, userEvent, within } from "storybook/test";
+
+import { Checkbox } from "./checkbox";
 import {
   Table,
   TableBody,
@@ -10,7 +13,6 @@ import {
   TableHeader,
   TableRow,
 } from "./table";
-import { Checkbox } from "./checkbox";
 
 const rows = [
   { id: "K-080", name: "九大カフェ", count: 12, amount: 3000 },
@@ -42,8 +44,7 @@ const meta = {
     },
     className: {
       control: "text",
-      description:
-        "表要素に適用するCSSクラス。長い名称のセルには whitespace-normal を指定する。",
+      description: "表要素に適用するCSSクラス。長い名称のセルには whitespace-normal を指定する。",
     },
   },
   parameters: {
@@ -74,15 +75,10 @@ const meta = {
           {rows.map((row) => (
             <TableRow key={row.id}>
               <TableCell className="tabular-nums">{row.id}</TableCell>
-              <TableHead
-                scope="row"
-                className="min-w-48 whitespace-normal py-3"
-              >
+              <TableHead scope="row" className="min-w-48 py-3 whitespace-normal">
                 {row.name}
               </TableHead>
-              <TableCell className="text-right tabular-nums">
-                {row.count}人
-              </TableCell>
+              <TableCell className="text-right tabular-nums">{row.count}人</TableCell>
               <TableCell className="text-right tabular-nums">
                 {row.amount.toLocaleString("ja-JP")}円
               </TableCell>
@@ -129,7 +125,7 @@ export const Selectable: Story = {
                   <Checkbox aria-label={`${row.name}を選択`} />
                 </div>
               </TableCell>
-              <TableHead scope="row" className="whitespace-normal py-3">
+              <TableHead scope="row" className="py-3 whitespace-normal">
                 {row.name}
               </TableHead>
               <TableCell>{row.id}</TableCell>
@@ -165,7 +161,7 @@ export const Empty: Story = {
           <TableRow>
             <TableCell
               colSpan={3}
-              className="h-28 whitespace-normal text-center text-muted-foreground"
+              className="h-28 text-center whitespace-normal text-muted-foreground"
             >
               審査中の企画はありません。
             </TableCell>

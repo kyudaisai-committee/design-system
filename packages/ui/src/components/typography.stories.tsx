@@ -47,9 +47,7 @@ function TypographyScale() {
                 fontSize: size,
                 fontWeight: weight,
                 lineHeight:
-                  weight === 600
-                    ? "var(--line-height-heading)"
-                    : "var(--line-height-body)",
+                  weight === 600 ? "var(--line-height-heading)" : "var(--line-height-body)",
               }}
             >
               {text}
@@ -57,7 +55,9 @@ function TypographyScale() {
           </div>
         ))}
       </section>
-      <a href="/system/DESIGN/#typography" target="_top">書体と文字サイズの使い方</a>
+      <a href="/system/DESIGN/#typography" target="_top">
+        書体と文字サイズの使い方
+      </a>
       <section className="sb-foundation-section">
         <h2>日本語と英数字</h2>
         <p style={{ maxWidth: "42rem" }}>

@@ -1,5 +1,5 @@
-import { useState, type ReactNode } from "react";
 import type { Meta, StoryObj } from "@storybook/react-vite";
+
 import {
   ArrowUpRight,
   Check,
@@ -9,7 +9,9 @@ import {
   ListFilter,
   Send,
 } from "lucide-react";
+import { useState, type ReactNode } from "react";
 import { expect, userEvent, within } from "storybook/test";
+
 import {
   Accordion,
   AccordionItem,
@@ -36,6 +38,17 @@ import {
   ContentCard,
   LoadingState,
   EmptyState,
+  EmailInput,
+  UrlInput,
+  OtpInput,
+  NumberInput,
+  DateInput,
+  TimeInput,
+  CheckboxGroup,
+  FileInput,
+  SocialProfileInput,
+  Repeater,
+  InputTable,
   Pagination,
   PaginationContent,
   PaginationItem,
@@ -109,20 +122,12 @@ const groups: CatalogGroup[] = [
           <div className="grid grid-cols-[6rem_1fr] gap-4">
             <div className="grid gap-1 border-r border-sidebar-border pr-3 text-xs">
               <strong>九大祭</strong>
-              <span className="text-[10px] text-muted-foreground">
-                企画運営
-              </span>
-              <span className="bg-sidebar-accent px-2 py-1 font-medium">
-                申請
-              </span>
+              <span className="text-[10px] text-muted-foreground">企画運営</span>
+              <span className="bg-sidebar-accent px-2 py-1 font-medium">申請</span>
               <span className="px-2">連絡</span>
-              <span className="mt-2 text-[10px] text-muted-foreground">
-                当日
-              </span>
+              <span className="mt-2 text-[10px] text-muted-foreground">当日</span>
               <span className="px-2">当日の案内</span>
-              <span className="mt-2 text-[10px] text-muted-foreground">
-                管理
-              </span>
+              <span className="mt-2 text-[10px] text-muted-foreground">管理</span>
               <span className="px-2">団体設定</span>
             </div>
             <div className="grid content-start gap-2 pt-1">
@@ -161,19 +166,45 @@ const groups: CatalogGroup[] = [
     items: [
       {
         name: "Input",
-        purpose: "企画名・メールなどの一行入力",
+        purpose: "名前などの一行入力",
         preview: <Input value="九大カフェ" readOnly aria-label="企画名" />,
+      },
+      {
+        name: "EmailInput",
+        purpose: "メールアドレスの入力",
+        preview: <EmailInput value="hello@example.com" readOnly aria-label="メールアドレス" />,
+      },
+      {
+        name: "UrlInput",
+        purpose: "WebページのURLを入力",
+        preview: <UrlInput value="https://example.com" readOnly aria-label="URL" />,
+      },
+      {
+        name: "OtpInput",
+        purpose: "確認コードの入力・貼り付け",
+        preview: (
+          <OtpInput value="012345" onValueChange={() => {}} readOnly aria-label="確認コード" />
+        ),
+      },
+      {
+        name: "NumberInput",
+        purpose: "整数・小数を範囲付きで入力",
+        preview: <NumberInput value="12" integer min={0} readOnly aria-label="数量" />,
+      },
+      {
+        name: "DateInput",
+        purpose: "日付を選ぶ",
+        preview: <DateInput value="2026-10-20" readOnly aria-label="日付" />,
+      },
+      {
+        name: "TimeInput",
+        purpose: "時刻を選ぶ",
+        preview: <TimeInput value="14:30" readOnly aria-label="時刻" />,
       },
       {
         name: "Textarea",
         purpose: "紹介文などの複数行入力",
-        preview: (
-          <Textarea
-            value="秋のキャンパスで、ひと休み。"
-            readOnly
-            aria-label="企画紹介"
-          />
-        ),
+        preview: <Textarea value="秋のキャンパスで、ひと休み。" readOnly aria-label="企画紹介" />,
       },
       {
         name: "Checkbox",
@@ -219,6 +250,77 @@ const groups: CatalogGroup[] = [
             <option>模擬店</option>
             <option>展示</option>
           </NativeSelect>
+        ),
+      },
+      {
+        name: "CheckboxGroup",
+        purpose: "選択上限のある複数選択",
+        preview: (
+          <CheckboxGroup
+            label="利用する形式"
+            options={[
+              { value: "text", label: "テキスト" },
+              { value: "image", label: "画像" },
+            ]}
+            value={["text"]}
+            onValueChange={() => {}}
+            readOnly
+          />
+        ),
+      },
+      {
+        name: "FileInput",
+        purpose: "ファイルの選択と取り消し",
+        preview: (
+          <FileInput
+            label="添付ファイル"
+            hint="PDF・画像"
+            value={[]}
+            onValueChange={() => {}}
+            readOnly
+          />
+        ),
+      },
+      {
+        name: "SocialProfileInput",
+        purpose: "登録済みのSNSアカウントを選ぶ",
+        preview: (
+          <SocialProfileInput
+            label="掲載するアカウント"
+            options={[{ value: "profile-1", label: "Instagram · @example" }]}
+            value={["profile-1"]}
+            onValueChange={() => {}}
+            noAccount={false}
+            onNoAccountChange={() => {}}
+            readOnly
+          />
+        ),
+      },
+      {
+        name: "Repeater",
+        purpose: "同じ入力項目を追加・削除",
+        preview: (
+          <Repeater
+            label="連絡先"
+            items={[{ id: "contact-1" }]}
+            onAdd={() => {}}
+            onRemove={() => {}}
+            readOnly
+            renderItem={() => <Input value="担当者名" readOnly aria-label="1件目の名前" />}
+          />
+        ),
+      },
+      {
+        name: "InputTable",
+        purpose: "行と列でまとめて入力",
+        preview: (
+          <InputTable
+            label="数量"
+            rows={[{ id: "row-1", label: "項目A" }]}
+            columns={[{ key: "quantity", label: "個数" }]}
+            readOnly
+            renderCell={() => <NumberInput value="3" readOnly aria-label="項目Aの個数" />}
+          />
         ),
       },
       {
@@ -498,9 +600,7 @@ function ComponentCatalog() {
     .map((group) => ({
       ...group,
       items: group.items.filter((item) =>
-        `${item.name} ${item.purpose} ${group.title}`
-          .toLocaleLowerCase()
-          .includes(normalized),
+        `${item.name} ${item.purpose} ${group.title}`.toLocaleLowerCase().includes(normalized),
       ),
     }))
     .filter((group) => group.items.length);
@@ -509,9 +609,7 @@ function ComponentCatalog() {
     <main className="sb-catalog">
       <header className="sb-catalog-header">
         <h1>コンポーネント一覧</h1>
-        <p>
-          九大祭のシステムに共通する部品です。用途から選び、表示・操作・使い方を確認できます。
-        </p>
+        <p>九大祭のシステムに共通する部品です。用途から選び、表示・操作・使い方を確認できます。</p>
         <nav className="sb-catalog-links" aria-label="設計資料">
           <a href="/system/DESIGN/" target="_top">
             デザイン指針
@@ -519,10 +617,7 @@ function ComponentCatalog() {
           <a href="./?path=/story/foundations-colors--palette" target="_top">
             色・文字・余白
           </a>
-          <a
-            href="./?path=/story/patterns-applicationform--default"
-            target="_top"
-          >
+          <a href="./?path=/story/patterns-formlayout--default" target="_top">
             画面の構成例
           </a>
         </nav>
@@ -590,9 +685,7 @@ export const Search: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     await userEvent.type(canvas.getByRole("searchbox"), "button");
-    await expect(canvas.getByRole("status")).toHaveTextContent(
-      "1コンポーネント",
-    );
+    await expect(canvas.getByRole("status")).toHaveTextContent("1コンポーネント");
     await expect(canvas.getByRole("link", { name: "Button" })).toHaveAttribute(
       "href",
       "./?path=/docs/components-button--docs",
@@ -605,8 +698,6 @@ export const Search: Story = {
       }),
     ).toBeInTheDocument();
     await userEvent.click(canvas.getByRole("button", { name: "検索を解除" }));
-    await expect(
-      canvas.getByRole("link", { name: "Timeline" }),
-    ).toBeInTheDocument();
+    await expect(canvas.getByRole("link", { name: "Timeline" })).toBeInTheDocument();
   },
 };

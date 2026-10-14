@@ -1,11 +1,13 @@
-import { useState } from "react";
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { expect, userEvent, within } from "storybook/test";
+
 import { Truck } from "lucide-react";
+import { useState } from "react";
+import { expect, userEvent, within } from "storybook/test";
+
 import { Button } from "./button";
 import { LoadingState, Notice } from "./compositions";
-import { Timeline, type TimelineEvent } from "./timeline";
 import { applicationSequenceIcons as icons } from "./sequence-example-icons";
+import { Timeline, type TimelineEvent } from "./timeline";
 
 const events: TimelineEvent[] = [
   {
@@ -73,7 +75,11 @@ const events: TimelineEvent[] = [
 const meta = {
   title: "Components/Timeline",
   component: Timeline,
-  args: { label: "申請履歴（古い順・日本時間）", events },
+  args: {
+    label: "申請履歴（古い順・日本時間）",
+    events,
+    currentStatus: { label: "承認済み", tone: "success" },
+  },
   argTypes: {
     label: {
       control: "text",
@@ -81,15 +87,20 @@ const meta = {
     },
     events: {
       control: false,
-      description: "表示する順に並べた出来事の配列。同じ種類の出来事にも、それぞれ異なるidを付けます。",
+      description:
+        "表示する順に並べた出来事の配列。同じ種類の出来事にも、それぞれ異なるidを付けます。",
     },
     emptyMessage: { control: "text", description: "履歴がない場合の表示。" },
+    currentStatus: {
+      control: "object",
+      description: "現在の状態をlabelとtoneで指定します。履歴の並び順からは推定しません。",
+    },
   },
   parameters: {
     docs: {
       description: {
         component:
-          "提出・差し戻し・承認など、起きた出来事を日時とともに表示します。手続きの現在位置にはProcessSteps、期限や予定日の表示にはDateDetailsを使います。\n\n`events`は表示する順に指定してください。日時による自動の並べ替えは行いません。同じ操作を繰り返した場合も、出来事ごとに別の`id`を付けます。\n\n| 項目 | 指定する内容 |\n| --- | --- |\n| `id`・`title` | 出来事を識別する一意の値と、表示する出来事の名前 |\n| `timestamp` | 表示文字列を`label`、HTML用の日時を`dateTime`に指定する。時刻にはタイムゾーンも含める |\n| `description` | 変更内容や、結果に対する説明 |\n| `metadata`・`actions` | 操作した人などの補足と、関連資料を開くなどの操作 |\n| `tone` | 案内は`info`、成功は`success`、注意は`warning`、失敗は`danger`。省略時は中立色 |\n| `icon` | 出来事の意味を表すアイコン |",
+          "提出・差し戻し・承認など、起きた出来事を日時とともに表示します。手続きの現在位置にはProcessSteps、期限や予定日の表示にはDateDetailsを使います。\n\n現在の状態は`currentStatus`に`label`と`tone`を指定し、履歴の上に一つだけ表示します。出来事の先頭・末尾や日時からは推定しません。途中の出来事には状態バッジを置かず、見出しで出来事を伝えます。\n\n`events`は表示する順に指定してください。日時による自動の並べ替えは行いません。同じ操作を繰り返した場合も、出来事ごとに別の`id`を付けます。\n\n| 項目 | 指定する内容 |\n| --- | --- |\n| `id`・`title` | 出来事を識別する一意の値と、表示する出来事の名前 |\n| `timestamp` | 表示文字列を`label`、HTML用の日時を`dateTime`に指定する。時刻にはタイムゾーンも含める |\n| `description` | 変更内容や、結果に対する説明 |\n| `metadata`・`actions` | 操作した人などの補足と、関連資料を開くなどの操作 |\n| `tone` | 案内は`info`、成功は`success`、注意は`warning`、失敗は`danger`。省略時は中立色 |\n| `icon` | 出来事の意味を表すアイコン |",
       },
     },
   },
@@ -107,6 +118,12 @@ export const History: Story = {
     await expect(items[4]).toHaveTextContent("第2版を再提出しました");
     await expect(canvasElement.querySelectorAll("time")).toHaveLength(6);
     await expect(canvasElement.querySelector("[aria-current]")).toBeNull();
+    await expect(canvas.getByRole("group", { name: "現在の状態" })).toHaveTextContent("承認済み");
+    await expect(canvas.queryByText("現在の状態")).not.toBeInTheDocument();
+    await expect(canvasElement.querySelectorAll('[data-slot="badge"]')).toHaveLength(1);
+    for (const item of items) {
+      await expect(item.querySelector('[data-slot="badge"]')).toBeNull();
+    }
   },
 };
 export const NewestFirst: Story = {
@@ -116,15 +133,38 @@ export const NewestFirst: Story = {
     events: [...events].reverse(),
   },
   play: async ({ canvasElement }) => {
-    await expect(
-      within(canvasElement).getAllByRole("listitem")[0],
-    ).toHaveTextContent("第2版を承認しました");
+    const canvas = within(canvasElement);
+    await expect(canvas.getAllByRole("listitem")[0]).toHaveTextContent("第2版を承認しました");
+    await expect(canvas.getByRole("group", { name: "現在の状態" })).toHaveTextContent("承認済み");
+    await expect(canvasElement.querySelectorAll('[data-slot="badge"]')).toHaveLength(1);
+  },
+};
+export const LatestNotification: Story = {
+  name: "最後の通知と現在状態を区別",
+  args: {
+    events: [
+      ...events,
+      {
+        id: "notified-2",
+        title: "審査結果をメールで通知しました",
+        timestamp: { dateTime: "2026-10-09T15:05:00+09:00", label: "10月9日 15:05" },
+      },
+    ],
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await expect(canvas.getAllByRole("listitem").at(-1)).toHaveTextContent(
+      "審査結果をメールで通知",
+    );
+    await expect(canvas.getByRole("group", { name: "現在の状態" })).toHaveTextContent("承認済み");
+    await expect(canvasElement.querySelectorAll('[data-slot="badge"]')).toHaveLength(1);
   },
 };
 export const Delivery: Story = {
   name: "別用途・配送履歴",
   args: {
     label: "配送履歴（古い順）",
+    currentStatus: { label: "配送中" },
     events: [
       {
         id: "collected",
@@ -150,6 +190,7 @@ export const Delivery: Story = {
 export const MissingTimestamp: Story = {
   name: "時刻不明・長い内容",
   args: {
+    currentStatus: undefined,
     events: [
       {
         id: "imported",
@@ -168,7 +209,7 @@ export const MissingTimestamp: Story = {
 };
 export const Empty: Story = {
   name: "履歴なし",
-  args: { events: [] },
+  args: { events: [], currentStatus: undefined },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     await expect(canvas.getByText("履歴はまだありません。")).toBeVisible();
@@ -208,7 +249,11 @@ function RetryExample() {
           </div>
         </>
       ) : (
-        <Timeline label="申請履歴（古い順・日本時間）" events={events} />
+        <Timeline
+          label="申請履歴（古い順・日本時間）"
+          events={events}
+          currentStatus={{ label: "承認済み", tone: "success" }}
+        />
       )}
     </div>
   );
@@ -219,16 +264,12 @@ export const LoadFailure: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     await userEvent.tab();
-    await expect(
-      canvas.getByRole("button", { name: "再読み込み" }),
-    ).toHaveFocus();
+    await expect(canvas.getByRole("button", { name: "再読み込み" })).toHaveFocus();
     await userEvent.keyboard("{Enter}");
     await expect(
       canvas.getByRole("status", { name: "履歴を読み込んでいます" }),
     ).toBeInTheDocument();
-    await expect(
-      canvas.getByRole("button", { name: "読み込み中…" }),
-    ).toBeDisabled();
+    await expect(canvas.getByRole("button", { name: "読み込み中…" })).toBeDisabled();
     await expect(
       await canvas.findByRole("list", { name: "申請履歴（古い順・日本時間）" }),
     ).toBeInTheDocument();
@@ -241,6 +282,7 @@ function EventActionExample() {
     <div className="ds-stack">
       <Timeline
         label="操作付きの履歴"
+        currentStatus={{ label: "要修正", tone: "warning" }}
         events={[
           {
             ...events[3],
@@ -266,12 +308,8 @@ export const WithAction: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     await userEvent.tab();
-    await expect(
-      canvas.getByRole("button", { name: "差し戻し理由を確認" }),
-    ).toHaveFocus();
+    await expect(canvas.getByRole("button", { name: "差し戻し理由を確認" })).toHaveFocus();
     await userEvent.keyboard("{Enter}");
-    await expect(canvas.getByRole("status")).toHaveTextContent(
-      "会場配置図に避難経路を追記",
-    );
+    await expect(canvas.getByRole("status")).toHaveTextContent("会場配置図に避難経路を追記");
   },
 };

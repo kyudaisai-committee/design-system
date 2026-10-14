@@ -1,4 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
+
+import { Badge } from "./badge";
+import { Button } from "./button";
 import {
   Card,
   CardAction,
@@ -8,8 +11,6 @@ import {
   CardHeader,
   CardTitle,
 } from "./card";
-import { Badge } from "./badge";
-import { Button } from "./button";
 
 const meta = {
   title: "Components/Card",
@@ -32,8 +33,7 @@ const meta = {
     },
     children: {
       control: false,
-      description:
-        "Header、Content、Footer で内容を構成する。必要な部分だけ使う。",
+      description: "Header、Content、Footer で内容を構成する。必要な部分だけ使う。",
     },
   },
   parameters: {
@@ -103,9 +103,7 @@ export const LongTitle: Story = {
         <CardDescription>理学部・工学部合同企画</CardDescription>
       </CardHeader>
       <CardContent>
-        <p>
-          身近な道具を使った実験から最新の研究紹介まで、幅広いテーマを体験できます。
-        </p>
+        <p>身近な道具を使った実験から最新の研究紹介まで、幅広いテーマを体験できます。</p>
       </CardContent>
       <CardFooter>
         <Button variant="outline">申請内容を確認</Button>

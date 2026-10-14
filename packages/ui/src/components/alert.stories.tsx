@@ -1,5 +1,8 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
+
 import { CircleAlert, Info } from "lucide-react";
+import { expect, within } from "storybook/test";
+
 import { Alert, AlertAction, AlertDescription, AlertTitle } from "./alert";
 import { Button } from "./button";
 
@@ -38,9 +41,7 @@ const meta = {
     <Alert {...args} className="max-w-xl">
       <Info aria-hidden="true" />
       <AlertTitle>受付を開始しました</AlertTitle>
-      <AlertDescription>
-        企画申請書を10月20日 17:00までに提出してください。
-      </AlertDescription>
+      <AlertDescription>企画申請書を10月20日 17:00までに提出してください。</AlertDescription>
     </Alert>
   ),
 } satisfies Meta<typeof Alert>;
@@ -68,9 +69,7 @@ export const WithAction: Story = {
   render: (args) => (
     <Alert {...args} className="max-w-xl">
       <AlertTitle>新しい提出内容があります</AlertTitle>
-      <AlertDescription>
-        表示を更新して内容を確認してください。
-      </AlertDescription>
+      <AlertDescription>表示を更新して内容を確認してください。</AlertDescription>
       <AlertAction>
         <Button size="sm" variant="outline">
           更新
@@ -95,4 +94,30 @@ export const LongContent: Story = {
       </AlertDescription>
     </Alert>
   ),
+};
+
+export const LongAction: Story = {
+  name: "狭い領域の操作付き案内",
+  render: (args) => (
+    <div style={{ width: 256, maxWidth: "100%" }}>
+      <Alert {...args}>
+        <Info aria-hidden="true" />
+        <AlertTitle>新しい提出内容があります</AlertTitle>
+        <AlertDescription>最新の回答を読み込んで、変更内容を確認してください。</AlertDescription>
+        <AlertAction>
+          <Button variant="outline">最新の提出内容を読み込む</Button>
+        </AlertAction>
+      </Alert>
+    </div>
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const button = canvas.getByRole("button").getBoundingClientRect();
+    const description = canvas
+      .getByText("最新の回答を読み込んで、変更内容を確認してください。")
+      .getBoundingClientRect();
+    const alert = canvas.getByRole("status");
+    await expect(button.top).toBeGreaterThanOrEqual(description.bottom);
+    await expect(alert.scrollWidth).toBeLessThanOrEqual(alert.clientWidth);
+  },
 };

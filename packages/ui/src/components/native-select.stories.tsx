@@ -1,12 +1,10 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { useStoryControls } from "./story-controls";
+
 import { expect, fn, userEvent, within } from "storybook/test";
-import {
-  NativeSelect,
-  NativeSelectOption,
-  NativeSelectOptGroup,
-} from "./native-select";
+
 import { Label } from "./label";
+import { NativeSelect, NativeSelectOption, NativeSelectOptGroup } from "./native-select";
+import { useStoryControls } from "./story-controls";
 
 const options = (
   <>
@@ -44,8 +42,7 @@ const meta = {
     "aria-invalid": { control: "boolean" },
     children: {
       control: false,
-      description:
-        "NativeSelectOption と NativeSelectOptGroup。ブラウザー標準の選択肢を使う。",
+      description: "NativeSelectOption と NativeSelectOptGroup。ブラウザー標準の選択肢を使う。",
     },
     onChange: { control: false },
   },
@@ -122,17 +119,11 @@ export const Grouped: Story = {
       <Label htmlFor="venue">使用会場</Label>
       <NativeSelect id="venue" defaultValue="lecture">
         <NativeSelectOptGroup label="屋内">
-          <NativeSelectOption value="lecture">
-            センター2号館・講義室
-          </NativeSelectOption>
-          <NativeSelectOption value="hall">
-            センター1号館・多目的ホール
-          </NativeSelectOption>
+          <NativeSelectOption value="lecture">センター2号館・講義室</NativeSelectOption>
+          <NativeSelectOption value="hall">センター1号館・多目的ホール</NativeSelectOption>
         </NativeSelectOptGroup>
         <NativeSelectOptGroup label="屋外">
-          <NativeSelectOption value="plaza">
-            ビッグさんど前広場
-          </NativeSelectOption>
+          <NativeSelectOption value="plaza">ビッグさんど前広場</NativeSelectOption>
           <NativeSelectOption value="stage" disabled>
             屋外ステージ（受付終了）
           </NativeSelectOption>
@@ -140,4 +131,26 @@ export const Grouped: Story = {
       </NativeSelect>
     </div>
   ),
+};
+
+export const NarrowLongOption: Story = {
+  name: "狭い画面と長い選択肢",
+  render: () => (
+    <div style={{ width: 240, maxWidth: "100%" }}>
+      <Label htmlFor="long-option">使用会場</Label>
+      <NativeSelect id="long-option" defaultValue="long">
+        <NativeSelectOption value="long">
+          伊都キャンパス・センター２号館・大講義室（午後の展示とステージ企画）
+        </NativeSelectOption>
+        <NativeSelectOption value="short">屋外広場</NativeSelectOption>
+      </NativeSelect>
+    </div>
+  ),
+  play: async ({ canvasElement }) => {
+    const input = within(canvasElement).getByRole("combobox");
+    const container = input.closest("[style]") as HTMLElement;
+    await expect(container.scrollWidth).toBeLessThanOrEqual(container.clientWidth + 1);
+    await userEvent.selectOptions(input, "short");
+    await expect(input).toHaveValue("short");
+  },
 };

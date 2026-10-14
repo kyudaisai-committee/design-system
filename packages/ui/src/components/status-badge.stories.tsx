@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
+
 import { StatusBadge } from "./compositions";
 
 const meta = {
@@ -48,9 +49,7 @@ export const WithReason: Story = {
       <div>
         <StatusBadge {...args} />
       </div>
-      <p>
-        会場配置図に避難経路を追記し、10月20日 17:00までに再提出してください。
-      </p>
+      <p>会場配置図に避難経路を追記し、10月20日 17:00までに再提出してください。</p>
     </div>
   ),
 };

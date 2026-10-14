@@ -1,5 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
+
 import { expect, within } from "storybook/test";
+
 import { DateDetails } from "./date-details";
 
 const meta = {
@@ -25,8 +27,7 @@ const meta = {
   argTypes: {
     items: {
       control: "object",
-      description:
-        "ラベルと日時の組。valueは表示文字列、dateTimeは機械可読な日時です。",
+      description: "ラベルと日時の組。valueは表示文字列、dateTimeは機械可読な日時です。",
     },
     "aria-label": {
       control: "text",
@@ -58,12 +59,6 @@ export const ExtendedDeadline: Story = {
         dateTime: "2026-10-20T17:00:00+09:00",
         emphasis: true,
         note: "延長済み",
-      },
-      {
-        id: "standard",
-        label: "標準期限",
-        value: "10月15日 17:00",
-        dateTime: "2026-10-15T17:00:00+09:00",
       },
     ],
   },

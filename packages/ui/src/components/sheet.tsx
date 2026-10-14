@@ -1,11 +1,11 @@
 "use client";
 
-import * as React from "react";
 import { Dialog as SheetPrimitive } from "@base-ui/react/dialog";
-import { cn, mergeClassName } from "../lib/utils";
-
-import { Button } from "./button";
 import { XIcon } from "lucide-react";
+import * as React from "react";
+
+import { cn, mergeClassName } from "../lib/utils";
+import { Button } from "./button";
 
 function Sheet({ ...props }: SheetPrimitive.Root.Props) {
   return <SheetPrimitive.Root data-slot="sheet" {...props} />;
@@ -62,13 +62,7 @@ function SheetContent({
         {showCloseButton && (
           <SheetPrimitive.Close
             data-slot="sheet-close"
-            render={
-              <Button
-                variant="ghost"
-                className="absolute top-3 right-3"
-                size="icon"
-              />
-            }
+            render={<Button variant="ghost" className="absolute top-3 right-3" size="icon" />}
           >
             <XIcon />
             <span className="sr-only">閉じる</span>
@@ -103,19 +97,13 @@ function SheetTitle({ className, ...props }: SheetPrimitive.Title.Props) {
   return (
     <SheetPrimitive.Title
       data-slot="sheet-title"
-      className={mergeClassName(
-        "font-heading text-base font-medium text-foreground",
-        className,
-      )}
+      className={mergeClassName("font-heading text-base font-medium text-foreground", className)}
       {...props}
     />
   );
 }
 
-function SheetDescription({
-  className,
-  ...props
-}: SheetPrimitive.Description.Props) {
+function SheetDescription({ className, ...props }: SheetPrimitive.Description.Props) {
   return (
     <SheetPrimitive.Description
       data-slot="sheet-description"

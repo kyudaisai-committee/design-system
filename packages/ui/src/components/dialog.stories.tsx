@@ -1,6 +1,8 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { useStoryControls } from "./story-controls";
+
 import { expect, userEvent, waitFor, within } from "storybook/test";
+
+import { Button } from "./button";
 import {
   Dialog,
   DialogClose,
@@ -13,9 +15,9 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "./dialog";
-import { Button } from "./button";
 import { Input } from "./input";
 import { Label } from "./label";
+import { useStoryControls } from "./story-controls";
 
 const meta = {
   title: "Components/Dialog",
@@ -56,15 +58,11 @@ const meta = {
     const [args, updateArgs] = useStoryControls(incoming);
     return (
       <Dialog {...args} onOpenChange={(open) => updateArgs({ open })}>
-        <DialogTrigger render={<Button variant="outline" />}>
-          連絡先を編集
-        </DialogTrigger>
+        <DialogTrigger render={<Button variant="outline" />}>連絡先を編集</DialogTrigger>
         <DialogContent>
           <DialogHeader>
             <DialogTitle>連絡先を編集</DialogTitle>
-            <DialogDescription>
-              当日連絡が取れる電話番号を入力してください。
-            </DialogDescription>
+            <DialogDescription>当日連絡が取れる電話番号を入力してください。</DialogDescription>
           </DialogHeader>
           <form
             className="grid gap-4"
@@ -84,9 +82,7 @@ const meta = {
               />
             </div>
             <DialogFooter>
-              <DialogClose render={<Button variant="outline" />}>
-                キャンセル
-              </DialogClose>
+              <DialogClose render={<Button variant="outline" />}>キャンセル</DialogClose>
               <Button type="submit">変更を保存</Button>
             </DialogFooter>
           </form>
@@ -120,9 +116,7 @@ export const Keyboard: Story = {
     await userEvent.clear(input);
     await userEvent.type(input, "080-1234-5678");
     await userEvent.keyboard("{Escape}");
-    await waitFor(() =>
-      expect(body.queryByRole("dialog")).not.toBeInTheDocument(),
-    );
+    await waitFor(() => expect(body.queryByRole("dialog")).not.toBeInTheDocument());
     await expect(trigger).toHaveFocus();
   },
 };
@@ -134,15 +128,11 @@ export const LongContent: Story = {
     const [args, updateArgs] = useStoryControls(incoming);
     return (
       <Dialog {...args} onOpenChange={(open) => updateArgs({ open })}>
-        <DialogTrigger render={<Button variant="outline" />}>
-          搬入手順を確認
-        </DialogTrigger>
+        <DialogTrigger render={<Button variant="outline" />}>搬入手順を確認</DialogTrigger>
         <DialogContent>
           <DialogHeader>
             <DialogTitle>搬入当日の手順</DialogTitle>
-            <DialogDescription>
-              受付から設営までの流れを確認してください。
-            </DialogDescription>
+            <DialogDescription>受付から設営までの流れを確認してください。</DialogDescription>
           </DialogHeader>
           <ol className="grid list-decimal gap-5 pl-5">
             {[

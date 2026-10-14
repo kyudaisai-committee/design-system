@@ -1,12 +1,9 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { useStoryControls } from "./story-controls";
+
 import { expect, userEvent, within } from "storybook/test";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "./accordion";
+
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "./accordion";
+import { useStoryControls } from "./story-controls";
 
 const meta = {
   title: "Components/Accordion",
@@ -40,11 +37,7 @@ const meta = {
   render: function Render(incoming) {
     const [args, updateArgs] = useStoryControls(incoming);
     return (
-      <Accordion
-        {...args}
-        className="max-w-xl"
-        onValueChange={(value) => updateArgs({ value })}
-      >
+      <Accordion {...args} className="max-w-xl" onValueChange={(value) => updateArgs({ value })}>
         <AccordionItem value="description">
           <AccordionTrigger>紹介文はどのように書きますか？</AccordionTrigger>
           <AccordionContent>

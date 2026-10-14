@@ -10,7 +10,5 @@ export function mergeClassName<State>(
   base: string,
   override: string | ((state: State) => string | undefined) | undefined,
 ): string | ((state: State) => string) {
-  return typeof override === "function"
-    ? (state) => cn(base, override(state))
-    : cn(base, override);
+  return typeof override === "function" ? (state) => cn(base, override(state)) : cn(base, override);
 }

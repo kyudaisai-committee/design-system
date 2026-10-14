@@ -1,7 +1,7 @@
+import { spawn } from "node:child_process";
 import { access, cp, mkdtemp, rm, symlink, writeFile } from "node:fs/promises";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
-import { spawn } from "node:child_process";
 
 const docs = fileURLToPath(new URL("../apps/docs/", import.meta.url));
 const staging = await mkdtemp(join(docs, ".build-"));
