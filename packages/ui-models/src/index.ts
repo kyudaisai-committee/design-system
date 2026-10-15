@@ -156,7 +156,7 @@ export function moveItem<T>(items: readonly T[], index: number, delta: number): 
   const result = [...items];
   const target = index + delta;
   if (index < 0 || index >= result.length || target < 0 || target >= result.length) return result;
-  [result[index], result[target]] = [result[target], result[index]];
+  [result[index], result[target]] = [result[target]!, result[index]!];
   return result;
 }
 /** IDs are supplied by the host so duplication never reuses field/condition/option IDs. */
