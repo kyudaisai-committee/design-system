@@ -4,8 +4,8 @@ import { Checkbox as CheckboxPrimitive } from "@base-ui/react/checkbox";
 import { CheckIcon, MinusIcon } from "lucide-react";
 import { useImperativeHandle, useRef } from "react";
 
-import { useFormResetValue } from "../hooks/use-form-reset";
-import { mergeClassName } from "../lib/utils";
+import { useFormResetValue } from "../hooks/use-form-reset.js";
+import { mergeClassName } from "../lib/utils.js";
 
 function Checkbox({
   className,

@@ -2,13 +2,13 @@
 
 import { useId, type ComponentProps, type ReactNode } from "react";
 
-import { cn, mergeClassName } from "../lib/utils";
-import { Alert, AlertTitle, AlertDescription } from "./alert";
-import { Badge } from "./badge";
-import { Card } from "./card";
-import { Checkbox } from "./checkbox";
-import { Label } from "./label";
-import { Skeleton } from "./skeleton";
+import { cn, mergeClassName } from "../lib/utils.js";
+import { Alert, AlertTitle, AlertDescription } from "./alert.js";
+import { Badge } from "./badge.js";
+import { Card } from "./card.js";
+import { Checkbox } from "./checkbox.js";
+import { Label } from "./label.js";
+import { Skeleton } from "./skeleton.js";
 
 export type Tone = "info" | "success" | "warning" | "danger";
 
