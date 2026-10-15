@@ -4,8 +4,8 @@ import { Radio as RadioPrimitive } from "@base-ui/react/radio";
 import { RadioGroup as RadioGroupPrimitive } from "@base-ui/react/radio-group";
 import { useImperativeHandle, useRef } from "react";
 
-import { useFormResetValue } from "../hooks/use-form-reset";
-import { mergeClassName } from "../lib/utils";
+import { useFormResetValue } from "../hooks/use-form-reset.js";
+import { mergeClassName } from "../lib/utils.js";
 
 function RadioGroup({
   className,
