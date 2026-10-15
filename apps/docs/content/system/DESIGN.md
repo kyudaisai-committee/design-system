@@ -272,6 +272,8 @@ Checkboxは4pxの角丸、RadioGroupは円、Switchは丸いつまみを使い�
 
 画面全体の組み合わせは、[入力部品の配置例](/storybook/?path=/story/patterns-formlayout--default)、[サイドバーを使った構成](/storybook/?path=/story/patterns-applicationshell--default)、[申請フォーム](/storybook/?path=/story/patterns-applicationform--default)、[審査一覧](/storybook/?path=/story/patterns-reviewlist--default)を参照してください。導入方法は[Webへの組み込み](./implementation.md)にまとめています。
 
+[本文・画像・地図と編集部品](./content-and-editors.md)では、会話、QR読取り、フォーム作成、内容比較、勤務配置を含む部品の使い分けを説明しています。
+
 ## Do's and Don'ts
 
 | 採用する                                     | 避ける                                                         |

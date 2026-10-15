@@ -11,13 +11,16 @@
     ".": "./src/index.ts"
   },
   "dependencies": {
-    "@kyudaisai/tokens": "workspace:*"
+    "@kyudaisai/tokens": "workspace:*",
+    "@kyudaisai/ui-models": "workspace:*"
   },
   "devDependencies": {
     "@react-native-community/datetimepicker": "9.1.0",
     "@types/react": "19.2.14",
     "expo": "57.0.28",
+    "expo-camera": "~57.0.6",
     "expo-glass-effect": "~57.0.4",
+    "expo-image-picker": "~57.0.20",
     "react": "19.2.3",
     "react-dom": "19.2.3",
     "react-native": "0.86.3",
@@ -27,7 +30,9 @@
   "peerDependencies": {
     "@react-native-community/datetimepicker": "9.1.0",
     "expo": "^57.0.0",
+    "expo-camera": "~57.0.6",
     "expo-glass-effect": "~57.0.4",
+    "expo-image-picker": "~57.0.20",
     "react": "^19.2.0",
     "react-native": "^0.86.0",
     "react-native-safe-area-context": "^5.7.0",

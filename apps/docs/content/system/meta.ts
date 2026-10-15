@@ -6,6 +6,7 @@ export default defineMeta({
     "patterns",
     "sequences",
     "qr-code",
+    "content-and-editors",
     "native",
     "implementation",
     "native-implementation",

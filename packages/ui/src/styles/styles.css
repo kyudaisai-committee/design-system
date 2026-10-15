@@ -731,3 +731,347 @@
     grid-template-columns: minmax(0, 1fr);
   }
 }
+
+/* Shared content, editing and accessible list alternatives. */
+.ds-stack {
+  display: grid;
+  gap: var(--space-4, 1rem);
+  min-width: 0;
+}
+.ds-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+}
+.ds-media {
+  margin: 0;
+  min-width: 0;
+}
+.ds-media img {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 70dvh;
+  object-fit: contain;
+}
+.ds-media figcaption {
+  margin-top: 0.5rem;
+  color: var(--muted-foreground);
+}
+.ds-gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr));
+  gap: 1.5rem;
+  padding: 0;
+  list-style: none;
+}
+.ds-gallery li {
+  display: grid;
+  align-content: start;
+  gap: 0.75rem;
+}
+.ds-markdown {
+  overflow-wrap: anywhere;
+  line-height: 1.65;
+}
+.ds-markdown > * + * {
+  margin-top: 1rem;
+}
+.ds-markdown h1,
+.ds-markdown h2,
+.ds-markdown h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+.ds-markdown ul {
+  list-style: disc;
+  padding-left: 1.5rem;
+}
+.ds-markdown ol {
+  list-style: decimal;
+  padding-left: 1.5rem;
+}
+.ds-markdown a {
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+.ds-markdown blockquote {
+  border-left: 3px solid var(--border);
+  padding-left: 1rem;
+}
+.ds-markdown pre {
+  overflow: auto;
+  padding: 1rem;
+  background: var(--muted);
+}
+.ds-markdown code {
+  background: var(--muted);
+  white-space: pre-wrap;
+}
+.ds-markdown-image {
+  display: block;
+}
+.ds-table-scroll {
+  max-width: 100%;
+  overflow-x: auto;
+}
+.ds-table-scroll table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.ds-table-scroll th,
+.ds-table-scroll td {
+  text-align: left;
+  padding: 0.75rem;
+  border-bottom: 1px solid var(--border);
+  overflow-wrap: anywhere;
+}
+.ds-map {
+  width: 100%;
+  max-height: 30rem;
+  aspect-ratio: 1;
+  border: 1px solid var(--border);
+  background: var(--muted);
+}
+.ds-map-point {
+  cursor: pointer;
+  fill: var(--primary);
+}
+.ds-map-point text {
+  fill: var(--foreground);
+}
+.ds-map-alternatives {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  gap: 0.75rem;
+}
+.ds-bars {
+  display: grid;
+  gap: 0.75rem;
+}
+.ds-bars > div {
+  display: grid;
+  grid-template-columns: minmax(5rem, 1fr) minmax(3rem, 3fr) auto;
+  align-items: center;
+  gap: 0.75rem;
+}
+.ds-bar-track {
+  display: block;
+  background: var(--muted);
+  height: 0.75rem;
+}
+.ds-bar-track > span {
+  display: block;
+  background: var(--primary);
+  height: 100%;
+}
+.ds-condition,
+.ds-builder-field {
+  display: grid;
+  gap: 0.75rem;
+  min-width: 0;
+  border: 1px solid var(--border);
+  padding: 1rem;
+}
+.ds-comparison > div {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.5rem;
+}
+.ds-comparison h3 {
+  font-weight: 600;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0.5rem;
+}
+.ds-comparison p {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+.ds-board {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr));
+  gap: 1.5rem;
+}
+.ds-board-lane,
+.ds-board-item {
+  display: grid;
+  align-content: start;
+  gap: 0.75rem;
+  min-width: 0;
+  padding: 1rem;
+  border: 1px solid var(--border);
+}
+.ds-board-lane h3,
+.ds-board-item h4 {
+  font-weight: 600;
+}
+.ds-scanner-video {
+  width: 100%;
+  max-height: 24rem;
+  aspect-ratio: 1;
+  object-fit: cover;
+  background: var(--muted);
+}
+.ds-conversation-shell {
+  container-type: inline-size;
+  container-name: conversation;
+}
+.ds-conversation-layout {
+  display: grid;
+  grid-template-columns: minmax(12rem, 1fr) minmax(0, 3fr);
+  gap: 1rem;
+}
+.ds-conversation-layout > [hidden] {
+  display: none;
+}
+.ds-conversation-topbar {
+  border-bottom: 1px solid var(--border);
+  padding: 1rem;
+}
+.ds-conversation-list,
+.ds-message-list,
+.ds-message-results {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.ds-conversation-list {
+  display: grid;
+  gap: 0.25rem;
+}
+.ds-conversation-link {
+  display: grid;
+  gap: 0.25rem;
+  padding: 0.75rem;
+  border-radius: var(--radius-md);
+}
+.ds-conversation-link[aria-current="page"] {
+  background: var(--muted);
+  font-weight: 600;
+}
+.ds-conversation-title {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+.ds-conversation-count,
+.ds-conversation-mention {
+  font-size: 0.875rem;
+}
+.ds-conversation-excerpt {
+  overflow-wrap: anywhere;
+  color: var(--muted-foreground);
+}
+.ds-message {
+  position: relative;
+  display: grid;
+  gap: 0.5rem;
+  padding: 1rem;
+  border-bottom: 1px solid var(--border);
+}
+.ds-message-meta,
+.ds-message-actions,
+.ds-message-tools {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+}
+.ds-message-avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  background: var(--muted);
+  border-radius: var(--radius-md);
+}
+.ds-message-body {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+.ds-unread-divider {
+  color: var(--danger);
+  border-top: 1px solid currentColor;
+  padding: 0.5rem;
+}
+.ds-thread-panel,
+.ds-chat-reference {
+  padding: 1rem;
+  border: 1px solid var(--border);
+}
+.ds-thread-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+  gap: 1rem;
+}
+.ds-message-result {
+  display: grid;
+  gap: 0.5rem;
+  padding: 1rem;
+  border-bottom: 1px solid var(--border);
+}
+.ds-message-result-link {
+  display: grid;
+  gap: 0.5rem;
+}
+.ds-message-match {
+  background: var(--warning-background);
+  color: var(--warning);
+}
+@container conversation (min-width: 68rem) {
+  .ds-conversation-layout[data-thread="true"]:not([data-discovery="true"]) {
+    grid-template-columns: minmax(12rem, 1fr) minmax(0, 2fr) minmax(0, 2fr);
+  }
+}
+@container conversation (max-width: 67.999rem) {
+  .ds-conversation-layout[data-view="thread"] {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .ds-conversation-layout[data-view="thread"] > .ds-conversation-list-pane,
+  .ds-conversation-layout[data-view="thread"] > .ds-conversation-body-pane {
+    display: none;
+  }
+}
+@container conversation (max-width: 48rem) {
+  .ds-conversation-layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .ds-conversation-layout:not([data-view="list"]) > .ds-conversation-list-pane,
+  .ds-conversation-layout:not([data-view="conversation"]) > .ds-conversation-body-pane {
+    display: none;
+  }
+  .ds-conversation-layout[data-discovery="true"] > .ds-conversation-discovery-pane {
+    display: block;
+  }
+}
+@media (max-width: 40rem) {
+  .ds-comparison > div {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .ds-bars > div {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.25rem;
+  }
+  .ds-condition,
+  .ds-builder-field {
+    padding: 0.75rem;
+  }
+}
+
+.ds-conversation-layout[data-discovery="true"] > .ds-conversation-thread-pane {
+  display: none;
+}
+@container conversation (max-width: 67.999rem) {
+  .ds-conversation-layout:not([data-view="thread"]) > .ds-conversation-thread-pane {
+    display: none;
+  }
+}
+@container conversation (max-width: 48rem) {
+  .ds-conversation-layout[data-discovery="true"] > .ds-conversation-list-pane {
+    display: none;
+  }
+}

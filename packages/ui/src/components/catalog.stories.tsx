@@ -73,12 +73,51 @@ import {
   Textarea,
   Timeline,
 } from "../index";
+import {
+  MarkdownExample,
+  ImageExample,
+  GalleryExample,
+  MapExample,
+  MapEditingExample,
+  ChartExample,
+  ConversationExample,
+  ComposerExample,
+  ScannerExample,
+  BuilderExample,
+  ConditionExample,
+  ComparisonExample,
+  BoardExample,
+  PhotoExample,
+} from "./extended-examples";
 import qrSample from "./qr-code-sample.png";
 
 type CatalogEntry = { name: string; purpose: string; preview: ReactNode };
 type CatalogGroup = { title: string; items: CatalogEntry[] };
 
 const groups: CatalogGroup[] = [
+  {
+    title: "本文・写真・業務の編集",
+    items: [
+      { name: "MarkdownContent", purpose: "本文の安全な表示", preview: <MarkdownExample /> },
+      { name: "PublicImage", purpose: "公開画像と取得状態", preview: <ImageExample /> },
+      { name: "ImageGallery", purpose: "写真一覧と拡大", preview: <GalleryExample /> },
+      { name: "MapView", purpose: "地図と会場一覧", preview: <MapExample /> },
+      { name: "MapEditor", purpose: "場所と配置の編集", preview: <MapEditingExample /> },
+      { name: "ResultChart", purpose: "数値と結果図表", preview: <ChartExample /> },
+      {
+        name: "Conversation",
+        purpose: "会話一覧・投稿・スレッド",
+        preview: <ConversationExample />,
+      },
+      { name: "MessageComposer", purpose: "本文・添付と送信状態", preview: <ComposerExample /> },
+      { name: "QrScanner", purpose: "QRコードの読み取り", preview: <ScannerExample /> },
+      { name: "FormBuilder", purpose: "フォームの作成と並替え", preview: <BuilderExample /> },
+      { name: "ConditionEditor", purpose: "条件の組合せ", preview: <ConditionExample /> },
+      { name: "ComparisonView", purpose: "変更前後の比較", preview: <ComparisonExample /> },
+      { name: "AssignmentBoard", purpose: "勤務の配置・固定・不足", preview: <BoardExample /> },
+      { name: "PhotoPicker", purpose: "端末標準の写真選択・切り抜き", preview: <PhotoExample /> },
+    ],
+  },
   {
     title: "操作・移動",
     items: [

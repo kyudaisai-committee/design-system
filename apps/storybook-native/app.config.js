@@ -7,6 +7,14 @@ module.exports = {
     userInterfaceStyle: "automatic",
     plugins: [
       [
+        "expo-camera",
+        {
+          cameraPermission: "受付のQRコードを読み取ります。",
+          recordAudioAndroid: false,
+          microphonePermission: false,
+        },
+      ],
+      [
         "expo-image-picker",
         {
           photosPermission: "編集・添付する写真を選択します。",
