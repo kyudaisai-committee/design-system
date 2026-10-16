@@ -208,6 +208,9 @@ importers:
       '@types/react':
         specifier: 19.2.14
         version: 19.2.14
+      '@types/react-dom':
+        specifier: 19.2.3
+        version: 19.2.3(@types/react@19.2.14)
       jest:
         specifier: ^29.7.0
         version: 29.7.0(@types/node@22.20.5)
@@ -230,7 +233,7 @@ importers:
     dependencies:
       '@base-ui/react':
         specifier: 1.9.0
-        version: 1.9.0(@types/react@19.2.14)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
+        version: 1.9.0(@types/react@19.3.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
       '@kyudaisai/ui-models':
         specifier: workspace:*
         version: link:../ui-models
@@ -245,7 +248,7 @@ importers:
         version: 2.1.1
       lucide-react:
         specifier: 1.56.0
-        version: 1.56.0(@types/react@19.2.14)(react@19.3.0)
+        version: 1.56.0(@types/react@19.3.0)(react@19.3.0)
       tailwind-merge:
         specifier: 3.6.0
         version: 3.6.0
@@ -253,6 +256,12 @@ importers:
       '@tailwindcss/cli':
         specifier: 4.3.3
         version: 4.3.3
+      '@types/react':
+        specifier: 19.3.0
+        version: 19.3.0
+      '@types/react-dom':
+        specifier: 19.3.0
+        version: 19.3.0(@types/react@19.3.0)
       react:
         specifier: 19.3.0
         version: 19.3.0
@@ -3680,11 +3689,19 @@ packages:
     peerDependencies:
       '@types/react': ^19.2.0
 
+  '@types/react-dom@19.3.0':
+    resolution: {integrity: sha512-ZI7bU42mZXXKHn/qNLEw2IrbiINU7X5+vfgdixBHkCNpYWXjKgfQ/P+uyGb5CjOLB9UcnTeg3rylQtV2hym44Q==}
+    peerDependencies:
+      '@types/react': ^19.3.0
+
   '@types/react-test-renderer@19.3.0':
     resolution: {integrity: sha512-TX4p2D4Z2oigM3SXU7+QyLSUnSR0vR1S1Pfxm/qFL9nHQ3jclgi6ioGoWQmlIr1DeKRVmPJrmNlhgM0JlWlLUg==}
 
   '@types/react@19.2.14':
     resolution: {integrity: sha512-ilcTH/UniCkMdtexkoCN0bI7pMcJDvmQFPvuPvmEaYA/NSfFTAgdUSLAoVjaRJm7+6PvcM+q1zYOwS4wTYMF9w==}
+
+  '@types/react@19.3.0':
+    resolution: {integrity: sha512-N0rFCuH9YoxG9/m61l9MfpJKfmLOVU0em7ipIz6TRgSSkvReLB9vL85GB+yr8Bs5leqpvg96JSwF4ZS1s4viQg==}
 
   '@types/resolve@1.20.6':
     resolution: {integrity: sha512-A4STmOXPhMUtHH+S6ymgE2GiBSMqf4oTvcQZMcHzokuTLVYzXTB8ttjcgxOVaAp2lGwEdzZ0J+cRbbeevQj1UQ==}
@@ -9973,19 +9990,19 @@ snapshots:
       '@babel/helper-string-parser': 7.29.7
       '@babel/helper-validator-identifier': 7.29.7
 
-  '@base-ui/react@1.9.0(@types/react@19.2.14)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)':
+  '@base-ui/react@1.9.0(@types/react@19.3.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)':
     dependencies:
       '@babel/runtime': 8.0.7
-      '@base-ui/utils': 0.5.0(@types/react@19.2.14)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
+      '@base-ui/utils': 0.5.0(@types/react@19.3.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
       '@floating-ui/react-dom': 2.1.9(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
       '@floating-ui/utils': 0.2.12
       react: 19.3.0
       react-dom: 19.3.0(react@19.3.0)
       use-sync-external-store: 1.7.0(react@19.3.0)
     optionalDependencies:
-      '@types/react': 19.2.14
+      '@types/react': 19.3.0
 
-  '@base-ui/utils@0.5.0(@types/react@19.2.14)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)':
+  '@base-ui/utils@0.5.0(@types/react@19.3.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)':
     dependencies:
       '@babel/runtime': 8.0.7
       '@floating-ui/utils': 0.2.12
@@ -9994,7 +10011,7 @@ snapshots:
       reselect: 5.3.0
       use-sync-external-store: 1.7.0(react@19.3.0)
     optionalDependencies:
-      '@types/react': 19.2.14
+      '@types/react': 19.3.0
 
   '@bcoe/v8-coverage@0.2.3': {}
 
@@ -12651,11 +12668,19 @@ snapshots:
     dependencies:
       '@types/react': 19.2.14
 
+  '@types/react-dom@19.3.0(@types/react@19.3.0)':
+    dependencies:
+      '@types/react': 19.3.0
+
   '@types/react-test-renderer@19.3.0':
     dependencies:
       '@types/react': 19.2.14
 
   '@types/react@19.2.14':
+    dependencies:
+      csstype: 3.2.3
+
+  '@types/react@19.3.0':
     dependencies:
       csstype: 3.2.3
 
@@ -16012,11 +16037,11 @@ snapshots:
 
   lru_map@0.4.1: {}
 
-  lucide-react@1.56.0(@types/react@19.2.14)(react@19.3.0):
+  lucide-react@1.56.0(@types/react@19.3.0)(react@19.3.0):
     dependencies:
       react: 19.3.0
     optionalDependencies:
-      '@types/react': 19.2.14
+      '@types/react': 19.3.0
 
   lz-string@1.5.0: {}
 
