@@ -63,6 +63,9 @@ importers:
       oxlint:
         specifier: 1.86.0
         version: 1.86.0
+      parse5:
+        specifier: 7.3.0
+        version: 7.3.0
       playwright:
         specifier: 1.64.0
         version: 1.64.0
@@ -11596,7 +11599,9 @@ snapshots:
       metro-runtime: 0.84.6
     transitivePeerDependencies:
       - '@babel/core'
+      - bufferutil
       - supports-color
+      - utf-8-validate
 
   '@react-native/normalize-colors@0.86.3': {}
 

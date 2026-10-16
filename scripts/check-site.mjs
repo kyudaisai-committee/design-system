@@ -1,11 +1,34 @@
 import assert from "node:assert/strict";
 import { readFile, readdir, stat } from "node:fs/promises";
 import { join, relative, resolve } from "node:path";
+import { parse } from "parse5";
 
 const root = resolve("dist");
 const storyIndex = JSON.parse(await readFile(join(root, "storybook/index.json"), "utf8"));
 const failures = new Set();
 let checked = 0;
+
+function extractReferences(html) {
+  const references = [];
+  const pending = [parse(html)];
+
+  while (pending.length > 0) {
+    const node = pending.pop();
+    for (const attribute of node.attrs ?? []) {
+      if (attribute.name === "href" || attribute.name === "src") {
+        references.push(attribute.value);
+      }
+    }
+
+    for (const childNodes of [node.childNodes, node.content?.childNodes]) {
+      for (let index = (childNodes?.length ?? 0) - 1; index >= 0; index--) {
+        pending.push(childNodes[index]);
+      }
+    }
+  }
+
+  return references;
+}
 
 async function visit(directory) {
   for (const entry of await readdir(directory, { withFileTypes: true })) {
@@ -15,12 +38,11 @@ async function visit(directory) {
       continue;
     }
     if (!entry.name.endsWith(".html")) continue;
-    const html = (await readFile(file, "utf8")).replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, "");
+    const html = await readFile(file, "utf8");
     const page = relative(root, file)
       .replaceAll("\\", "/")
       .replace(/index\.html$/, "");
-    for (const match of html.matchAll(/\b(?:href|src)="([^"\s]+)"/g)) {
-      const href = match[1].replaceAll("&amp;", "&");
+    for (const href of extractReferences(html)) {
       const url = new URL(href, `https://site.invalid/${page}`);
       if (url.origin !== "https://site.invalid") continue;
       checked++;

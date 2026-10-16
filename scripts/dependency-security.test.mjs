@@ -1,13 +1,31 @@
 import assert from "node:assert/strict";
 import { execFileSync, spawnSync } from "node:child_process";
-import { readFileSync } from "node:fs";
+import { mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { createRequire } from "node:module";
+import { tmpdir } from "node:os";
 import { dirname, join } from "node:path";
 import test from "node:test";
 import { fileURLToPath } from "node:url";
 import { parse } from "yaml";
 
 const root = fileURLToPath(new URL("../", import.meta.url));
+function checkSite(html) {
+  const workspace = mkdtempSync(join(tmpdir(), "design-system-site-check-"));
+  const dist = join(workspace, "dist");
+  mkdirSync(join(dist, "storybook"), { recursive: true });
+  writeFileSync(join(dist, "storybook/index.json"), JSON.stringify({ entries: {} }));
+  writeFileSync(join(dist, "index.html"), html);
+  try {
+    return spawnSync(process.execPath, [join(root, "scripts/check-site.mjs")], {
+      cwd: workspace,
+      encoding: "utf8",
+      timeout: 3000,
+    });
+  } finally {
+    rmSync(workspace, { recursive: true, force: true });
+  }
+}
+
 function context(workspace, ...dependencies) {
   let require = createRequire(join(root, workspace, "package.json"));
   for (const dependency of dependencies) require = createRequire(require.resolve(dependency));
@@ -54,6 +72,50 @@ test("all affected dependency copies resolve to fixed versions or reviewed local
       `${dependency} must keep its patch`,
     );
   }
+});
+
+test("site link checking reads parsed href/src attributes and ignores script text and comments", () => {
+  const result = checkSite(`
+    <script>
+      const markup = '<a href="/script-string"><img src="/script-image">';
+    </script >
+    <!-- <a href="/comment"> -->
+    <script type="text/plain">
+      <img src='/raw-script-text'>
+    </ScRiPt data-end="yes">
+    <a href="/?quoted">quoted</a>
+    <img src='/?single-quoted'>
+    <img src=/?unquoted>
+    <a href="/?a=1&amp;b=2">entity</a>
+  `);
+
+  assert.equal(result.status, 0, result.stderr || result.stdout);
+  assert.match(result.stdout, /4 internal links/);
+});
+
+test("site link checking does not rebuild tags from malformed nested markup", () => {
+  const result = checkSite(`
+    <div title="<a href='/quoted-attribute'>"></div>
+    <a href='/outer'><a href=/inner>nested</a>
+    <img src='/?valid'>
+    <img src='/unfinished'
+  `);
+  const output = `${result.stderr}\n${result.stdout}`;
+
+  assert.equal(result.status, 1, output);
+  assert.match(output, /→ \/outer/);
+  assert.match(output, /→ \/inner/);
+  assert.doesNotMatch(output, /quoted-attribute|unfinished/);
+});
+
+test("script-like malformed tags do not hide references by joining source text", () => {
+  const result = checkSite(
+    '<scrip<script>is removed</script>t><a href="/visible">visible</a></script>',
+  );
+  const output = `${result.stderr}\n${result.stdout}`;
+
+  assert.equal(result.status, 1, output);
+  assert.match(output, /→ \/visible/);
 });
 
 test("braces rejects excessive brace, parenthesis and mixed nesting before recursive work", () => {

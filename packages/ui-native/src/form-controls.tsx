@@ -377,7 +377,10 @@ export interface NumberInputProps extends PurposeInputProps {
 
 function numberError(value: string, min?: number, max?: number, integer?: boolean) {
   if (value === "") return undefined;
-  if (!/^-?(?:\d+\.?\d*|\.\d+)(?:[eE][+-]?\d+)?$/.test(value) || !Number.isFinite(Number(value)))
+  if (
+    !/^-?(?:\d+(?:\.\d*)?|\.\d+)(?:[eE][+-]?\d+)?$/.test(value) ||
+    !Number.isFinite(Number(value))
+  )
     return "数値を入力してください。";
   const number = Number(value);
   if (integer && !Number.isInteger(number)) return "整数を入力してください。";
