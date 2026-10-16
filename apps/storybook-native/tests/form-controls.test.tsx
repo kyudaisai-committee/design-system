@@ -254,6 +254,46 @@ test("number drafts retain minus and decimal text while blur reports integer and
   expect(screen.queryByRole("alert")).toBeNull();
 });
 
+test.each([
+  { description: "an integer", value: "125", props: { min: 0, max: 200 }, error: undefined },
+  {
+    description: "scientific notation",
+    value: "1.25e2",
+    props: { min: 0, max: 200 },
+    error: undefined,
+  },
+  { description: "a decimal", value: "-2.5", props: { min: -10, max: 10 }, error: undefined },
+  {
+    description: "a non-integer for an integer field",
+    value: "1.5",
+    props: { min: 0, max: 10, integer: true },
+    error: "整数を入力してください。",
+  },
+  {
+    description: "a value above its range",
+    value: "1e3",
+    props: { min: 0, max: 10 },
+    error: "10以下で入力してください。",
+  },
+  {
+    description: "a long zero sequence with an invalid suffix",
+    value: `${"0".repeat(16_384)}x`,
+    props: {},
+    error: "数値を入力してください。",
+  },
+])(
+  "number validation keeps syntax and range behavior for $description",
+  ({ value, props, error }) => {
+    render(<NumberInput label="数量" value={value} onValueChange={jest.fn()} {...props} />);
+    fireEvent(screen.getByLabelText("数量"), "blur", {});
+    if (error) {
+      expect(screen.getByText(error)).toBeTruthy();
+    } else {
+      expect(screen.queryByRole("alert")).toBeNull();
+    }
+  },
+);
+
 test("choice limits prevent additions but leave selected choices removable", () => {
   const onValueChange = jest.fn();
   render(
