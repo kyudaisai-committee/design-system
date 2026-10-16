@@ -262,7 +262,38 @@ test.each([
     props: { min: 0, max: 200 },
     error: undefined,
   },
+  {
+    description: "a leading-dot decimal",
+    value: ".5",
+    props: { min: 0, max: 200 },
+    error: undefined,
+  },
+  {
+    description: "a trailing-dot decimal",
+    value: "1.",
+    props: { min: 0, max: 200 },
+    error: undefined,
+  },
+  {
+    description: "an exponent after a trailing dot",
+    value: "1.e+2",
+    props: { min: 0, max: 200 },
+    error: undefined,
+  },
   { description: "a decimal", value: "-2.5", props: { min: -10, max: 10 }, error: undefined },
+  {
+    description: "a whitespace-padded number",
+    value: " 1 ",
+    props: {},
+    error: "数値を入力してください。",
+  },
+  {
+    description: "a hexadecimal value",
+    value: "0x10",
+    props: {},
+    error: "数値を入力してください。",
+  },
+  { description: "Infinity", value: "Infinity", props: {}, error: "数値を入力してください。" },
   {
     description: "a non-integer for an integer field",
     value: "1.5",
