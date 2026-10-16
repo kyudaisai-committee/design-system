@@ -37,3 +37,9 @@ test("reads only parsed elements from malformed and nested markup", () => {
 
   assert.deepEqual(extractReferences(html), ["/outer", "/inner", "/valid"]);
 });
+
+test("does not merge markup when script-like text appears in a tag name", () => {
+  const html = '<scrip<script>is removed</script>t><a href="/visible">visible</a></script>';
+
+  assert.deepEqual(extractReferences(html), ["/visible"]);
+});
