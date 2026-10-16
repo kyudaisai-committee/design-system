@@ -30,7 +30,7 @@
     "native:build:ios": "pnpm --filter @kyudaisai/storybook-native build:ios",
     "native:build:android": "pnpm --filter @kyudaisai/storybook-native build:android",
     "package:check": "node scripts/check-package.mjs",
-    "site:check": "node scripts/check-site.mjs"
+    "site:check": "node --test scripts/check-site.test.mjs && node scripts/check-site.mjs"
   },
   "devDependencies": {
     "@axe-core/playwright": "4.11.1",

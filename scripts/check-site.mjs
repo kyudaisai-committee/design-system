@@ -2,6 +2,8 @@ import assert from "node:assert/strict";
 import { readFile, readdir, stat } from "node:fs/promises";
 import { join, relative, resolve } from "node:path";
 
+import { extractReferences } from "./site-references.mjs";
+
 const root = resolve("dist");
 const storyIndex = JSON.parse(await readFile(join(root, "storybook/index.json"), "utf8"));
 const failures = new Set();
@@ -15,12 +17,11 @@ async function visit(directory) {
       continue;
     }
     if (!entry.name.endsWith(".html")) continue;
-    const html = (await readFile(file, "utf8")).replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, "");
+    const html = await readFile(file, "utf8");
     const page = relative(root, file)
       .replaceAll("\\", "/")
       .replace(/index\.html$/, "");
-    for (const match of html.matchAll(/\b(?:href|src)="([^"\s]+)"/g)) {
-      const href = match[1].replaceAll("&amp;", "&");
+    for (const href of extractReferences(html)) {
       const url = new URL(href, `https://site.invalid/${page}`);
       if (url.origin !== "https://site.invalid") continue;
       checked++;
