@@ -32,7 +32,7 @@ pnpm preview
 
 ### React NativeのStorybook
 
-iOS・Android向けにExpo SDK 57とReact Native 0.86を使用します。端末内にStorybookを表示する構成は、[Storybookの公式チュートリアル](https://storybook.js.org/tutorials/intro-to-storybook/react-native/en/get-started/)に沿っています。
+iOS・Android向けにExpo SDK 58とReact Native 0.88を使用します。端末内にStorybookを表示する構成は、[Storybookの公式チュートリアル](https://storybook.js.org/tutorials/intro-to-storybook/react-native/en/get-started/)に沿っています。
 
 ```sh
 pnpm native:build:ios    # iOSの開発ビルドを作成・起動

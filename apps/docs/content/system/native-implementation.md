@@ -3,7 +3,7 @@ title: React Nativeへの組み込み
 description: 共通部品と、写真編集・下部タブなど端末に合わせた部品の利用方法。
 ---
 
-React Native用の部品は `@kyudaisai/ui-native`、色・文字・余白の値は `@kyudaisai/tokens/native` から読み込みます。Webと色の役割や操作名を揃え、入力・文字拡大・画面端の余白は端末に合わせます。対象はExpo SDK 57とReact Native 0.86です。
+React Native用の部品は `@kyudaisai/ui-native`、色・文字・余白の値は `@kyudaisai/tokens/native` から読み込みます。Webと色の役割や操作名を揃え、入力・文字拡大・画面端の余白は端末に合わせます。対象はExpo SDK 58とReact Native 0.88です。
 
 利用するアプリでは、`react-native-safe-area-context`、`react-native-svg`、`@react-native-community/datetimepicker`、`expo-glass-effect`も必要です。対応するバージョンは `@kyudaisai/ui-native` の `peerDependencies` に合わせます。
 
@@ -59,7 +59,7 @@ DateInputは`YYYY/MM/DD`で表示し、`value`と`onValueChange`には`YYYY-MM-D
 
 明暗は`NativeThemeProvider`に従います。「視差効果を減らす」が有効な場合は、ガラス面の操作に伴う効果を止めます。文字や選択状態は、どちらの表示でも同じ意味を持ちます。
 
-利用するアプリには`expo-glass-effect`を追加し、開発ビルドを再作成します。部品はネイティブモジュールとOSの対応状況を確認し、利用できない場合は不透明な表示を使います。[Expoの導入手順](https://docs.expo.dev/versions/v57.0.0/sdk/glass-effect/)も参照してください。
+利用するアプリには`expo-glass-effect`を追加し、開発ビルドを再作成します。部品はネイティブモジュールとOSの対応状況を確認し、利用できない場合は不透明な表示を使います。[Expoの導入手順](https://docs.expo.dev/versions/v58.0.0/sdk/glass-effect/)も参照してください。
 
 バーは親の横幅を使い、左右の余白はセーフエリアに4ptを加えます。タブ間と各タブ内の左右余白を抑えて、ラベルの幅を確保します。タブの高さは52pt以上とし、文字サイズや折り返しに応じて広がります。アイコンは22pt、ラベルは14ptを基準にします。
 

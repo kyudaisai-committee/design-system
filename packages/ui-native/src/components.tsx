@@ -13,6 +13,7 @@ import {
   View,
   useWindowDimensions,
   type PressableProps,
+  type TextInputInstance,
   type TextInputProps,
   type TextProps as RNTextProps,
   type TextStyle,
@@ -150,7 +151,7 @@ export interface FieldProps extends TextInputProps {
   hint?: string;
   error?: string;
   required?: boolean;
-  ref?: Ref<TextInput>;
+  ref?: Ref<TextInputInstance>;
 }
 
 export function Field({

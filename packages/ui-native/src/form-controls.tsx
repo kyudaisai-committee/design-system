@@ -8,6 +8,8 @@ import {
   TextInput,
   View,
   useWindowDimensions,
+  type TextInputInstance,
+  type ScrollViewInstance,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -134,8 +136,8 @@ export function OtpInput({
   const [availableWidth, setAvailableWidth] = useState(width - spacing[8]);
   const [measuredDigit, setMeasuredDigit] = useState<{ width: number; scale: number }>();
   const [nativeDigitWidth, setNativeDigitWidth] = useState(typography.heading.fontSize * 0.65);
-  const input = useRef<TextInput>(null);
-  const scroll = useRef<ScrollView>(null);
+  const input = useRef<TextInputInstance>(null);
+  const scroll = useRef<ScrollViewInstance>(null);
   useImperativeHandle(ref, () => input.current!, []);
   const canEdit = !disabled && !readOnly;
   const gap = spacing[2];

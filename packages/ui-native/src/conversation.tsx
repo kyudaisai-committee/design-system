@@ -7,6 +7,8 @@ import {
   ScrollView,
   View,
   useWindowDimensions,
+  type ViewInstance,
+  type ScrollViewInstance,
 } from "react-native";
 import Svg, { Path } from "react-native-svg";
 
@@ -104,7 +106,7 @@ export function ConversationList({
 }) {
   const { colors } = useNativeTheme();
   const [keyboardFocusedId, setKeyboardFocusedId] = useState<string>();
-  const rows = useRef<Record<string, View | null>>({});
+  const rows = useRef<Record<string, ViewInstance | null>>({});
   useEffect(() => {
     const node = focusedId ? rows.current[focusedId] : undefined;
     if (node) AccessibilityInfo.sendAccessibilityEvent(node, "focus");
@@ -203,14 +205,14 @@ export function MessageList({
   onEdit?: (message: ConversationMessage) => void;
   firstUnreadId?: string;
   focusMessageId?: string;
-  onMessageRef?: (id: string, node: View | null) => void;
+  onMessageRef?: (id: string, node: ViewInstance | null) => void;
   savedIds?: readonly string[];
   onSaveChange?: (message: ConversationMessage, saved: boolean) => void;
 }) {
   const { colors } = useNativeTheme();
   const { fontScale } = useWindowDimensions();
   const avatarSize = Math.max(40, 24 * fontScale);
-  const headers = useRef<Record<string, View | null>>({});
+  const headers = useRef<Record<string, ViewInstance | null>>({});
   useEffect(() => {
     const node = focusMessageId ? headers.current[focusMessageId] : undefined;
     if (node) AccessibilityInfo.sendAccessibilityEvent(node, "focus");
@@ -524,7 +526,7 @@ export function MessageResultList({
 }) {
   const { colors } = useNativeTheme();
   const [keyboardFocusedId, setKeyboardFocusedId] = useState<string>();
-  const headers = useRef<Record<string, View | null>>({});
+  const headers = useRef<Record<string, ViewInstance | null>>({});
   useEffect(() => {
     const node = focusedId ? headers.current[focusedId] : undefined;
     if (node) AccessibilityInfo.sendAccessibilityEvent(node, "focus");
@@ -638,7 +640,7 @@ function CollectionScroll({
   offset: number;
   onOffsetChange?: (offset: number) => void;
 }) {
-  const scroll = useRef<ScrollView>(null);
+  const scroll = useRef<ScrollViewInstance>(null);
   const restore = useRef<number | undefined>(offset);
   return (
     <ScrollView

@@ -1,7 +1,7 @@
 import { radii, spacing } from "@kyudaisai/tokens/native";
 import { safeImage, type ImageAsset, type MediaState } from "@kyudaisai/ui-models";
 import { useEffect, useRef, useState } from "react";
-import { Image, Modal, ScrollView, View } from "react-native";
+import { Image, Modal, ScrollView, View, type ViewInstance } from "react-native";
 
 import { Button, EmptyState, Text } from "./components";
 import { useNativeTheme } from "./theme";
@@ -110,7 +110,7 @@ export function ImageGallery({ label, assets, scopeLabel, resolveSource }: Image
     asset.state !== "unavailable" && (asset.expiresAt === undefined || asset.expiresAt > now);
   const { colors } = useNativeTheme();
   const [selected, setSelected] = useState<string>();
-  const closeButton = useRef<View>(null);
+  const closeButton = useRef<ViewInstance>(null);
   const asset = assets.find((item) => item.id === selected && available(item));
   useEffect(() => {
     if (selected && !asset) setSelected(undefined);

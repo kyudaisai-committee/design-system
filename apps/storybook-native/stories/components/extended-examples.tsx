@@ -34,7 +34,7 @@ export type ExampleProps = {
 };
 const image: ImageAsset = {
   id: "sample",
-  src: NativeImage.resolveAssetSource(require("../../assets/crop-sample.png")).uri,
+  src: NativeImage.resolveAssetSource(require("../../assets/crop-sample.png"))?.uri,
   alt: "切り抜き範囲の見本",
   state: "ready",
 };

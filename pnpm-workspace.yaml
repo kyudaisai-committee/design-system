@@ -7,6 +7,8 @@ allowBuilds:
   sharp: true
   "@parcel/watcher": true
 overrides:
+  chokidar@4.0.3: 4.0.1
+  semver@6.3.1: 7.8.5
   "esbuild@>=0.27.3 <0.28.1": 0.28.2
   "katex@>=0.11.0 <0.18.2": 0.18.10
   "path-to-regexp@>=4.0.0 <6.3.0": 6.3.0
@@ -31,21 +33,6 @@ minimumReleaseAgeExclude:
   - storybook@10.6.2
   - vitest@5.0.4
   - lucide-react@1.56.0
-  - "@expo/cli@57.0.29"
-  - "@expo/fingerprint@0.20.14"
-  - "@expo/inline-modules@0.1.8"
-  - "@expo/local-build-cache-provider@57.0.9"
-  - "@expo/prebuild-config@57.0.18"
-  - babel-preset-expo@57.0.15
-  - expo-modules-autolinking@57.0.15
-  - expo-modules-core@57.0.22
-  - expo-modules-jsi@57.1.2
-  - expo@57.0.28
-  - jest-expo@57.0.6
-  - expo-dev-client@57.0.20
-  - expo-dev-launcher@57.0.21
-  - expo-dev-menu@57.0.20
-  - expo-sharing@57.0.23
 patchedDependencies:
   braces@3.0.3: patches/braces@3.0.3.patch
   js-yaml@3.15.2: patches/js-yaml@3.15.2.patch

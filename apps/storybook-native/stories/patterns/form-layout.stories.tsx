@@ -21,7 +21,7 @@ import {
   UrlInput,
 } from "@kyudaisai/ui-native";
 import { useEffect, useRef, useState } from "react";
-import { TextInput, View } from "react-native";
+import { View, type TextInputInstance } from "react-native";
 
 import { useLocalFiles } from "../components/form-control-examples";
 
@@ -54,7 +54,7 @@ function FormLayout({ initialErrors = false, disabled = false, readOnly = false 
   const [noAccount, setNoAccount] = useState(false);
   const [items, setItems] = useState([{ id: "item-1", name: "" }]);
   const nextItem = useRef(2);
-  const inputRefs = useRef<Record<string, TextInput | null>>({});
+  const inputRefs = useRef<Record<string, TextInputInstance | null>>({});
   const pendingFocus = useRef<string | undefined>(undefined);
   const files = useLocalFiles();
   const state = { disabled, readOnly };
