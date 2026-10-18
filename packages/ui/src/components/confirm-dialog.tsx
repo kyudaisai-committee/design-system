@@ -12,7 +12,7 @@ export function ConfirmDialog({
   title,
   description,
   confirmLabel,
-  pendingLabel = "処理中…",
+  pendingLabel = "処理しています",
   errorMessage = "処理できませんでした。時間をおいて、もう一度お試しください。",
   onConfirm,
   destructive = false,

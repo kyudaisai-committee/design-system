@@ -163,7 +163,7 @@ export function Repeater({
             onAdd();
           }}
         >
-          項目を追加
+          項目を追加する
         </Button>
       ) : null}
       {error ? (
@@ -296,7 +296,7 @@ export function InputTable({
             onAdd();
           }}
         >
-          行を追加
+          行を追加する
         </Button>
       ) : null}
       {error ? (

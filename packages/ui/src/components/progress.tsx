@@ -9,7 +9,7 @@ function Progress({ className, children, value, ...props }: ProgressPrimitive.Ro
     <ProgressPrimitive.Root
       value={value}
       data-slot="progress"
-      {...(value == null || !Number.isFinite(value) ? { "aria-valuetext": "処理中" } : {})}
+      {...(value == null || !Number.isFinite(value) ? { "aria-valuetext": "処理しています" } : {})}
       className={mergeClassName("flex flex-wrap gap-3", className)}
       {...props}
     >

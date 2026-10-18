@@ -137,7 +137,7 @@ export function ConditionEditor({
                 })
               }
             >
-              条件{index + 1}を削除
+              条件{index + 1}を削除する
             </Button>
           </div>
         ))}
@@ -162,7 +162,7 @@ export function ConditionEditor({
               })
             }
           >
-            条件を追加
+            条件を追加する
           </Button>
           <Button
             type="button"
@@ -178,7 +178,7 @@ export function ConditionEditor({
               })
             }
           >
-            グループを追加
+            グループを追加する
           </Button>
         </div>
       </fieldset>
@@ -333,7 +333,7 @@ export function FormBuilder({
                           })
                         }
                       >
-                        選択肢{optionIndex + 1}を削除
+                        選択肢{optionIndex + 1}を削除する
                       </Button>
                     </div>
                   ))}
@@ -349,7 +349,7 @@ export function FormBuilder({
                       })
                     }
                   >
-                    選択肢を追加
+                    選択肢を追加する
                   </Button>
                 </div>
               )}
@@ -396,7 +396,7 @@ export function FormBuilder({
                     })
                   }
                 >
-                  表示条件を設定
+                  表示条件を設定する
                 </Button>
               )}
               <div className="ds-actions">
@@ -434,7 +434,7 @@ export function FormBuilder({
                   variant="ghost"
                   onClick={() => onChange(value.filter((item) => item.id !== field.id))}
                 >
-                  項目{index + 1}を削除
+                  項目{index + 1}を削除する
                 </Button>
               </div>
             </fieldset>
@@ -446,7 +446,7 @@ export function FormBuilder({
               onChange([...value, { id: createId(), kind: "text", label: "新しい項目" }])
             }
           >
-            項目を追加
+            項目を追加する
           </Button>
         </>
       )}

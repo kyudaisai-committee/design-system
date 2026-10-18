@@ -145,7 +145,7 @@ export function MapEditor({
         onSelect={(item) => setSelectedId(item.id)}
       />
       <Button
-        title="場所を追加"
+        title="場所を追加する"
         disabled={inactive}
         onPress={() => {
           const id = createId();
@@ -180,7 +180,7 @@ export function MapEditor({
             数値で位置を調整できます。地図の拡大率を変えても配置は変わりません。
           </Text>
           <Button
-            title="この場所を削除"
+            title="この場所を削除する"
             variant="outline"
             disabled={inactive}
             onPress={() => {

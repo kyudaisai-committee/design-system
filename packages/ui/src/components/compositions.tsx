@@ -114,7 +114,7 @@ export function EmptyState({ title, children }: { title: string; children?: Reac
     </div>
   );
 }
-export function LoadingState({ label = "読み込み中" }: { label?: string }) {
+export function LoadingState({ label = "読み込んでいます" }: { label?: string }) {
   return (
     <div role="status" aria-label={label} className="ds-stack">
       <span className="ds-sr-only">{label}</span>

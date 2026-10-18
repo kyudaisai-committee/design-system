@@ -101,7 +101,7 @@ export function QrScanner({ label, onRead, active = true, disabled }: QrScannerP
       )}
       <Notice title={label}>{status}</Notice>
       <Button
-        title="カメラを開始"
+        title="カメラを開始する"
         disabled={!active || disabled || running || processing || !foreground}
         onPress={() => void start()}
       />
@@ -117,7 +117,7 @@ export function QrScanner({ label, onRead, active = true, disabled }: QrScannerP
         />
       )}
       <Button
-        title="停止"
+        title="停止する"
         variant="outline"
         disabled={!running}
         onPress={() => {

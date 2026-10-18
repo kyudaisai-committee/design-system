@@ -123,7 +123,7 @@ export function ConditionEditor({
           </View>
         ))}
         <Button
-          title="条件を追加"
+          title="条件を追加する"
           variant="outline"
           disabled={inactive || (group.operator === "not" && group.children.length >= 1)}
           onPress={() =>
@@ -143,7 +143,7 @@ export function ConditionEditor({
           }
         />
         <Button
-          title="グループを追加"
+          title="グループを追加する"
           variant="outline"
           disabled={
             inactive || depth >= 5 || (group.operator === "not" && group.children.length >= 1)
@@ -294,7 +294,7 @@ export function FormBuilder({
                     </View>
                   ))}
                   <Button
-                    title="選択肢を追加"
+                    title="選択肢を追加する"
                     variant="outline"
                     disabled={inactive}
                     onPress={() =>
@@ -342,7 +342,7 @@ export function FormBuilder({
                 </>
               ) : (
                 <Button
-                  title="表示条件を設定"
+                  title="表示条件を設定する"
                   variant="outline"
                   disabled={inactive}
                   onPress={() =>
@@ -385,7 +385,7 @@ export function FormBuilder({
             </View>
           ))}
           <Button
-            title="項目を追加"
+            title="項目を追加する"
             disabled={inactive}
             onPress={() =>
               onChange([...value, { id: createId(), kind: "text", label: "新しい項目" }])

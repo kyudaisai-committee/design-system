@@ -92,7 +92,7 @@ function QrCodeContent({
                     onRetry();
                   }}
                 >
-                  再読み込み
+                  もう一度読み込む
                 </Button>
               )}
             </div>

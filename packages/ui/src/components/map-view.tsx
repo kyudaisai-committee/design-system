@@ -151,7 +151,7 @@ export function MapEditor({
           setSelectedId(id);
         }}
       >
-        場所を追加
+        場所を追加する
       </Button>
       {point && (
         <fieldset disabled={inactive} className="ds-stack">
@@ -193,7 +193,7 @@ export function MapEditor({
               setSelectedId(undefined);
             }}
           >
-            この場所を削除
+            この場所を削除する
           </Button>
         </fieldset>
       )}

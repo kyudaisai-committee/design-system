@@ -489,14 +489,14 @@ export function Progress({ label, value }: ProgressProps) {
       accessibilityState={{ busy: percent === undefined || percent < 100 }}
       accessibilityValue={
         percent === undefined
-          ? { text: "処理中" }
+          ? { text: "処理しています" }
           : { min: 0, max: 100, now: percent, text: `${Math.round(percent)}%` }
       }
       style={styles.field}
     >
       <Text variant="label">
         {label}
-        {percent === undefined ? " — 処理中" : ` — ${Math.round(percent)}%`}
+        {percent === undefined ? "— 処理しています" : ` — ${Math.round(percent)}%`}
       </Text>
       {percent === undefined ? (
         <ActivityIndicator

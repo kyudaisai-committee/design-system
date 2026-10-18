@@ -102,7 +102,7 @@ function QrCodeContent({
           ) : null}
           {resolvedState === "error" && onRetry ? (
             <Button
-              title="再読み込み"
+              title="もう一度読み込む"
               variant="outline"
               disabled={retryDisabled}
               onPress={() => {

@@ -22,7 +22,7 @@ export function ResultChart({
   if (data.some((item) => !Number.isFinite(item.value) || item.value < 0))
     return (
       <Notice title="結果を表示できません" tone="danger">
-        数値を再取得してください。
+        数値をもう一度読み込んでください。
       </Notice>
     );
   const max = Math.max(1, ...data.map((item) => item.value));

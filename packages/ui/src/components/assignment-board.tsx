@@ -31,7 +31,7 @@ export function AssignmentBoard({
         {[
           ...lanes.map((lane) => ({ ...lane, orphanBucket: false })),
           ...(orphaned.length
-            ? [{ id: "", label: "配置先を確認してください", orphanBucket: true }]
+            ? [{ id: "", label: "配置先を確認してください。", orphanBucket: true }]
             : []),
         ].map((lane) => {
           const assigned = lane.orphanBucket

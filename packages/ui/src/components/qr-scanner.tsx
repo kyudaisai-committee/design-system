@@ -123,7 +123,7 @@ export function QrScanner({ label, onRead, active = true, disabled }: QrScannerP
           disabled={!active || disabled || running || processing}
           onClick={() => void start()}
         >
-          カメラを開始
+          カメラを開始する
         </Button>
         <Button
           type="button"
@@ -135,7 +135,7 @@ export function QrScanner({ label, onRead, active = true, disabled }: QrScannerP
             setStatus("カメラを停止しました。");
           }}
         >
-          停止
+          停止する
         </Button>
       </div>
     </section>

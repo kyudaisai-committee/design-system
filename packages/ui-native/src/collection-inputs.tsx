@@ -427,7 +427,7 @@ export function InputTable({
       {!rows.length ? <Text tone="muted">行はありません。</Text> : null}
       {onAdd ? (
         <Button
-          title="行を追加"
+          title="行を追加する"
           variant="outline"
           disabled={inactive || (maxRows !== undefined && rows.length >= maxRows)}
           onPress={() => {

@@ -73,7 +73,7 @@ function ImageContent({ asset, onRetry, resolveSource }: PublicImageProps) {
           </Text>
           {state === "error" && onRetry && (
             <Button
-              title="再読み込み"
+              title="もう一度読み込む"
               variant="outline"
               onPress={() => {
                 setFailed(false);
