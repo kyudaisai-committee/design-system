@@ -25,7 +25,7 @@ const meta = {
     docs: {
       description: {
         component:
-          "ファイルを選択し、名前・容量を確認して取り除けます。選択内容はvalueで管理します。新しく選択すると置き換わります。acceptはファイル選択画面の絞り込みです。ファイルの送信や保存は利用側で行います。",
+          "ファイルを選択し、名前・容量を確認して取り除けます。選択内容はvalueで管理します。新しく選択すると置き換わり、同じファイルも選び直せます。選択後のファイル読込、送信、保存は利用側で行います。acceptはファイル選択画面の絞り込みです。",
       },
     },
   },
@@ -47,12 +47,14 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 export const Default: Story = {
-  play: async ({ canvasElement }) => {
+  play: async ({ canvasElement, args }) => {
     const canvas = within(canvasElement);
     const input = canvas.getByLabelText("添付ファイル");
     const file = new File(["見本"], "sample.txt", { type: "text/plain" });
     await userEvent.upload(input, file);
     await expect(canvas.getByText("sample.txt")).toBeInTheDocument();
+    const selected = args.onValueChange.mock.calls.at(-1)?.[0]?.[0];
+    await expect(await selected?.text()).toBe("見本");
     await userEvent.click(canvas.getByRole("button", { name: "sample.txtを取り除く" }));
     await expect(canvas.queryByText("sample.txt")).not.toBeInTheDocument();
     await expect(input).toHaveFocus();

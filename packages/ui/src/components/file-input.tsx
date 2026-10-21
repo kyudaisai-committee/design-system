@@ -20,7 +20,7 @@ export interface FileInputProps {
   onValueChange: (files: File[]) => void;
 }
 
-/** Selection only. The caller owns upload, persistence and server-side file validation. */
+/** Selection only. The caller can read the selected files and owns upload, persistence and server-side validation. */
 export function FileInput({
   label,
   hint,
@@ -48,18 +48,23 @@ export function FileInput({
             multiple={maxFiles > 1}
             required={required && value.length === 0}
             disabled={disabled || readOnly}
+            onClick={(event) => {
+              event.currentTarget.value = "";
+            }}
             onChange={(event) => {
-              const selected = Array.from(event.target.files ?? []);
-              event.target.value = "";
+              const input = event.currentTarget;
+              const selected = Array.from(input.files ?? []);
               if (disabled || readOnly || selected.length === 0) return;
               if (selected.length > maxFiles) {
                 setSelectionError(`${maxFiles}ファイル以内で選択してください。`);
+                input.value = "";
                 return;
               }
               if (maxBytes !== undefined && selected.some((file) => file.size > maxBytes)) {
                 setSelectionError(
                   `1ファイルあたり${maxBytes.toLocaleString()}バイト以内で選択してください。`,
                 );
+                input.value = "";
                 return;
               }
               setSelectionError("");
